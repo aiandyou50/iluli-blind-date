@@ -27,7 +27,7 @@ matching.get('/deck', authMiddleware, async (c) => {
 
     const actedUserIds = actedUsersResult.results.map((row: any) => row.target_user_id);
     
-    // 2. 승인된 사진이 있는 사용자 중, 내가 액션하지 않은 사용자 조회
+    // 2. 사진이 있는 사용자 중, 내가 액션하지 않은 사용자 조회
     let query = `
       SELECT DISTINCT
         u.id AS user_id,
@@ -39,8 +39,7 @@ matching.get('/deck', authMiddleware, async (c) => {
       FROM Users u
       INNER JOIN UserProfiles up ON u.id = up.user_id
       INNER JOIN ProfilePhotos pp ON u.id = pp.user_id
-      WHERE pp.verification_status = 'approved'
-        AND u.id != ?
+      WHERE u.id != ?
     `;
 
     // 이미 액션한 사용자 제외
@@ -54,13 +53,13 @@ matching.get('/deck', authMiddleware, async (c) => {
     const bindings = [authUser.userId, ...actedUserIds];
     const usersResult = await c.env.DB.prepare(query).bind(...bindings).all();
 
-    // 3. 각 사용자의 승인된 사진 조회
+    // 3. 각 사용자의 사진 조회 (verification_status 포함)
     const deck = await Promise.all(
       usersResult.results.map(async (user: any) => {
         const photosResult = await c.env.DB.prepare(`
-          SELECT id, image_url
+          SELECT id, image_url, verification_status
           FROM ProfilePhotos
-          WHERE user_id = ? AND verification_status = 'approved'
+          WHERE user_id = ?
           ORDER BY created_at DESC
         `).bind(user.user_id).all();
 
@@ -74,6 +73,7 @@ matching.get('/deck', authMiddleware, async (c) => {
           photos: photosResult.results.map((photo: any) => ({
             id: photo.id,
             image_url: photo.image_url,
+            verification_status: photo.verification_status || 'not_applied',
           })),
         };
       })

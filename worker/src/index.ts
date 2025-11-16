@@ -7,6 +7,7 @@ import users from './routes/users';
 import feed from './routes/feed';
 import likes from './routes/likes';
 import matching from './routes/matching';
+import admin from './routes/admin';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -22,6 +23,7 @@ app.use('/*', async (c, next) => {
 });
 
 // API v1 라우트 (우선 순위: 더 구체적인 경로가 먼저)
+app.route('/api/v1/admin', admin);  // Admin routes
 app.route('/api/v1/profile/photos', photos);  // 더 구체적인 경로를 먼저
 app.route('/api/v1/profile', profile);
 app.route('/api/v1/users', users);
