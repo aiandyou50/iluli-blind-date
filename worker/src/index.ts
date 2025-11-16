@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { Env } from './types/env';
 import profile from './routes/profile';
 import photos from './routes/photos';
+import users from './routes/users';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -20,6 +21,7 @@ app.use('/*', async (c, next) => {
 // API v1 라우트 (우선 순위: API 먼저)
 app.route('/api/v1/profile', profile);
 app.route('/api/v1/profile/photos', photos);
+app.route('/api/v1/users', users);
 
 // 정적 파일 서빙 (Wrangler 4.x Assets)
 app.get('/*', async (c) => {
@@ -37,9 +39,8 @@ app.get('/*', async (c) => {
   
   if (indexAsset.status === 200) {
     return new Response(indexAsset.body, {
-      ...indexAsset,
+      status: 200,
       headers: {
-        ...Object.fromEntries(indexAsset.headers.entries()),
         'Content-Type': 'text/html',
       },
     });
