@@ -33,28 +33,30 @@ app.route('/api/v1/matching', matching);  // /api/v1/matching/deck, /action, /ma
 
 // 정적 파일 서빙 (Wrangler 4.x Assets)
 app.get('/*', async (c) => {
-  // Assets 바인딩 사용
+  // API 경로는 여기서 처리하지 않음
+  if (c.req.path.startsWith('/api/')) {
+    return c.notFound();
+  }
+
+  // 정적 파일 조회
   const asset = await c.env.ASSETS.fetch(c.req.raw);
-  
-  // 정적 파일이 있으면 반환
   if (asset.status !== 404) {
     return asset;
   }
-  
-  // SPA fallback: 정적 파일이 없으면 index.html 반환
-  const indexRequest = new Request(new URL('/index.html', c.req.url), c.req.raw);
-  const indexAsset = await c.env.ASSETS.fetch(indexRequest);
-  
-  if (indexAsset.status === 200) {
-    return new Response(indexAsset.body, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html',
-      },
+
+  // SPA fallback: /index.html → / 순으로 조회
+  const fallbackPaths = ['/index.html', '/'];
+  for (const fallbackPath of fallbackPaths) {
+    const fallbackRequest = new Request(new URL(fallbackPath, c.req.url).toString(), {
+      method: 'GET',
+      headers: c.req.raw.headers,
     });
+    const fallbackAsset = await c.env.ASSETS.fetch(fallbackRequest);
+    if (fallbackAsset.status === 200) {
+      return new Response(fallbackAsset.body, fallbackAsset);
+    }
   }
-  
-  // Assets에도 index.html이 없으면 404
+
   return c.json({ error: 'Not Found' }, 404);
 });
 
