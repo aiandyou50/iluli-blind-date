@@ -140,11 +140,17 @@ export default function FeedPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 헤더 */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
+      <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold text-primary-600">피드</h1>
             <div className="flex gap-2">
+              <button
+                onClick={() => navigate('/matching')}
+                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+              >
+                매칭
+              </button>
               <button
                 onClick={() => navigate('/profile')}
                 className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"

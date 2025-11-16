@@ -6,6 +6,7 @@ import photos from './routes/photos';
 import users from './routes/users';
 import feed from './routes/feed';
 import likes from './routes/likes';
+import matching from './routes/matching';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -26,6 +27,7 @@ app.route('/api/v1/profile', profile);
 app.route('/api/v1/users', users);
 app.route('/api/v1/feed', feed);
 app.route('/api/v1/photos', likes);  // /api/v1/photos/:photoId/like, /unlike, /likers
+app.route('/api/v1/matching', matching);  // /api/v1/matching/deck, /action, /matches
 
 // 정적 파일 서빙 (Wrangler 4.x Assets)
 app.get('/*', async (c) => {

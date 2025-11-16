@@ -132,6 +132,12 @@ export default function ProfilePage() {
               피드
             </button>
             <button
+              onClick={() => navigate('/matching')}
+              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+            >
+              매칭
+            </button>
+            <button
               onClick={handleLogout}
               className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
             >

@@ -5,6 +5,7 @@ import LoginPage from '@/pages/LoginPage';
 import ProfilePage from '@/pages/ProfilePage';
 import PublicProfilePage from '@/pages/PublicProfilePage';
 import FeedPage from '@/pages/FeedPage';
+import MatchingPage from '@/pages/MatchingPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <FeedPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/matching"
+            element={
+              <ProtectedRoute>
+                <MatchingPage />
               </ProtectedRoute>
             }
           />
