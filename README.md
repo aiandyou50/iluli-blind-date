@@ -10,6 +10,12 @@
     /ssot            # Single Source of Truth 문서
   /worker            # Cloudflare Workers (백엔드 API)
   /frontend          # React 프론트엔드
+    /src
+      /components
+        /AdminPhotoApprovalModal  # 관리자 사진 승인 모달 (모듈화)
+      /pages         # 페이지 컴포넌트
+      /api           # API 클라이언트
+    /.storybook      # Storybook 설정
   /shared            # 공통 TypeScript 타입 정의
   README.md
 ```
@@ -22,6 +28,9 @@
 - **Tailwind CSS** + Headless UI
 - **React Query** (TanStack Query)
 - **Zustand** (전역 상태)
+- **Vitest** (테스트 프레임워크)
+- **Storybook** (컴포넌트 문서화)
+- **React Testing Library** (컴포넌트 테스트)
 
 ### 백엔드
 - **Cloudflare Workers** (서버리스)
@@ -58,6 +67,18 @@
   - [PRD-ADMIN-001](./docs/PRD-ADMIN-001.md) - 관리자 기능
   - [Tech-Spec-PRD-ADMIN-001](./docs/Tech-Spec-PRD-ADMIN-001.md)
 
+## ✨ 주요 기능
+
+### 관리자 사진 승인 모달 (리팩토링)
+- ✅ 접근성 우선 설계 (WCAG AA 준수)
+- ✅ 반응형 디자인 (모바일/태블릿/데스크탑)
+- ✅ 다크모드 지원
+- ✅ 모듈화된 컴포넌트 구조
+- ✅ 포괄적인 테스트 커버리지 (21개 테스트)
+- ✅ Storybook 문서화
+
+자세한 내용은 [frontend/MODAL_REFACTORING.md](./frontend/MODAL_REFACTORING.md)를 참조하세요.
+
 ## 🚀 시작하기
 
 ### 사전 요구사항
@@ -81,6 +102,23 @@ npm run dev  # 로컬 개발 서버 (http://localhost:8787)
 cd frontend
 npm install
 npm run dev  # Vite 개발 서버 (http://localhost:5173)
+```
+
+### 테스트 실행
+
+```bash
+cd frontend
+npm test              # 테스트 실행
+npm run test:ui       # 테스트 UI로 실행
+npm run test:coverage # 테스트 커버리지
+```
+
+### Storybook (컴포넌트 문서화)
+
+```bash
+cd frontend
+npm run storybook     # http://localhost:6006
+npm run build-storybook  # 정적 빌드
 ```
 
 ### 데이터베이스 마이그레이션
