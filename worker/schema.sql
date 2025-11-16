@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS Users (
     id TEXT PRIMARY KEY,                            -- UUID (Worker에서 생성)
     google_subject_id TEXT UNIQUE NOT NULL,         -- Google에서 받은 고유 ID (sub 클레임)
     email TEXT,                                     -- Google 이메일
+    role TEXT DEFAULT 'user' NOT NULL               -- 역할: 'user' (기본) 또는 'admin'
+        CHECK(role IN ('user', 'admin')),
     created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
