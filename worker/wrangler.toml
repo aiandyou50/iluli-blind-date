@@ -27,6 +27,15 @@ GOOGLE_CLIENT_ID = "554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleuse
 name = "iluli-worker-prod"
 vars = { ALLOWED_ORIGIN = "https://aiboop.org", GOOGLE_CLIENT_ID = "554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com" }
 
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "iluli-db"
+database_id = "5d259601-b9ad-4767-8be9-e7eeb540bd66"
+
+[[env.production.r2_buckets]]
+binding = "R2"
+bucket_name = "iluli-photos"
+
 # Development Environment
 [env.development]
 name = "iluli-worker-dev"
