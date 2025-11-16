@@ -10,6 +10,7 @@ import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import AdminVerificationPage from '@/pages/AdminVerificationPage';
 import AdminPhotosPage from '@/pages/AdminPhotosPage';
 import AdminUsersPage from '@/pages/AdminUsersPage';
+import AdminProtectedRoute from '@/components/AdminProtectedRoute';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -71,33 +72,33 @@ function App() {
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <AdminProtectedRoute>
                 <AdminDashboardPage />
-              </ProtectedRoute>
+              </AdminProtectedRoute>
             }
           />
           <Route
             path="/admin/verification"
             element={
-              <ProtectedRoute>
+              <AdminProtectedRoute>
                 <AdminVerificationPage />
-              </ProtectedRoute>
+              </AdminProtectedRoute>
             }
           />
           <Route
             path="/admin/photos"
             element={
-              <ProtectedRoute>
+              <AdminProtectedRoute>
                 <AdminPhotosPage />
-              </ProtectedRoute>
+              </AdminProtectedRoute>
             }
           />
           <Route
             path="/admin/users"
             element={
-              <ProtectedRoute>
+              <AdminProtectedRoute>
                 <AdminUsersPage />
-              </ProtectedRoute>
+              </AdminProtectedRoute>
             }
           />
         </Routes>
