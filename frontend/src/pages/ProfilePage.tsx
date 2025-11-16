@@ -4,12 +4,16 @@ import { useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { useNavigate } from 'react-router-dom';
 import imageCompression from 'browser-image-compression';
+import PhotoModal from '@/components/PhotoModal';
+import type { ProfilePhoto } from '@/types/profile';
 
 export default function ProfilePage() {
   const queryClient = useQueryClient();
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<ProfilePhoto | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     nickname: '',
     school: '',
@@ -105,6 +109,19 @@ export default function ProfilePage() {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const handlePhotoClick = (photo: ProfilePhoto) => {
+    setSelectedPhoto(photo);
+    setIsModalOpen(true);
+  };
+
+  const handleDeletePhoto = (photoId: string) => {
+    deleteMutation.mutate(photoId);
+  };
+
+  const handleVerifyFestival = (photoId: string) => {
+    verifyMutation.mutate(photoId);
   };
 
   if (isLoading) {
@@ -268,7 +285,12 @@ export default function ProfilePage() {
                 <img
                   src={photo.image_url}
                   alt="프로필 사진"
-                  className="w-full h-48 object-cover rounded-lg"
+                  className="w-full h-48 object-cover rounded-lg cursor-pointer"
+                  onClick={() => handlePhotoClick(photo)}
+                  onError={(e) => {
+                    console.error('Image failed to load:', photo.image_url);
+                    e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext fill="%23999" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3E이미지 로드 실패%3C/text%3E%3C/svg%3E';
+                  }}
                 />
                 {/* 좋아요 수 표시 */}
                 {photo.likes_count > 0 && (
@@ -283,26 +305,15 @@ export default function ProfilePage() {
                     {photo.verification_status === 'rejected' && '❌ 거절됨'}
                     {photo.verification_status === 'not_applied' && '🔒 미신청'}
                   </span>
-                  <div className="flex gap-2">
-                    {photo.verification_status === 'not_applied' && (
-                      <button
-                        onClick={() => verifyMutation.mutate(photo.id)}
-                        className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
-                      >
-                        인증 신청
-                      </button>
-                    )}
-                    <button
-                      onClick={() => {
-                        if (confirm('정말 삭제하시겠습니까?')) {
-                          deleteMutation.mutate(photo.id);
-                        }
-                      }}
-                      className="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
-                    >
-                      삭제
-                    </button>
-                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePhotoClick(photo);
+                    }}
+                    className="px-3 py-1 bg-white text-gray-900 text-sm rounded hover:bg-gray-100"
+                  >
+                    자세히 보기
+                  </button>
                   {photo.verification_status === 'rejected' && photo.rejection_reason && (
                     <p className="text-white text-xs mt-2 px-2 text-center">
                       거절 사유: {photo.rejection_reason}
@@ -318,6 +329,15 @@ export default function ProfilePage() {
           )}
         </div>
       </main>
+
+      {/* Photo Modal */}
+      <PhotoModal
+        photo={selectedPhoto}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onDelete={handleDeletePhoto}
+        onVerifyFestival={handleVerifyFestival}
+      />
     </div>
   );
 }
