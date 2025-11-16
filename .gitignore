@@ -11,6 +11,10 @@ node_modules
 dist
 .wrangler
 .mf
+storybook-static
+
+# Test coverage
+coverage
 
 # Logs
 *.log
@@ -30,3 +34,5 @@ Thumbs.db
 
 # Cloudflare
 .dev.vars
+
+*storybook.log
