@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/authStore';
 import LoginPage from '@/pages/LoginPage';
 import ProfilePage from '@/pages/ProfilePage';
 import PublicProfilePage from '@/pages/PublicProfilePage';
+import FeedPage from '@/pages/FeedPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route
+            path="/feed"
+            element={
+              <ProtectedRoute>
+                <FeedPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile"
             element={
