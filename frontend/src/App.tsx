@@ -6,6 +6,10 @@ import ProfilePage from '@/pages/ProfilePage';
 import PublicProfilePage from '@/pages/PublicProfilePage';
 import FeedPage from '@/pages/FeedPage';
 import MatchingPage from '@/pages/MatchingPage';
+import AdminDashboardPage from '@/pages/AdminDashboardPage';
+import AdminVerificationPage from '@/pages/AdminVerificationPage';
+import AdminPhotosPage from '@/pages/AdminPhotosPage';
+import AdminUsersPage from '@/pages/AdminUsersPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,6 +65,38 @@ function App() {
             element={
               <ProtectedRoute>
                 <PublicProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/verification"
+            element={
+              <ProtectedRoute>
+                <AdminVerificationPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/photos"
+            element={
+              <ProtectedRoute>
+                <AdminPhotosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <AdminUsersPage />
               </ProtectedRoute>
             }
           />
