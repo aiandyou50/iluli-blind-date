@@ -39,15 +39,15 @@ users.get('/:userId/profile', authMiddleware, async (c) => {
       return c.json({ error: 'User not found' }, 404);
     }
 
-    // 2. 승인된 사진만 조회 (verification_status = 'approved')
+    // 2. 사용자의 모든 사진 조회 (verification_status 포함)
     const photosResult = await c.env.DB.prepare(`
       SELECT 
         id,
         image_url,
-        likes_count
+        likes_count,
+        verification_status
       FROM ProfilePhotos
       WHERE user_id = ?
-        AND verification_status = 'approved'
       ORDER BY created_at DESC
     `).bind(targetUserId).all();
 
@@ -74,6 +74,7 @@ users.get('/:userId/profile', authMiddleware, async (c) => {
         id: photo.id,
         image_url: photo.image_url,
         likes_count: photo.likes_count || 0,
+        verification_status: photo.verification_status || 'not_applied',
       })),
     };
 

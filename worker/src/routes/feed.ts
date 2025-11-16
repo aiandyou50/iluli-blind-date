@@ -27,6 +27,7 @@ feed.get('/', authMiddleware, async (c) => {
         pp.id AS photo_id,
         pp.image_url,
         pp.likes_count,
+        pp.verification_status,
         pp.created_at AS photo_created_at,
         u.id AS user_id,
         up.nickname,
@@ -35,8 +36,7 @@ feed.get('/', authMiddleware, async (c) => {
       FROM ProfilePhotos pp
       INNER JOIN Users u ON pp.user_id = u.id
       LEFT JOIN UserProfiles up ON u.id = up.user_id
-      WHERE pp.verification_status = 'approved'
-        AND pp.user_id != ?
+      WHERE pp.user_id != ?
     `;
 
     // 정렬 옵션
@@ -130,6 +130,7 @@ feed.get('/', authMiddleware, async (c) => {
       },
       likes_count: item.likes_count || 0,
       i_like_this: myLikes.has(item.photo_id),
+      verification_status: item.verification_status || 'not_applied',
     }));
 
     return c.json({
