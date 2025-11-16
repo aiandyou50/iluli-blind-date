@@ -11,6 +11,10 @@ node_modules
 dist
 .wrangler
 .mf
+storybook-static
+
+# Test coverage
+coverage
 
 # Logs
 *.log
