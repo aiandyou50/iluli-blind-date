@@ -1,0 +1,33 @@
+name = "iluli-worker"
+main = "src/index.ts"
+compatibility_date = "2024-11-16"
+
+# Static Assets (Frontend)
+[site]
+bucket = "./public"
+
+# D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "iluli-db"
+database_id = "5d259601-b9ad-4767-8be9-e7eeb540bd66"  # wrangler d1 create iluli-db 실행 후 ID 입력
+
+# R2 Storage Binding
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "iluli-photos"
+
+# Environment Variables
+[vars]
+ALLOWED_ORIGIN = "http://localhost:5173"  # 프론트엔드 도메인
+GOOGLE_CLIENT_ID = "554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com"  # Google OAuth 클라이언트 ID
+
+# Production Environment
+[env.production]
+name = "iluli-worker-prod"
+vars = { ALLOWED_ORIGIN = "https://aiboop.org", GOOGLE_CLIENT_ID = "554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com" }
+
+# Development Environment
+[env.development]
+name = "iluli-worker-dev"
+vars = { ALLOWED_ORIGIN = "http://localhost:5173" }
