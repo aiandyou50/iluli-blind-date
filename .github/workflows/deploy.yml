@@ -51,4 +51,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: worker
-          command: deploy --env production
+          command: deploy --env production --config wrangler.toml
