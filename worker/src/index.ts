@@ -18,9 +18,9 @@ app.use('/*', async (c, next) => {
   return corsMiddleware(c, next);
 });
 
-// API v1 라우트 (우선 순위: API 먼저)
+// API v1 라우트 (우선 순위: 더 구체적인 경로가 먼저)
+app.route('/api/v1/profile/photos', photos);  // 더 구체적인 경로를 먼저
 app.route('/api/v1/profile', profile);
-app.route('/api/v1/profile/photos', photos);
 app.route('/api/v1/users', users);
 
 // 정적 파일 서빙 (Wrangler 4.x Assets)
