@@ -124,12 +124,26 @@ export default function ProfilePage() {
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-primary-600">내 프로필</h1>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-          >
-            로그아웃
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => navigate('/feed')}
+              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+            >
+              피드
+            </button>
+            <button
+              onClick={() => navigate('/matching')}
+              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+            >
+              매칭
+            </button>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
+            >
+              로그아웃
+            </button>
+          </div>
         </div>
       </header>
 
@@ -256,6 +270,12 @@ export default function ProfilePage() {
                   alt="프로필 사진"
                   className="w-full h-48 object-cover rounded-lg"
                 />
+                {/* 좋아요 수 표시 */}
+                {photo.likes_count > 0 && (
+                  <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-full">
+                    ❤️ {photo.likes_count}
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex flex-col items-center justify-center gap-2">
                   <span className="text-white text-sm">
                     {photo.verification_status === 'approved' && '✅ 승인됨'}
