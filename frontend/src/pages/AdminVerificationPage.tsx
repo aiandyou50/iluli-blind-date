@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
 import { API_BASE_URL } from '@/config/env';
+import AdminPhotoApprovalModal from '@/components/AdminPhotoApprovalModal';
+import type { Photo } from '@/components/AdminPhotoApprovalModal';
 
 interface PendingPhoto {
   id: string;
@@ -22,7 +24,8 @@ export default function AdminVerificationPage() {
   const [photos, setPhotos] = useState<PendingPhoto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [processingId, setProcessingId] = useState<string | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchPendingPhotos();
@@ -45,79 +48,78 @@ export default function AdminVerificationPage() {
     }
   };
 
-  const handleApprove = async (photoId: string) => {
-    if (!confirm('이 사진을 승인하시겠습니까?')) return;
-
-    setProcessingId(photoId);
-    try {
-      await axios.post(
-        `${API_BASE_URL}/admin/photos/${photoId}/approve`,
-        {},
-        { headers: { Authorization: `Bearer ${idToken}` } }
-      );
-      setPhotos(photos.filter((p) => p.id !== photoId));
-      alert('사진이 승인되었습니다.');
-    } catch (err) {
-      alert('승인 처리에 실패했습니다.');
-    } finally {
-      setProcessingId(null);
-    }
+  const handlePhotoClick = (photo: PendingPhoto) => {
+    const modalPhoto: Photo = {
+      ...photo,
+      verification_status: photo.verification_status as Photo['verification_status'],
+      rejection_reason: null,
+      likes_count: 0,
+    };
+    setSelectedPhoto(modalPhoto);
+    setIsModalOpen(true);
   };
 
-  const handleReject = async (photoId: string) => {
-    const reason = prompt('거절 사유를 입력하세요 (선택사항):');
-    if (reason === null) return; // 취소
+  const handleApprove = async (photoId: string) => {
+    await axios.post(
+      `${API_BASE_URL}/admin/photos/${photoId}/approve`,
+      {},
+      { headers: { Authorization: `Bearer ${idToken}` } }
+    );
+    setPhotos(photos.filter((p) => p.id !== photoId));
+  };
 
-    setProcessingId(photoId);
-    try {
-      await axios.post(
-        `${API_BASE_URL}/admin/photos/${photoId}/reject`,
-        { reason },
-        { headers: { Authorization: `Bearer ${idToken}` } }
-      );
-      setPhotos(photos.filter((p) => p.id !== photoId));
-      alert('사진이 거절되었습니다.');
-    } catch (err) {
-      alert('거절 처리에 실패했습니다.');
-    } finally {
-      setProcessingId(null);
-    }
+  const handleReject = async (photoId: string, reason: string) => {
+    await axios.post(
+      `${API_BASE_URL}/admin/photos/${photoId}/reject`,
+      { reason },
+      { headers: { Authorization: `Bearer ${idToken}` } }
+    );
+    setPhotos(photos.filter((p) => p.id !== photoId));
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPhoto(null);
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-xl">로딩 중...</div>
+      <div className="min-h-screen bg-gray-100 dark:bg-background-dark flex items-center justify-center">
+        <div className="text-xl dark:text-gray-100">로딩 중...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-xl text-red-600">{error}</div>
+      <div className="min-h-screen bg-gray-100 dark:bg-background-dark flex items-center justify-center">
+        <div className="text-xl text-red-600 dark:text-danger-400">{error}</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-background-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">사진 인증 관리</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">사진 인증 관리</h1>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             파트너 포토부스 사진 인증 요청을 처리합니다.
           </p>
         </div>
 
         {photos.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-8 text-center">
-            <p className="text-gray-600">인증 대기 중인 사진이 없습니다.</p>
+          <div className="bg-white dark:bg-background-dark-secondary rounded-lg shadow p-8 text-center">
+            <p className="text-gray-600 dark:text-gray-400">인증 대기 중인 사진이 없습니다.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {photos.map((photo) => (
-              <div key={photo.id} className="bg-white rounded-lg shadow overflow-hidden">
+              <div 
+                key={photo.id} 
+                className="bg-white dark:bg-background-dark-secondary rounded-lg shadow overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => handlePhotoClick(photo)}
+              >
                 <div className="aspect-square relative">
                   <img
                     src={photo.image_url}
@@ -127,31 +129,15 @@ export default function AdminVerificationPage() {
                 </div>
                 <div className="p-4">
                   <div className="mb-4">
-                    <p className="text-sm text-gray-500">사용자</p>
-                    <p className="font-medium">{photo.user.nickname}</p>
-                    <p className="text-xs text-gray-500">{photo.user.email}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">사용자</p>
+                    <p className="font-medium dark:text-gray-100">{photo.user.nickname}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{photo.user.email}</p>
                   </div>
                   <div className="mb-4">
-                    <p className="text-sm text-gray-500">신청 일시</p>
-                    <p className="text-xs">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">신청 일시</p>
+                    <p className="text-xs dark:text-gray-300">
                       {new Date(photo.created_at).toLocaleString('ko-KR')}
                     </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleApprove(photo.id)}
-                      disabled={processingId === photo.id}
-                      className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      {processingId === photo.id ? '처리 중...' : '승인'}
-                    </button>
-                    <button
-                      onClick={() => handleReject(photo.id)}
-                      disabled={processingId === photo.id}
-                      className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      거절
-                    </button>
                   </div>
                 </div>
               </div>
@@ -162,12 +148,20 @@ export default function AdminVerificationPage() {
         <div className="mt-8">
           <button
             onClick={() => navigate('/admin')}
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-blue-600 dark:text-primary-400 hover:text-blue-800 dark:hover:text-primary-300 font-medium"
           >
             ← 대시보드로 돌아가기
           </button>
         </div>
       </div>
+
+      <AdminPhotoApprovalModal
+        photo={selectedPhoto}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onApprove={handleApprove}
+        onReject={handleReject}
+      />
     </div>
   );
 }

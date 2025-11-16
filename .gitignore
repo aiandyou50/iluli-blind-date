@@ -30,3 +30,5 @@ Thumbs.db
 
 # Cloudflare
 .dev.vars
+
+*storybook.log
