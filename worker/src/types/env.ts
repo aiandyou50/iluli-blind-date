@@ -2,6 +2,7 @@
 export interface Env {
   DB: D1Database;
   R2: R2Bucket;
+  ASSETS: Fetcher;  // Wrangler 4.x Assets 바인딩
   GOOGLE_CLIENT_ID: string;
   ALLOWED_ORIGIN: string;
 }

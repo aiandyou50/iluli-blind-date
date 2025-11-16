@@ -14,14 +14,14 @@
   },
   "dependencies": {
     "hono": "^4.6.3",
-    "ngeohash": "^0.6.3",
-    "jose": "^5.9.6"
+    "jose": "^5.9.6",
+    "ngeohash": "^0.6.3"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241127.0",
     "@types/node": "^22.9.3",
     "typescript": "^5.7.2",
     "vitest": "^2.1.6",
-    "wrangler": "^3.86.0"
+    "wrangler": "^4.47.0"
   }
 }
