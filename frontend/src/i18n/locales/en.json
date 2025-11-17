@@ -1,0 +1,77 @@
+{
+  "app": {
+    "title": "aiboop.org",
+    "subtitle": "University Festival Photo Booth Dating"
+  },
+  "navigation": {
+    "feed": "Feed",
+    "matching": "Matching",
+    "profile": "Profile",
+    "home": "Home",
+    "chats": "Chats",
+    "myProfile": "My Profile",
+    "eventInfo": "Event Info"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "backToHome": "Back to Home"
+  },
+  "profile": {
+    "loading": "Loading profile...",
+    "loadError": "Unable to load profile.",
+    "photos": "Photos",
+    "verifiedPhotos": "Verified Photos",
+    "noPhotos": "No verified photos yet.",
+    "bio": "Bio",
+    "age": "years old",
+    "studentVerified": "Student Verified",
+    "instagramDM": "Instagram DM",
+    "edit": "Edit Profile",
+    "updateSuccess": "Profile updated successfully!",
+    "updateError": "Error",
+    "uploadSuccess": "Photo uploaded successfully!",
+    "deleteConfirm": "Are you sure you want to delete this photo?",
+    "nickname": "Nickname",
+    "school": "School",
+    "mbti": "MBTI",
+    "instagram": "Instagram URL"
+  },
+  "feed": {
+    "title": "Feed",
+    "sortBy": "Sort By",
+    "latest": "Latest",
+    "oldest": "Oldest",
+    "popular": "Popular",
+    "random": "Random",
+    "distance": "Distance",
+    "loadMore": "Load More",
+    "loading": "Loading...",
+    "noPhotos": "No photos available",
+    "viewProfile": "View Profile"
+  },
+  "matching": {
+    "title": "Matching",
+    "loading": "Loading...",
+    "noMoreCards": "No more cards",
+    "matched": "It's a match!",
+    "pass": "Pass",
+    "like": "Like"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "close": "Close",
+    "upload": "Upload"
+  },
+  "language": {
+    "select": "Select Language",
+    "ko": "한국어",
+    "en": "English",
+    "zh-TW": "繁體中文",
+    "zh-CN": "简体中文"
+  }
+}
