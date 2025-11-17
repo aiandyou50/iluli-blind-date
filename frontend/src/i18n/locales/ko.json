@@ -26,7 +26,37 @@
     "bio": "자기소개",
     "age": "세",
     "studentVerified": "학생 인증",
-    "instagramDM": "Instagram DM"
+    "instagramDM": "Instagram DM",
+    "edit": "프로필 수정",
+    "updateSuccess": "프로필이 업데이트되었습니다!",
+    "updateError": "오류",
+    "uploadSuccess": "사진이 업로드되었습니다!",
+    "deleteConfirm": "이 사진을 삭제하시겠습니까?",
+    "nickname": "닉네임",
+    "school": "학교",
+    "mbti": "MBTI",
+    "instagram": "인스타그램 URL"
+  },
+  "feed": {
+    "title": "피드",
+    "sortBy": "정렬",
+    "latest": "최신순",
+    "oldest": "오래된순",
+    "popular": "인기순",
+    "random": "랜덤",
+    "distance": "거리순",
+    "loadMore": "더 보기",
+    "loading": "로딩 중...",
+    "noPhotos": "사진이 없습니다",
+    "viewProfile": "프로필 보기"
+  },
+  "matching": {
+    "title": "매칭",
+    "loading": "로딩 중...",
+    "noMoreCards": "더 이상 카드가 없습니다",
+    "matched": "매칭되었습니다!",
+    "pass": "패스",
+    "like": "좋아요"
   },
   "common": {
     "save": "저장",
@@ -34,7 +64,8 @@
     "delete": "삭제",
     "edit": "수정",
     "confirm": "확인",
-    "close": "닫기"
+    "close": "닫기",
+    "upload": "업로드"
   },
   "language": {
     "select": "언어 선택",
