@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
@@ -19,18 +19,14 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/admin/stats`, {
         headers: { Authorization: `Bearer ${idToken}` },
       });
       setStats(response.data.stats);
-    } catch (err: any) {
-      if (err.response?.status === 403) {
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
         setError('관리자 권한이 필요합니다.');
       } else {
         setError('통계를 불러오는데 실패했습니다.');
@@ -38,7 +34,11 @@ export default function AdminDashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [idToken]);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   if (loading) {
     return (

@@ -56,7 +56,9 @@ export default function MatchingPage() {
   };
 
   useEffect(() => {
-    setCurrentPhotoIndex(0);
+    // Avoid calling setState synchronously in useEffect (ESLint react-hooks/set-state-in-effect)
+    const id = setTimeout(() => setCurrentPhotoIndex(0), 0);
+    return () => clearTimeout(id);
   }, [currentCardIndex]);
 
   if (isLoading) {

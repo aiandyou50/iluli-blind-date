@@ -125,6 +125,7 @@ export default function ProfilePage() {
       setIsUploading(false);
       setUploadProgress(0);
       alert('이미지 압축 실패');
+      console.error(error);
     }
 
     // Reset file input

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
@@ -27,11 +27,7 @@ export default function AdminUsersPage() {
   const [hasMore, setHasMore] = useState(false);
   const [processingId, setProcessingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchUsers();
-  }, [page]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_BASE_URL}/admin/users?page=${page}`, {
@@ -39,8 +35,8 @@ export default function AdminUsersPage() {
       });
       setUsers(response.data.users);
       setHasMore(!!response.data.next_page);
-    } catch (err: any) {
-      if (err.response?.status === 403) {
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
         setError('관리자 권한이 필요합니다.');
       } else {
         setError('사용자 목록을 불러오는데 실패했습니다.');
@@ -48,7 +44,11 @@ export default function AdminUsersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [idToken, page]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleDelete = async (userId: string) => {
     if (!confirm('이 사용자를 삭제하시겠습니까? 모든 데이터가 영구적으로 삭제됩니다.')) return;
@@ -60,8 +60,8 @@ export default function AdminUsersPage() {
       });
       setUsers(users.filter((u) => u.id !== userId));
       alert('사용자가 삭제되었습니다.');
-    } catch (err: any) {
-      if (err.response?.status === 400) {
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
         alert('자기 자신은 삭제할 수 없습니다.');
       } else {
         alert('사용자 삭제에 실패했습니다.');
@@ -86,8 +86,9 @@ export default function AdminUsersPage() {
         users.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
       );
       alert('역할이 변경되었습니다.');
-    } catch (err) {
+    } catch (error) {
       alert('역할 변경에 실패했습니다.');
+      console.error(error);
     } finally {
       setProcessingId(null);
     }
@@ -111,9 +112,9 @@ export default function AdminUsersPage() {
       alert('관리자 초대(승급)가 완료되었습니다.');
       setInviteEmail('');
       fetchUsers();
-    } catch (err: any) {
-      if (err.response?.data?.error) {
-        alert(`오류: ${err.response.data.error}`);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data?.error) {
+        alert(`오류: ${error.response.data.error}`);
       } else {
         alert('관리자 초대에 실패했습니다.');
       }

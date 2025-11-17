@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getFeed, likePhoto, unlikePhoto, FeedPhoto } from '@/api/feed';
+import { useInfiniteQuery, useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
+import { getFeed, likePhoto, unlikePhoto, FeedPhoto, FeedResponse } from '@/api/feed';
 import { useNavigate } from 'react-router-dom';
 import { HeartIcon as HeartOutline } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid';
@@ -47,14 +47,14 @@ export default function FeedPage() {
       // Optimistic update
       await queryClient.cancelQueries({ queryKey: ['feed'] });
       
-      const previousData = queryClient.getQueryData(['feed', sortBy, userLocation]);
+      const previousData = queryClient.getQueryData<InfiniteData<FeedResponse>>(['feed', sortBy, userLocation]);
       
-      queryClient.setQueryData(['feed', sortBy, userLocation], (old: any) => {
+      queryClient.setQueryData<InfiniteData<FeedResponse>>(['feed', sortBy, userLocation], (old) => {
         if (!old) return old;
-        
+
         return {
           ...old,
-          pages: old.pages.map((page: any) => ({
+          pages: old.pages.map((page) => ({
             ...page,
             feed: page.feed.map((photo: FeedPhoto) =>
               photo.photo_id === photoId
