@@ -22,6 +22,8 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteLoading, setInviteLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [processingId, setProcessingId] = useState<string | null>(null);
 
@@ -91,6 +93,35 @@ export default function AdminUsersPage() {
     }
   };
 
+  const handleInviteAdmin = async () => {
+    if (!inviteEmail.trim()) {
+      alert('이메일을 입력해주세요.');
+      return;
+    }
+
+    if (!confirm(`${inviteEmail} 계정을 관리자 권한으로 승급시키시겠습니까?`)) return;
+
+    setInviteLoading(true);
+    try {
+      await axios.post(
+        `${API_BASE_URL}/admin/users/invite`,
+        { email: inviteEmail.trim() },
+        { headers: { Authorization: `Bearer ${idToken}` } }
+      );
+      alert('관리자 초대(승급)가 완료되었습니다.');
+      setInviteEmail('');
+      fetchUsers();
+    } catch (err: any) {
+      if (err.response?.data?.error) {
+        alert(`오류: ${err.response.data.error}`);
+      } else {
+        alert('관리자 초대에 실패했습니다.');
+      }
+    } finally {
+      setInviteLoading(false);
+    }
+  };
+
   if (error) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -105,6 +136,24 @@ export default function AdminUsersPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">사용자 관리</h1>
           <p className="mt-2 text-sm text-gray-600">계정 조회, 삭제 및 권한 관리</p>
+        </div>
+
+        {/* Invite admin */}
+        <div className="bg-white rounded-lg shadow p-4 mb-6 flex gap-2 items-center">
+          <input
+            type="email"
+            value={inviteEmail}
+            onChange={(e) => setInviteEmail(e.target.value)}
+            placeholder="관리자로 초대할 이메일 입력"
+            className="px-4 py-2 border rounded-lg w-full"
+          />
+          <button
+            onClick={handleInviteAdmin}
+            disabled={inviteLoading}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+          >
+            {inviteLoading ? '초대 중...' : '관리자 초대'}
+          </button>
         </div>
 
         {loading ? (

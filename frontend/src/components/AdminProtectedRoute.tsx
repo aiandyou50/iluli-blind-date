@@ -42,6 +42,33 @@ export default function AdminProtectedRoute({ children }: AdminProtectedRoutePro
 
   // Redirect to main page if not authenticated or not admin
   if (!isAuthenticated || !isAdmin) {
+    // If user is authenticated but not admin, show an explanatory page rather than redirect
+    if (isAuthenticated && isAdmin === false) {
+      return (
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+          <div className="bg-white p-8 rounded shadow-md max-w-lg text-center">
+            <h2 className="text-2xl font-semibold mb-4">관리자 권한이 필요합니다</h2>
+            <p className="text-sm text-gray-600 mb-6">현재 계정은 관리자 권한이 없습니다. 관리자에게 권한을 요청하거나 관리자에게 문의하세요.</p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                다시 시도
+              </button>
+              <button
+                onClick={() => (window.location.href = '/')}
+                className="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
+              >
+                메인으로 돌아가기
+              </button>
+            </div>
+            <p className="text-xs text-gray-400 mt-4">문제가 계속되면 관리자 계정(예: sungyo0518@gmail.com)에 권한이 있는지 확인하세요.</p>
+          </div>
+        </div>
+      );
+    }
+
     return <Navigate to="/" replace />;
   }
 
