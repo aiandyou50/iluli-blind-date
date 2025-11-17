@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
@@ -29,11 +29,7 @@ export default function AdminPhotosPage() {
   const [hasMore, setHasMore] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchPhotos();
-  }, [filter, page]);
-
-  const fetchPhotos = async () => {
+  const fetchPhotos = useCallback(async () => {
     setLoading(true);
     try {
       const url = filter
@@ -45,8 +41,8 @@ export default function AdminPhotosPage() {
       });
       setPhotos(response.data.photos);
       setHasMore(!!response.data.next_page);
-    } catch (err: any) {
-      if (err.response?.status === 403) {
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
         setError('관리자 권한이 필요합니다.');
       } else {
         setError('사진 목록을 불러오는데 실패했습니다.');
@@ -54,7 +50,11 @@ export default function AdminPhotosPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [idToken, filter, page]);
+
+  useEffect(() => {
+    fetchPhotos();
+  }, [fetchPhotos]);
 
   const handleDelete = async (photoId: string) => {
     if (!confirm('이 사진을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
@@ -66,8 +66,9 @@ export default function AdminPhotosPage() {
       });
       setPhotos(photos.filter((p) => p.id !== photoId));
       alert('사진이 삭제되었습니다.');
-    } catch (err) {
+    } catch (error) {
       alert('사진 삭제에 실패했습니다.');
+      console.error(error);
     } finally {
       setDeletingId(null);
     }

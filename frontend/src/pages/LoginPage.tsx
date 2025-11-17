@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GOOGLE_CLIENT_ID } from '@/config/env';
 import { useAuthStore } from '@/store/authStore';
@@ -10,8 +10,8 @@ declare global {
     google: {
       accounts: {
         id: {
-          initialize: (config: any) => void;
-          renderButton: (element: HTMLElement, config: any) => void;
+          initialize: (config: Record<string, unknown>) => void;
+          renderButton: (element: HTMLElement, config: Record<string, unknown>) => void;
           prompt: () => void;
         };
       };
@@ -23,6 +23,14 @@ export default function LoginPage() {
   const { t } = useTranslation();
   const setIdToken = useAuthStore((state) => state.setIdToken);
   const navigate = useNavigate();
+
+  const handleCredentialResponse = useCallback((response: { credential: string }) => {
+    // Google ID Token 저장
+    setIdToken(response.credential);
+
+    // 프로필 페이지로 이동
+    navigate('/profile');
+  }, [setIdToken, navigate]);
 
   useEffect(() => {
     // Google Identity Services 스크립트 로드
@@ -52,15 +60,7 @@ export default function LoginPage() {
     return () => {
       document.body.removeChild(script);
     };
-  }, []);
-
-  const handleCredentialResponse = (response: { credential: string }) => {
-    // Google ID Token 저장
-    setIdToken(response.credential);
-    
-    // 프로필 페이지로 이동
-    navigate('/profile');
-  };
+  }, [handleCredentialResponse]);
 
   return (
     <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center px-4">

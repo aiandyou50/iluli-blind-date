@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthStore } from '@/store/authStore';
@@ -29,18 +29,14 @@ export default function AdminVerificationPage() {
   const [selectedPhotos, setSelectedPhotos] = useState<Set<string>>(new Set());
   const [isBulkApproving, setIsBulkApproving] = useState(false);
 
-  useEffect(() => {
-    fetchPendingPhotos();
-  }, []);
-
-  const fetchPendingPhotos = async () => {
+  const fetchPendingPhotos = useCallback(async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/admin/photos/pending`, {
         headers: { Authorization: `Bearer ${idToken}` },
       });
       setPhotos(response.data.photos);
-    } catch (err: any) {
-      if (err.response?.status === 403) {
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
         setError('관리자 권한이 필요합니다.');
       } else {
         setError('사진 목록을 불러오는데 실패했습니다.');
@@ -48,7 +44,11 @@ export default function AdminVerificationPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [idToken]);
+
+  useEffect(() => {
+    fetchPendingPhotos();
+  }, [fetchPendingPhotos]);
 
   const handlePhotoClick = (photo: PendingPhoto) => {
     const modalPhoto: Photo = {
@@ -129,9 +129,9 @@ export default function AdminVerificationPage() {
       setPhotos(photos.filter(p => !selectedPhotos.has(p.id)));
       setSelectedPhotos(new Set());
       alert(`${selectedPhotos.size}개의 사진이 승인되었습니다.`);
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       alert('일괄 승인 중 오류가 발생했습니다.');
-      console.error(err);
     } finally {
       setIsBulkApproving(false);
     }
