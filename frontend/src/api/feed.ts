@@ -23,6 +23,8 @@ export interface FeedPhoto {
   };
   likes_count: number;
   i_like_this: boolean;
+  // verification status from the backend for the photo
+  verification_status: 'not_applied' | 'pending' | 'approved' | 'rejected';
 }
 
 export interface FeedResponse {
