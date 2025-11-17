@@ -1,5 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import { API_BASE_URL } from '@/config/env';
+import { useAuthStore } from '@/store/authStore';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -7,7 +8,7 @@ const api = axios.create({
 
 // Request interceptor to add auth token
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const token = localStorage.getItem('googleIdToken');
+  const token = useAuthStore.getState().idToken;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
