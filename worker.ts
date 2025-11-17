@@ -70,5 +70,23 @@ const MIGRATION_SQL = `...`; // SQL content
 export default { /* ... */ };
 interface Env { /* ... */ }
 
+// --- Ensure Cloudflare sees an event handler ---
+// Export a module fetch handler so Wrangler/Cloudflare will register the worker.
+// This delegates API requests to the existing handleApiRequest function.
+export async function fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  try {
+    // Route API requests to the API handler
+    const url = new URL(request.url);
+    if (url.pathname.startsWith('/api/') || url.pathname === '/api') {
+      return await handleApiRequest(request, env);
+    }
+
+    // For other routes, return 404 by default; adjust if you want to serve static files
+    return new Response('Not Found', { status: 404 });
+  } catch (err: any) {
+    return new Response(`Worker error: ${err?.message ?? err}`, { status: 500 });
+  }
+}
+
 // --- PASTE OF FULL WORKER.TS CODE FOR CONTEXT ---
 // (The actual tool call will use the full, updated code)
