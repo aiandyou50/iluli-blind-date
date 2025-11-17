@@ -1,16 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getMyProfile, updateMyProfile, uploadPhoto, deletePhoto, requestPhotoVerification } from '@/api/profile';
 import { useState } from 'react';
-import { useAuthStore } from '@/store/authStore';
-import { useNavigate } from 'react-router-dom';
 import imageCompression from 'browser-image-compression';
 import PhotoModal from '@/components/PhotoModal';
+import Layout from '@/components/Layout';
 import type { ProfilePhoto } from '@/types/profile';
 
 export default function ProfilePage() {
   const queryClient = useQueryClient();
-  const logout = useAuthStore((state) => state.logout);
-  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<ProfilePhoto | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -132,11 +129,6 @@ export default function ProfilePage() {
     e.target.value = '';
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
   const handlePhotoClick = (photo: ProfilePhoto) => {
     setSelectedPhoto(photo);
     setIsModalOpen(true);
@@ -152,9 +144,11 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">로딩 중...</div>
-      </div>
+      <Layout currentPage="profile">
+        <div className="flex items-center justify-center py-16">
+          <div className="text-lg text-gray-600 dark:text-gray-400">로딩 중...</div>
+        </div>
+      </Layout>
     );
   }
 
@@ -162,44 +156,17 @@ export default function ProfilePage() {
   const photos = data?.photos || [];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 헤더 */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-primary-600">내 프로필</h1>
-          <div className="flex gap-2">
-            <button
-              onClick={() => navigate('/feed')}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-            >
-              피드
-            </button>
-            <button
-              onClick={() => navigate('/matching')}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-            >
-              매칭
-            </button>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-            >
-              로그아웃
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <Layout currentPage="profile">
       {/* 메인 콘텐츠 */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="px-4 py-6">
         {/* 프로필 정보 */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">기본 정보</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">기본 정보</h2>
             {!isEditing && (
               <button
                 onClick={handleEditClick}
-                className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600"
+                className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
               >
                 수정하기
               </button>
@@ -209,28 +176,28 @@ export default function ProfilePage() {
           {!isEditing ? (
             <div className="space-y-3">
               <div>
-                <span className="text-sm text-gray-500">이메일:</span>
-                <span className="ml-2">{profile?.email}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">이메일:</span>
+                <span className="ml-2 text-gray-900 dark:text-gray-100">{profile?.email}</span>
               </div>
               <div>
-                <span className="text-sm text-gray-500">닉네임:</span>
-                <span className="ml-2">{profile?.nickname || '미설정'}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">닉네임:</span>
+                <span className="ml-2 text-gray-900 dark:text-gray-100">{profile?.nickname || '미설정'}</span>
               </div>
               <div>
-                <span className="text-sm text-gray-500">학교:</span>
-                <span className="ml-2">{profile?.school || '미설정'}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">학교:</span>
+                <span className="ml-2 text-gray-900 dark:text-gray-100">{profile?.school || '미설정'}</span>
               </div>
               <div>
-                <span className="text-sm text-gray-500">MBTI:</span>
-                <span className="ml-2">{profile?.mbti || '미설정'}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">MBTI:</span>
+                <span className="ml-2 text-gray-900 dark:text-gray-100">{profile?.mbti || '미설정'}</span>
               </div>
               <div>
-                <span className="text-sm text-gray-500">자기소개:</span>
-                <p className="mt-1">{profile?.bio || '미설정'}</p>
+                <span className="text-sm text-gray-500 dark:text-gray-400">자기소개:</span>
+                <p className="mt-1 text-gray-900 dark:text-gray-100">{profile?.bio || '미설정'}</p>
               </div>
               <div>
-                <span className="text-sm text-gray-500">인스타그램:</span>
-                <span className="ml-2">{profile?.instagram_url || '미설정'}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">인스타그램:</span>
+                <span className="ml-2 text-gray-900 dark:text-gray-100">{profile?.instagram_url || '미설정'}</span>
               </div>
             </div>
           ) : (
@@ -240,27 +207,27 @@ export default function ProfilePage() {
                 placeholder="닉네임"
                 value={formData.nickname}
                 onChange={(e) => setFormData({ ...formData, nickname: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
               <input
                 type="text"
                 placeholder="학교"
                 value={formData.school}
                 onChange={(e) => setFormData({ ...formData, school: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
               <input
                 type="text"
                 placeholder="MBTI"
                 value={formData.mbti}
                 onChange={(e) => setFormData({ ...formData, mbti: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
               <textarea
                 placeholder="자기소개"
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 rows={3}
               />
               <input
@@ -268,19 +235,19 @@ export default function ProfilePage() {
                 placeholder="https://www.instagram.com/username"
                 value={formData.instagram_url}
                 onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
               <div className="flex gap-2">
                 <button
                   onClick={handleSave}
                   disabled={updateMutation.isPending}
-                  className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 disabled:opacity-50"
+                  className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 disabled:opacity-50 transition-colors"
                 >
                   {updateMutation.isPending ? '저장 중...' : '저장'}
                 </button>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                 >
                   취소
                 </button>
@@ -290,11 +257,11 @@ export default function ProfilePage() {
         </div>
 
         {/* 내 사진 목록 */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">내 사진</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">내 사진</h2>
 
           {/* 업로드 버튼 */}
-          <label className={`inline-block px-4 py-2 bg-primary-500 text-white rounded-lg cursor-pointer hover:bg-primary-600 mb-4 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+          <label className={`inline-block px-4 py-2 bg-primary-500 text-white rounded-lg cursor-pointer hover:bg-primary-600 mb-4 transition-colors ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
             {isUploading ? '업로드 중...' : '사진 업로드'}
             <input
               type="file"
@@ -302,6 +269,7 @@ export default function ProfilePage() {
               onChange={handleFileUpload}
               disabled={isUploading}
               className="hidden"
+              aria-label="사진 업로드"
             />
           </label>
 
@@ -309,26 +277,30 @@ export default function ProfilePage() {
           {isUploading && (
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600">업로드 진행 중...</span>
-                <span className="text-sm text-gray-600">{Math.round(uploadProgress)}%</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">업로드 진행 중...</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">{Math.round(uploadProgress)}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                 <div 
                   className="bg-primary-500 h-2.5 rounded-full transition-all duration-300 ease-out"
                   style={{ width: `${uploadProgress}%` }}
+                  role="progressbar"
+                  aria-valuenow={uploadProgress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
                 />
               </div>
             </div>
           )}
 
           {/* 사진 그리드 */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {photos.map((photo) => (
               <div key={photo.id} className="relative group">
                 <img
                   src={photo.image_url}
                   alt="프로필 사진"
-                  className="w-full h-48 object-cover rounded-lg cursor-pointer"
+                  className="w-full aspect-square object-cover rounded-lg cursor-pointer transition-transform hover:scale-105"
                   onClick={() => handlePhotoClick(photo)}
                   onError={(e) => {
                     console.error('Image failed to load:', photo.image_url);
@@ -353,7 +325,7 @@ export default function ProfilePage() {
                       e.stopPropagation();
                       handlePhotoClick(photo);
                     }}
-                    className="px-3 py-1 bg-white text-gray-900 text-sm rounded hover:bg-gray-100"
+                    className="px-3 py-1 bg-white text-gray-900 text-sm rounded hover:bg-gray-100 transition-colors"
                   >
                     자세히 보기
                   </button>
@@ -368,7 +340,7 @@ export default function ProfilePage() {
           </div>
 
           {photos.length === 0 && (
-            <p className="text-gray-500 text-center py-8">아직 업로드한 사진이 없습니다.</p>
+            <p className="text-gray-500 dark:text-gray-400 text-center py-8">아직 업로드한 사진이 없습니다.</p>
           )}
         </div>
       </main>
@@ -381,6 +353,6 @@ export default function ProfilePage() {
         onDelete={handleDeletePhoto}
         onVerifyFestival={handleVerifyFestival}
       />
-    </div>
+    </Layout>
   );
 }

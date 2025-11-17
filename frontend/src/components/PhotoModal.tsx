@@ -13,6 +13,7 @@ interface PhotoModalProps {
 /**
  * Modal component for displaying enlarged profile photos
  * Shows photo with delete button, festival verification button, and like count
+ * Features: Focus trap, ESC to close, accessible keyboard navigation
  */
 export default function PhotoModal({
   photo,
@@ -47,7 +48,7 @@ export default function PhotoModal({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-75" />
+          <div className="fixed inset-0 bg-black bg-opacity-75" aria-hidden="true" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -61,11 +62,14 @@ export default function PhotoModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title className="sr-only">프로필 사진 상세보기</Dialog.Title>
+                
                 {/* Close button */}
                 <button
                   onClick={onClose}
-                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-full p-1"
+                  aria-label="닫기"
                 >
                   <svg
                     className="w-6 h-6"
@@ -95,11 +99,12 @@ export default function PhotoModal({
                 <div className="mb-4 flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     {/* Like count */}
-                    <div className="flex items-center gap-1 text-gray-700">
+                    <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
                       <svg
                         className="w-5 h-5 text-red-500"
                         fill="currentColor"
                         viewBox="0 0 20 20"
+                        aria-hidden="true"
                       >
                         <path
                           fillRule="evenodd"
@@ -108,22 +113,22 @@ export default function PhotoModal({
                         />
                       </svg>
                       <span className="font-medium">{photo.likes_count}</span>
-                      <span className="text-sm text-gray-500">좋아요</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">좋아요</span>
                     </div>
 
                     {/* Verification status */}
                     <div className="text-sm">
                       {photo.verification_status === 'approved' && (
-                        <span className="text-green-600">✅ 인증 승인됨</span>
+                        <span className="text-green-600 dark:text-green-400">✅ 인증 승인됨</span>
                       )}
                       {photo.verification_status === 'pending' && (
-                        <span className="text-orange-600">⏳ 인증 대기중</span>
+                        <span className="text-orange-600 dark:text-orange-400">⏳ 인증 대기중</span>
                       )}
                       {photo.verification_status === 'rejected' && (
-                        <span className="text-red-600">❌ 인증 거절됨</span>
+                        <span className="text-red-600 dark:text-red-400">❌ 인증 거절됨</span>
                       )}
                       {photo.verification_status === 'not_applied' && (
-                        <span className="text-gray-600">🔒 인증 미신청</span>
+                        <span className="text-gray-600 dark:text-gray-400">🔒 인증 미신청</span>
                       )}
                     </div>
                   </div>
@@ -131,8 +136,8 @@ export default function PhotoModal({
 
                 {/* Rejection reason */}
                 {photo.verification_status === 'rejected' && photo.rejection_reason && (
-                  <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-sm text-red-800">
+                  <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    <p className="text-sm text-red-800 dark:text-red-300">
                       <strong>거절 사유:</strong> {photo.rejection_reason}
                     </p>
                   </div>
@@ -142,14 +147,14 @@ export default function PhotoModal({
                 <div className="flex gap-3">
                   <button
                     onClick={handleDelete}
-                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
                   >
                     삭제
                   </button>
                   {photo.verification_status === 'not_applied' && (
                     <button
                       onClick={handleVerifyFestival}
-                      className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                     >
                       학교축제 인증하기
                     </button>

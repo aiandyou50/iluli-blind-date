@@ -32,15 +32,13 @@ export default function LoginPage() {
     navigate('/profile');
   }, [setIdToken, navigate]);
 
-  useEffect(() => {
-    // Google Identity Services 스크립트 로드
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
+  const initializeGoogleSignIn = useCallback(() => {
+    if (!window.google?.accounts?.id) {
+      console.error('Google Identity Services not available');
+      return;
+    }
 
-    script.onload = () => {
+    try {
       window.google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleCredentialResponse,
@@ -48,6 +46,9 @@ export default function LoginPage() {
 
       const buttonDiv = document.getElementById('google-signin-button');
       if (buttonDiv) {
+        // Clear any existing button first
+        buttonDiv.innerHTML = '';
+        
         window.google.accounts.id.renderButton(buttonDiv, {
           theme: 'outline',
           size: 'large',
@@ -55,12 +56,48 @@ export default function LoginPage() {
           locale: 'ko',
         });
       }
+    } catch (error) {
+      console.error('Error initializing Google Sign-In:', error);
+    }
+  }, [handleCredentialResponse]);
+
+  useEffect(() => {
+    // Check if Google Identity Services script is already loaded
+    const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+    
+    if (existingScript) {
+      // Script already exists, initialize if Google API is available
+      if (window.google?.accounts?.id) {
+        initializeGoogleSignIn();
+      } else {
+        // Wait for script to load
+        existingScript.addEventListener('load', initializeGoogleSignIn);
+      }
+      return;
+    }
+
+    // Google Identity Services 스크립트 로드
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    
+    script.onload = () => {
+      initializeGoogleSignIn();
     };
 
-    return () => {
-      document.body.removeChild(script);
+    script.onerror = () => {
+      console.error('Failed to load Google Identity Services script');
     };
-  }, [handleCredentialResponse]);
+
+    document.body.appendChild(script);
+
+    // Cleanup: Only remove if we added it
+    return () => {
+      // Don't remove script on unmount to prevent re-loading on navigation
+      // The script can be safely reused across page visits
+    };
+  }, [initializeGoogleSignIn]);
 
   return (
     <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center px-4">
@@ -73,7 +110,7 @@ export default function LoginPage() {
         <div className="text-center mb-12">
           <div className="mb-4">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 shadow-google-lg mb-4">
-              <span className="text-4xl">💙</span>
+              <span className="text-4xl" role="img" aria-label="heart">💙</span>
             </div>
           </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-3">
@@ -92,7 +129,22 @@ export default function LoginPage() {
             </div>
 
             {/* Google Sign-In Button */}
-            <div id="google-signin-button" className="flex justify-center"></div>
+            <div 
+              id="google-signin-button" 
+              className="flex justify-center min-h-[44px]"
+              data-testid="google-signin-button"
+              role="region"
+              aria-label="Google Sign-In"
+            >
+              {/* Google button will be rendered here */}
+            </div>
+
+            {/* Fallback message if Google Sign-In fails to load */}
+            <noscript>
+              <div className="text-center text-sm text-red-600 dark:text-red-400">
+                JavaScript가 필요합니다. 브라우저 설정에서 JavaScript를 활성화해주세요.
+              </div>
+            </noscript>
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -106,8 +158,8 @@ export default function LoginPage() {
 
 
             <div className="text-xs text-gray-500 dark:text-gray-400 text-center leading-relaxed">
-              로그인 시 <a href="#" className="text-primary-600 hover:text-primary-700 font-medium">이용약관</a> 및{' '}
-              <a href="#" className="text-primary-600 hover:text-primary-700 font-medium">개인정보처리방침</a>에 동의하게 됩니다.
+              로그인 시 <a href="#" className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">이용약관</a> 및{' '}
+              <a href="#" className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">개인정보처리방침</a>에 동의하게 됩니다.
             </div>
           </div>
         </div>
