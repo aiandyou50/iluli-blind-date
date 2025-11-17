@@ -62,6 +62,8 @@ body {
 
 /* Google Material Design Elevation */
 @layer components {
+  /* Reference custom utilities so they can be used with @apply in Tailwind v4 */
+  @reference .elevation-1, .elevation-2, .rounded-google;
   .elevation-1 {
     box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
   }
@@ -76,15 +78,32 @@ body {
   
   /* Google Button Styles */
   .btn-google {
-    @apply px-6 py-3 rounded-google font-medium transition-all duration-200;
-    @apply elevation-1 hover:elevation-2;
+    padding: 0.75rem 1.5rem; /* px-6 py-3 */
+    border-radius: 8px;
+    font-weight: 500;
+    transition-property: all;
+    transition-duration: 200ms;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+  }
+  .btn-google:hover {
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15);
   }
   
   .btn-primary {
-    @apply bg-primary-500 text-white hover:bg-primary-600;
+    background-color: #ff5c6c;
+    color: #ffffff;
+  }
+  .btn-primary:hover {
+    background-color: #e5525f;
   }
   
   .btn-secondary {
-    @apply bg-white text-gray-700 border border-gray-300 hover:bg-gray-50;
+    background-color: #ffffff;
+    color: #374151; /* gray-700 */
+    border-width: 1px;
+    border-color: #d1d5db; /* gray-300 */
+  }
+  .btn-secondary:hover {
+    background-color: #f8fafc; /* gray-50 */
   }
 }
