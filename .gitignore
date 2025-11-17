@@ -16,6 +16,11 @@ storybook-static
 # Test coverage
 coverage
 
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
 # Logs
 *.log
 npm-debug.log*
