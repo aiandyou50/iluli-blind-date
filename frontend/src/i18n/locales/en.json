@@ -1,0 +1,22 @@
+{
+  "publicProfile": {
+    "verifiedPhotos": "Verified Photos",
+    "noPhotos": "No Verified Photos",
+    "noPhotosDescription": "This user hasn't added any verified photos yet. Check back later!",
+    "instagramDM": "Instagram DM",
+    "backButton": "Back",
+    "studentVerified": "Student Verified",
+    "yearsOld": "years old"
+  },
+  "languages": {
+    "korean": "한국어",
+    "english": "English",
+    "simplifiedChinese": "简体中文",
+    "traditionalChinese": "繁體中文"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error loading profile",
+    "returnHome": "Return Home"
+  }
+}

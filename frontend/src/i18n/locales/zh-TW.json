@@ -1,0 +1,22 @@
+{
+  "publicProfile": {
+    "verifiedPhotos": "已驗證照片",
+    "noPhotos": "沒有已驗證的照片",
+    "noPhotosDescription": "此使用者尚未新增任何已驗證的照片。請稍後再查看！",
+    "instagramDM": "Instagram 私訊",
+    "backButton": "返回",
+    "studentVerified": "學生已驗證",
+    "yearsOld": "歲"
+  },
+  "languages": {
+    "korean": "한국어",
+    "english": "English",
+    "simplifiedChinese": "简体中文",
+    "traditionalChinese": "繁體中文"
+  },
+  "common": {
+    "loading": "載入中...",
+    "error": "無法載入個人資料",
+    "returnHome": "返回主頁"
+  }
+}

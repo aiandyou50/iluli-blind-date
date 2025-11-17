@@ -8,13 +8,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
+        primary: '#ff5c6c', // Main brand color - Pink/Red
+        'background-light': '#f8f5f6',
+        'background-dark': '#230f11',
+        'primary-old': {
           50: '#e8f0fe',
           100: '#d2e3fc',
           200: '#aecbfa',
           300: '#8ab4f8',
           400: '#669df6',
-          500: '#4285f4',  // Google Blue - Main brand color
+          500: '#4285f4',  // Google Blue - Old brand color
           600: '#1a73e8',
           700: '#1967d2',
           800: '#185abc',
@@ -56,19 +59,11 @@ export default {
           800: '#b91c1c',
           900: '#991b1b',
         },
-        'background-light': {
-          DEFAULT: '#ffffff',
-          secondary: '#f8f9fa',
-          tertiary: '#f1f3f4',
-        },
-        'background-dark': {
-          DEFAULT: '#1f2937',
-          secondary: '#111827',
-          tertiary: '#0f172a',
-        },
+
       },
       fontFamily: {
         sans: ['Google Sans', 'Roboto', 'Arial', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'Noto Sans', 'sans-serif'],
       },
       borderRadius: {
         'google': '8px',
