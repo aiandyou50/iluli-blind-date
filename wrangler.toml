@@ -1,0 +1,11 @@
+name = "iluli-blind-date-worker"
+main = "./worker.ts"
+compatibility_date = "2023-11-21"
+
+[vars]
+ENVIRONMENT = "development"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "iluli-blind-date-db"
+database_id = "ab5ae5d5-df9a-4468-afd1-5deeb47f6ea9"

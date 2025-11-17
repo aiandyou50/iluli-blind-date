@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>People who liked</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#f4253a",
+              "background-light": "#f8f5f6",
+              "background-dark": "#221012",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "1rem",
+              "lg": "2rem",
+              "xl": "3rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light p-4 dark:bg-background-dark group/design-root" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGiyGcgzKmuIeMvQAtQoLich5nnK1tShC24laRU51AtI7-V_-hajp8azy_rKOcVobE9HfskrigO7a2lFm0AvSXhk0bGevpCOENNL0UdU9Ul8aDn2AkxFLX6BoFUX-ZEkilXFXbU2zrBIYKhZoNhRQx7ShXLV_PcG6Wx0mw683pNlbDepfnMhSkFTNrwPDyTsupnAXJdzoAcWHIOO4WtnVlMM-XHDQsY95YrFBzKsu6K5R9qpq4hu31xI0mKjVZqTgoIa4ZubS7mToB');">
+<div aria-hidden="true" class="fixed inset-0 bg-black/50"></div>
+<div class="relative flex w-full max-w-md flex-col overflow-hidden rounded-lg bg-white shadow-xl dark:bg-neutral-900">
+<div class="flex items-center justify-between gap-3 border-b border-neutral-200/70 p-4 dark:border-neutral-700/50">
+<h1 class="text-xl font-bold text-neutral-800 dark:text-neutral-100">People who liked</h1>
+<button class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-neutral-100 text-neutral-600 transition-colors hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<div class="flex h-96 flex-col overflow-y-auto">
+<a class="group transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50" href="/profile/user1">
+<div class="flex items-center justify-between gap-4 p-4">
+<div class="flex flex-1 items-center gap-4 overflow-hidden">
+<div class="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat" data-alt="Profile picture of a smiling woman." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAT7T0Pq1kTRZhWyybl10b_Jx9psGr-gGsvLlxYZEuSWj1EyssOknMXQbnbNyCZD4H9rjGuTUkhxrk78zFJelPBdh2jx4A88FnBY9fbnsTaSxMhrboHkms9NQTp7mJ9J-iP8_Luol8KppAQjP0k7TMT3lMcnvFSQ4Q6o9DPhiBgNqVZWK1ZesMxkSbA1t_jJPgdmU6APZPL3yJM8p3DZRWm097gfwjq0RdyzQjMOh9Sosa2Bb38Ie11Mo7kGuktvrDdOrKgPTBZsGLK');"></div>
+<p class="truncate text-base font-medium text-neutral-800 dark:text-neutral-200">Olivia Martinez</p>
+</div>
+<div class="shrink-0 text-neutral-400 transition-transform group-hover:translate-x-1 dark:text-neutral-500">
+<span class="material-symbols-outlined text-2xl">arrow_forward_ios</span>
+</div>
+</div>
+</a>
+<a class="group transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50" href="/profile/user2">
+<div class="flex items-center justify-between gap-4 p-4">
+<div class="flex flex-1 items-center gap-4 overflow-hidden">
+<div class="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat" data-alt="Profile picture of a man with a beard." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBoGyQGvFR4VyMQaLEylRe0LiAVYkbP2LgBQtH65ikiIR-DjvBW-qXc7iRWf5ewTTht7pmJ3wgf9UqwbFoScz58X6-Y-KPGGmvSJXgN5SWDAd45-Cu0umjAWd-CrcYKpZoIZSqEK2gmYTeMppDQ032R-caXhh8uK61oa-KBOsdA8L_j9LYzYHpfPfyb0r_rtbHZC0yGWkKmFyxD66CAoQ0uz5_oCAi6axkSxcjuCPoI5uq1VP04LHwdI-_4Bpjom2ty3AV4chxYX1IE');"></div>
+<p class="truncate text-base font-medium text-neutral-800 dark:text-neutral-200">Benjamin Carter</p>
+</div>
+<div class="shrink-0 text-neutral-400 transition-transform group-hover:translate-x-1 dark:text-neutral-500">
+<span class="material-symbols-outlined text-2xl">arrow_forward_ios</span>
+</div>
+</div>
+</a>
+<a class="group transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50" href="/profile/user3">
+<div class="flex items-center justify-between gap-4 p-4">
+<div class="flex flex-1 items-center gap-4 overflow-hidden">
+<div class="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat" data-alt="Profile picture of a woman with long hair." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCWDWszWuuypdZs8gtOx_OI-dibwqwtU3Od1i38IC6tPGg1LdRxDf3_8laiJ4XFr3QqxnXH3qjE_suF3g6CkeHPe23QpqeVSsQWgy4xOzkNPPDA4DlblZimh5fk64ny7maldqxysAFlmGfwRxdU0huVPppKhVrS8LRb3AxzBc_9qF3eYUr3KKYH4OHCb2jLM5za9msEpo3SbpDFj3N7gI4ji9fCAmQCTJuNEw_Q3nb8dQXa4sGJ_ARNZeh7g0JK_MwdFsyY1YkRPOUj');"></div>
+<p class="truncate text-base font-medium text-neutral-800 dark:text-neutral-200">Ava Thompson</p>
+</div>
+<div class="shrink-0 text-neutral-400 transition-transform group-hover:translate-x-1 dark:text-neutral-500">
+<span class="material-symbols-outlined text-2xl">arrow_forward_ios</span>
+</div>
+</div>
+</a>
+<a class="group transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50" href="/profile/user4">
+<div class="flex items-center justify-between gap-4 p-4">
+<div class="flex flex-1 items-center gap-4 overflow-hidden">
+<div class="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat" data-alt="Profile picture of a smiling man in a suit." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDZFRZldWOlH0zYgBG9GYyaOlyc_xwNIDCryg-oIf8osSrHaDNepAcGoQ59dUryeWEa8ZRYjMc6pG232OKxz--hjkCMo2iWl-M4XDhA6-BlapOJzotr4AMN8qOJWgOSJMWIOyLcoLsj9PAmogfIf0I7eZx11xoUrKPzAWU4NRsbTZ1XC6oMs_75_ZgDMJrgzAU9CIRSHRm8aEAGfmUd1LI_hBIBtL3o0zsh-W4IpOyr3tmphJPGiAet5dMSCBABRZuo0p-E63Outvfq');"></div>
+<p class="truncate text-base font-medium text-neutral-800 dark:text-neutral-200">Liam Rodriguez</p>
+</div>
+<div class="shrink-0 text-neutral-400 transition-transform group-hover:translate-x-1 dark:text-neutral-500">
+<span class="material-symbols-outlined text-2xl">arrow_forward_ios</span>
+</div>
+</div>
+</a>
+<a class="group transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50" href="/profile/user5">
+<div class="flex items-center justify-between gap-4 p-4">
+<div class="flex flex-1 items-center gap-4 overflow-hidden">
+<div class="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat" data-alt="Profile picture of a smiling woman with glasses." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCdALd6Wo45sfR2inOH661Wj7MuFlDbER2xZA65VRTyLCunD6DME6THre2pw5o6RHAeeBxh5gziVAzyKvs0uT56SF90JnLTnRpeZ0ndb9W5RWGe3UrZxBI1vLSxQqrE2vqWpmPm3JBmH5Iq0FizpnS7VD2kW3aVNS8ljGMivXXQZtpAlbPSc60Bf8A9ddcPwpsutBCvIQeHCwrWB17Am2tj1dEXCVT9sfSLLIXVfiCErLQ5w_5PO_RA5x_SqWU2eSLCo6N6QP2bX2ha');"></div>
+<p class="truncate text-base font-medium text-neutral-800 dark:text-neutral-200">Sophia Chen</p>
+</div>
+<div class="shrink-0 text-neutral-400 transition-transform group-hover:translate-x-1 dark:text-neutral-500">
+<span class="material-symbols-outlined text-2xl">arrow_forward_ios</span>
+</div>
+</div>
+</a>
+<a class="group transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50" href="/profile/user6">
+<div class="flex items-center justify-between gap-4 p-4">
+<div class="flex flex-1 items-center gap-4 overflow-hidden">
+<div class="h-10 w-10 shrink-0 rounded-full bg-cover bg-center bg-no-repeat" data-alt="Profile picture of a man by the sea." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDDWfqabxeKDTrWgUIUjuLDQdkX88SVRBhnD8V3e_tGI5trdoNhps7RX2YXgqez7BhAXcW-SrDpTYF0Dho_DEakxcqME7muPxQqqCsoO0-dMMxPsMOkjcAUwZRoqYknqP8BgbLEPAY4zOToAlhIUYpvBwaiYnB3XL-k8hobBTtRaoZREYSb4aK5hicJdvoQb-9e4RUToWzgUt37SewY6q8TszMyLlOPZro2mOKq8GEuHp1e87ajiRUiIeACMOW5LywLtMmO0ubrEZCU');"></div>
+<p class="truncate text-base font-medium text-neutral-800 dark:text-neutral-200">Noah Kim</p>
+</div>
+<div class="shrink-0 text-neutral-400 transition-transform group-hover:translate-x-1 dark:text-neutral-500">
+<span class="material-symbols-outlined text-2xl">arrow_forward_ios</span>
+</div>
+</div>
+</a>
+<div class="flex flex-col items-center justify-center p-16 text-center" style="display: none;">
+<span class="material-symbols-outlined text-5xl text-neutral-400 dark:text-neutral-600">favorite</span>
+<p class="mt-4 font-semibold text-neutral-700 dark:text-neutral-300">No Likes Yet</p>
+<p class="text-sm text-neutral-500 dark:text-neutral-400">Be the first to like this photo!</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>
