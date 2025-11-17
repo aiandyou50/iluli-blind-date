@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Delete Photo Confirmation Modal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#f4253a",
+              "background-light": "#f8f5f6",
+              "background-dark": "#221012",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-display">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+<div class="fixed inset-0 z-40 flex h-full w-full items-center justify-center bg-black/50 p-4">
+<div class="layout-container flex h-full grow flex-col justify-center">
+<div class="flex flex-1 justify-center items-center">
+<div class="layout-content-container flex flex-col max-w-sm flex-1 bg-white dark:bg-zinc-900 rounded-lg shadow-2xl p-6">
+<h3 class="text-[#181111] dark:text-white tracking-light text-2xl font-bold leading-tight text-center pb-2">사진 삭제</h3>
+<p class="text-zinc-600 dark:text-zinc-400 text-base font-normal leading-normal pb-6 pt-1 text-center">이 사진을 정말 삭제하시겠습니까? 복구할 수 없습니다.</p>
+<div class="flex flex-col sm:flex-row justify-stretch gap-3">
+<button class="flex flex-1 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-zinc-200 dark:bg-zinc-800 text-[#181111] dark:text-white text-base font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">취소</span>
+</button>
+<button class="flex flex-1 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">삭제</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Background page content for context -->
+<div class="absolute inset-0 z-0 h-full w-full bg-cover bg-center filter blur-sm" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB0WvECFbwLTYZS1MHJjoL6mXXxhP5ZIJVx1nZKIiVupoElDxOkYt0oL76xL6aNPOIx8Lwd96Ri2nalVnYzZ_i9IVeWs_GiqcT1i-bd28y8zw15vUw483k9H4HxdTWarX3jOk-MhfS0raKbSPOcTRJrrWvt8TYR8OxH82mP72WaeKdOAdtqS0MsXXkv6ft1tzD1hcGogu4J42HQmQsaF8tEiVZmejZ5L3J5imcdiljitFfPCE7sggXTT86vmUsj8cSqfu-Lc_uDQfq3');">
+<div class="absolute inset-0 bg-background-light/20 dark:bg-background-dark/20"></div>
+</div>
+</div>
+</body></html>
