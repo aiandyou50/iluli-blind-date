@@ -1,0 +1,46 @@
+{
+  "app": {
+    "title": "aiboop.org",
+    "subtitle": "大学节日照相亭交友"
+  },
+  "navigation": {
+    "feed": "动态",
+    "matching": "配对",
+    "profile": "个人资料",
+    "home": "首页",
+    "chats": "聊天",
+    "myProfile": "我的资料",
+    "eventInfo": "活动信息"
+  },
+  "auth": {
+    "login": "登录",
+    "logout": "登出",
+    "backToHome": "返回首页"
+  },
+  "profile": {
+    "loading": "加载个人资料中...",
+    "loadError": "无法加载个人资料。",
+    "photos": "照片",
+    "verifiedPhotos": "已验证照片",
+    "noPhotos": "尚无已验证的照片。",
+    "bio": "自我介绍",
+    "age": "岁",
+    "studentVerified": "学生已验证",
+    "instagramDM": "Instagram 私信"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "confirm": "确认",
+    "close": "关闭"
+  },
+  "language": {
+    "select": "选择语言",
+    "ko": "한국어",
+    "en": "English",
+    "zh-TW": "繁體中文",
+    "zh-CN": "简体中文"
+  }
+}

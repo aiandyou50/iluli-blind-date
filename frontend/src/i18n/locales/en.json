@@ -1,0 +1,46 @@
+{
+  "app": {
+    "title": "aiboop.org",
+    "subtitle": "University Festival Photo Booth Dating"
+  },
+  "navigation": {
+    "feed": "Feed",
+    "matching": "Matching",
+    "profile": "Profile",
+    "home": "Home",
+    "chats": "Chats",
+    "myProfile": "My Profile",
+    "eventInfo": "Event Info"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "backToHome": "Back to Home"
+  },
+  "profile": {
+    "loading": "Loading profile...",
+    "loadError": "Unable to load profile.",
+    "photos": "Photos",
+    "verifiedPhotos": "Verified Photos",
+    "noPhotos": "No verified photos yet.",
+    "bio": "Bio",
+    "age": "years old",
+    "studentVerified": "Student Verified",
+    "instagramDM": "Instagram DM"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "language": {
+    "select": "Select Language",
+    "ko": "한국어",
+    "en": "English",
+    "zh-TW": "繁體中文",
+    "zh-CN": "简体中文"
+  }
+}

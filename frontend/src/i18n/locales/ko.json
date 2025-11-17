@@ -1,0 +1,46 @@
+{
+  "app": {
+    "title": "이루리",
+    "subtitle": "대학 축제 포토부스 소개팅"
+  },
+  "navigation": {
+    "feed": "피드",
+    "matching": "매칭",
+    "profile": "프로필",
+    "home": "홈",
+    "chats": "채팅",
+    "myProfile": "내 프로필",
+    "eventInfo": "이벤트 정보"
+  },
+  "auth": {
+    "login": "로그인",
+    "logout": "로그아웃",
+    "backToHome": "홈으로 돌아가기"
+  },
+  "profile": {
+    "loading": "프로필 로딩 중...",
+    "loadError": "프로필을 불러올 수 없습니다.",
+    "photos": "사진",
+    "verifiedPhotos": "인증된 사진",
+    "noPhotos": "아직 승인된 사진이 없습니다.",
+    "bio": "자기소개",
+    "age": "세",
+    "studentVerified": "학생 인증",
+    "instagramDM": "Instagram DM"
+  },
+  "common": {
+    "save": "저장",
+    "cancel": "취소",
+    "delete": "삭제",
+    "edit": "수정",
+    "confirm": "확인",
+    "close": "닫기"
+  },
+  "language": {
+    "select": "언어 선택",
+    "ko": "한국어",
+    "en": "English",
+    "zh-TW": "繁體中文",
+    "zh-CN": "简体中文"
+  }
+}

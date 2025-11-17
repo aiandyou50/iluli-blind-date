@@ -1,0 +1,46 @@
+{
+  "app": {
+    "title": "aiboop.org",
+    "subtitle": "大學節日照相亭交友"
+  },
+  "navigation": {
+    "feed": "動態",
+    "matching": "配對",
+    "profile": "個人資料",
+    "home": "首頁",
+    "chats": "聊天",
+    "myProfile": "我的資料",
+    "eventInfo": "活動資訊"
+  },
+  "auth": {
+    "login": "登入",
+    "logout": "登出",
+    "backToHome": "返回首頁"
+  },
+  "profile": {
+    "loading": "載入個人資料中...",
+    "loadError": "無法載入個人資料。",
+    "photos": "照片",
+    "verifiedPhotos": "已驗證照片",
+    "noPhotos": "尚無已驗證的照片。",
+    "bio": "自我介紹",
+    "age": "歲",
+    "studentVerified": "學生已驗證",
+    "instagramDM": "Instagram 私訊"
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "delete": "刪除",
+    "edit": "編輯",
+    "confirm": "確認",
+    "close": "關閉"
+  },
+  "language": {
+    "select": "選擇語言",
+    "ko": "한국어",
+    "en": "English",
+    "zh-TW": "繁體中文",
+    "zh-CN": "简体中文"
+  }
+}

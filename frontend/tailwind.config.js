@@ -9,16 +9,27 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#e8f0fe',
-          100: '#d2e3fc',
-          200: '#aecbfa',
-          300: '#8ab4f8',
-          400: '#669df6',
-          500: '#4285f4',  // Google Blue - Main brand color
-          600: '#1a73e8',
-          700: '#1967d2',
-          800: '#185abc',
-          900: '#174ea6',
+          DEFAULT: '#ff5c6c',
+          50: '#ffe5e8',
+          100: '#ffccd1',
+          200: '#ff99a3',
+          300: '#ff6675',
+          400: '#ff5c6c',
+          500: '#ff5c6c',
+          600: '#e5525f',
+          700: '#cc4954',
+          800: '#b23f49',
+          900: '#99363e',
+        },
+        'background-light': {
+          DEFAULT: '#f8f5f6',
+          secondary: '#ffffff',
+          tertiary: '#f1f3f4',
+        },
+        'background-dark': {
+          DEFAULT: '#230f11',
+          secondary: '#1f1315',
+          tertiary: '#0f172a',
         },
         secondary: {
           50: '#fef7e0',
@@ -56,22 +67,17 @@ export default {
           800: '#b91c1c',
           900: '#991b1b',
         },
-        'background-light': {
-          DEFAULT: '#ffffff',
-          secondary: '#f8f9fa',
-          tertiary: '#f1f3f4',
-        },
-        'background-dark': {
-          DEFAULT: '#1f2937',
-          secondary: '#111827',
-          tertiary: '#0f172a',
-        },
       },
       fontFamily: {
-        sans: ['Google Sans', 'Roboto', 'Arial', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'Noto Sans', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'Roboto', 'Arial', 'sans-serif'],
       },
       borderRadius: {
+        'DEFAULT': '1rem',
         'google': '8px',
+        'lg': '2rem',
+        'xl': '3rem',
+        'full': '9999px'
       },
       boxShadow: {
         'google': '0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15)',
