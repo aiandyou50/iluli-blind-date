@@ -36,3 +36,6 @@ Thumbs.db
 .dev.vars
 
 *storybook.log
+
+# UI/UX reference files
+stitch_public_profile_page.zip

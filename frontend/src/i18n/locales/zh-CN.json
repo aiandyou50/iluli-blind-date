@@ -26,7 +26,37 @@
     "bio": "自我介绍",
     "age": "岁",
     "studentVerified": "学生已验证",
-    "instagramDM": "Instagram 私信"
+    "instagramDM": "Instagram 私信",
+    "edit": "编辑资料",
+    "updateSuccess": "资料更新成功！",
+    "updateError": "错误",
+    "uploadSuccess": "照片上传成功！",
+    "deleteConfirm": "确定要删除此照片吗？",
+    "nickname": "昵称",
+    "school": "学校",
+    "mbti": "MBTI",
+    "instagram": "Instagram 网址"
+  },
+  "feed": {
+    "title": "动态",
+    "sortBy": "排序",
+    "latest": "最新",
+    "oldest": "最旧",
+    "popular": "热门",
+    "random": "随机",
+    "distance": "距离",
+    "loadMore": "加载更多",
+    "loading": "加载中...",
+    "noPhotos": "没有照片",
+    "viewProfile": "查看资料"
+  },
+  "matching": {
+    "title": "配对",
+    "loading": "加载中...",
+    "noMoreCards": "没有更多卡片",
+    "matched": "配对成功！",
+    "pass": "略过",
+    "like": "喜欢"
   },
   "common": {
     "save": "保存",
@@ -34,7 +64,8 @@
     "delete": "删除",
     "edit": "编辑",
     "confirm": "确认",
-    "close": "关闭"
+    "close": "关闭",
+    "upload": "上传"
   },
   "language": {
     "select": "选择语言",
