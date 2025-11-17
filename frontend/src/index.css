@@ -9,14 +9,33 @@
   line-height: 1.5;
   font-weight: 400;
 
+  /* Light mode color variables */
   color-scheme: light;
   color: rgba(32, 33, 36, 0.87);
   background-color: #f8f5f6;
+
+  /* Custom properties for theming */
+  --color-text-primary: rgba(32, 33, 36, 0.87);
+  --color-text-secondary: rgba(32, 33, 36, 0.6);
+  --color-bg-primary: #f8f5f6;
+  --color-bg-secondary: #ffffff;
+  --color-border: rgba(0, 0, 0, 0.12);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark mode color variables */
+.dark {
+  color-scheme: dark;
+  
+  --color-text-primary: rgba(255, 255, 255, 0.87);
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-bg-primary: #230f11;
+  --color-bg-secondary: #1f1315;
+  --color-border: rgba(255, 255, 255, 0.12);
 }
 
 body {
@@ -25,7 +44,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f8f5f6;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 #root {

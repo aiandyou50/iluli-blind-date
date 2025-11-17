@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react';
 import { useInfiniteQuery, useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { getFeed, likePhoto, unlikePhoto, FeedPhoto, FeedResponse } from '@/api/feed';
 import { useNavigate } from 'react-router-dom';
-import { HeartIcon as HeartOutline } from '@heroicons/react/24/outline';
-import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid';
+import Layout from '@/components/Layout';
+import PhotoCard from '@/components/PhotoCard';
 
 type SortOption = 'latest' | 'oldest' | 'popular' | 'random' | 'distance';
 
@@ -129,143 +129,86 @@ export default function FeedPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-lg">로딩 중...</div>
-      </div>
+      <Layout currentPage="feed">
+        <div className="flex items-center justify-center py-16">
+          <div className="text-lg text-gray-600 dark:text-gray-400">로딩 중...</div>
+        </div>
+      </Layout>
     );
   }
 
   const allPhotos = data?.pages.flatMap((page) => page.feed) || [];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 헤더 */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-primary-600">피드</h1>
-            <div className="flex gap-2">
-              <button
-                onClick={() => navigate('/matching')}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-              >
-                매칭
-              </button>
-              <button
-                onClick={() => navigate('/profile')}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-              >
-                내 프로필
-              </button>
-            </div>
-          </div>
-
-          {/* 정렬 옵션 */}
-          <div className="flex gap-2 overflow-x-auto">
-            {(['latest', 'popular', 'random', 'distance'] as SortOption[]).map((option) => (
-              <button
-                key={option}
-                onClick={() => handleSortChange(option)}
-                className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
-                  sortBy === option
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {option === 'latest' && '최신순'}
-                {option === 'popular' && '좋아요순'}
-                {option === 'random' && '랜덤'}
-                {option === 'distance' && '가까운 거리순'}
-              </button>
-            ))}
-          </div>
+    <Layout currentPage="feed">
+      {/* 정렬 옵션 */}
+      <div className="sticky top-0 z-10 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800 px-4 py-3">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+          {(['latest', 'popular', 'random', 'distance'] as SortOption[]).map((option) => (
+            <button
+              key={option}
+              onClick={() => handleSortChange(option)}
+              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors ${
+                sortBy === option
+                  ? 'bg-primary-500 text-white'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+              aria-pressed={sortBy === option}
+            >
+              {option === 'latest' && '최신순'}
+              {option === 'popular' && '좋아요순'}
+              {option === 'random' && '랜덤'}
+              {option === 'distance' && '가까운 거리순'}
+            </button>
+          ))}
         </div>
-      </header>
+      </div>
 
       {/* 피드 그리드 */}
       <main
-        className="max-w-4xl mx-auto px-4 py-6 overflow-y-auto"
-        style={{ maxHeight: 'calc(100vh - 140px)' }}
+        className="px-4 py-6 overflow-y-auto"
         onScroll={handleScroll}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
           {allPhotos.map((photo) => (
-            <div key={photo.photo_id} className="bg-white rounded-lg shadow overflow-hidden">
-              {/* 사용자 정보 */}
-              <div className="p-4 flex items-center gap-3">
-                <div
-                  className="flex-1 cursor-pointer"
-                  onClick={() => navigate(`/profile/${photo.user.user_id}`)}
-                >
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold text-gray-900">{photo.user.nickname}</p>
-                    {/* 인증 뱃지 - 학교 축제 인증 */}
-                    {photo.verification_status === 'approved' && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                        학교 축제 인증
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* 사진 */}
-              <div
-                className="cursor-pointer"
-                onClick={() => openLightbox(photo)}
-              >
-                <img
-                  src={photo.image_url}
-                  alt={`${photo.user.nickname}의 사진`}
-                  className="w-full h-96 object-cover"
-                />
-              </div>
-
-              {/* 좋아요 버튼 */}
-              <div className="p-4">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() =>
-                      likeMutation.mutate({
-                        photoId: photo.photo_id,
-                        isLiked: photo.i_like_this,
-                      })
-                    }
-                    className="transition-transform hover:scale-110"
-                  >
-                    {photo.i_like_this ? (
-                      <HeartSolid className="w-7 h-7 text-red-500" />
-                    ) : (
-                      <HeartOutline className="w-7 h-7 text-gray-700" />
-                    )}
-                  </button>
-                  <span className="text-sm font-semibold">
-                    {photo.likes_count} 좋아요
-                  </span>
-                </div>
-              </div>
-            </div>
+            <PhotoCard
+              key={photo.photo_id}
+              imageUrl={photo.image_url}
+              alt={`${photo.user.nickname}의 사진`}
+              nickname={photo.user.nickname}
+              likesCount={photo.likes_count}
+              isLiked={photo.i_like_this}
+              isVerified={photo.verification_status === 'approved'}
+              aspectRatio="3/4"
+              onClick={() => openLightbox(photo)}
+              onLike={() =>
+                likeMutation.mutate({
+                  photoId: photo.photo_id,
+                  isLiked: photo.i_like_this,
+                })
+              }
+              onUserClick={() => navigate(`/profile/${photo.user.user_id}`)}
+            />
           ))}
         </div>
 
         {/* 로딩 인디케이터 */}
         {isFetchingNextPage && (
-          <div className="text-center py-8">
-            <div className="text-gray-500">더 불러오는 중...</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto mt-4">
+            {[1, 2, 3].map((i) => (
+              <PhotoCard key={i} imageUrl="" alt="" loading />
+            ))}
           </div>
         )}
 
         {!hasNextPage && allPhotos.length > 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
             모든 게시물을 확인했습니다.
           </div>
         )}
 
         {allPhotos.length === 0 && (
-          <div className="text-center py-16 text-gray-500">
+          <div className="text-center py-16 text-gray-500 dark:text-gray-400">
             아직 게시물이 없습니다.
           </div>
         )}
@@ -276,11 +219,15 @@ export default function FeedPage() {
         <div
           className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
           onClick={closeLightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label="확대된 사진"
         >
           <div className="relative max-w-4xl max-h-full">
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300"
+              className="absolute top-4 right-4 text-white text-3xl font-bold hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white rounded-full w-10 h-10 flex items-center justify-center"
+              aria-label="닫기"
             >
               ×
             </button>
@@ -293,6 +240,6 @@ export default function FeedPage() {
           </div>
         </div>
       )}
-    </div>
+    </Layout>
   );
 }

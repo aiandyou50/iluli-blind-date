@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getMatchingDeck, performMatchingAction, MatchingCard, MatchData } from '@/api/matching';
-import { useNavigate } from 'react-router-dom';
 import { HeartIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import Layout from '@/components/Layout';
 
 export default function MatchingPage() {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [matchModal, setMatchModal] = useState<MatchData | null>(null);
@@ -63,9 +62,11 @@ export default function MatchingPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-lg">로딩 중...</div>
-      </div>
+      <Layout currentPage="matching">
+        <div className="flex items-center justify-center py-16">
+          <div className="text-lg text-gray-600 dark:text-gray-400">로딩 중...</div>
+        </div>
+      </Layout>
     );
   }
 
@@ -74,79 +75,35 @@ export default function MatchingPage() {
 
   if (!currentCard) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <header className="bg-white shadow-sm">
-          <div className="max-w-4xl mx-auto px-4 py-4">
-            <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-primary-600">매칭</h1>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => navigate('/feed')}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-                >
-                  피드
-                </button>
-                <button
-                  onClick={() => navigate('/profile')}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-                >
-                  프로필
-                </button>
-              </div>
-            </div>
-          </div>
-        </header>
-        <main className="max-w-md mx-auto px-4 py-16 text-center">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <p className="text-lg text-gray-600 mb-4">더 이상 카드가 없습니다.</p>
+      <Layout currentPage="matching">
+        <main className="px-4 py-16 text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 max-w-md mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">더 이상 카드가 없습니다.</p>
             <button
               onClick={() => refetch()}
-              className="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600"
+              className="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
             >
               새로운 카드 불러오기
             </button>
           </div>
         </main>
-      </div>
+      </Layout>
     );
   }
 
   const currentPhoto = currentCard.photos[currentPhotoIndex];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 헤더 */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-primary-600">매칭</h1>
-            <div className="flex gap-2">
-              <button
-                onClick={() => navigate('/feed')}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-              >
-                피드
-              </button>
-              <button
-                onClick={() => navigate('/profile')}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900"
-              >
-                프로필
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <Layout currentPage="matching">
       {/* 카드 UI */}
-      <main className="max-w-md mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <main className="px-4 py-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden max-w-md mx-auto">
           {/* 사진 영역 */}
           <div className="relative">
             <img
               src={currentPhoto?.image_url}
               alt={`${currentCard.nickname}의 사진`}
-              className="w-full h-[500px] object-cover"
+              className="w-full aspect-[3/4] object-cover"
             />
             
             {/* 사진 네비게이션 점 */}
@@ -161,6 +118,8 @@ export default function MatchingPage() {
                         ? 'bg-white w-8'
                         : 'bg-white/50 w-1'
                     }`}
+                    aria-label={`사진 ${index + 1}로 이동`}
+                    aria-current={index === currentPhotoIndex}
                   />
                 ))}
               </div>
@@ -216,14 +175,16 @@ export default function MatchingPage() {
             <button
               onClick={handlePass}
               disabled={actionMutation.isPending}
-              className="w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg hover:bg-red-600 hover:scale-110 transition-all disabled:opacity-50"
+              className="w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg hover:bg-red-600 hover:scale-110 transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              aria-label="거절"
             >
               <XMarkIcon className="w-8 h-8" />
             </button>
             <button
               onClick={handleOk}
               disabled={actionMutation.isPending}
-              className="w-16 h-16 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg hover:bg-green-600 hover:scale-110 transition-all disabled:opacity-50"
+              className="w-16 h-16 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg hover:bg-green-600 hover:scale-110 transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              aria-label="좋아요"
             >
               <HeartIcon className="w-8 h-8" />
             </button>
@@ -231,20 +192,25 @@ export default function MatchingPage() {
         </div>
 
         {/* 진행 상황 */}
-        <div className="text-center mt-4 text-gray-500 text-sm">
+        <div className="text-center mt-4 text-gray-500 dark:text-gray-400 text-sm">
           {currentCardIndex + 1} / {deck.length}
         </div>
       </main>
 
       {/* 매치 성공 모달 */}
       {matchModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center">
-            <h2 className="text-3xl font-bold text-primary-600 mb-6">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="match-modal-title"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full text-center">
+            <h2 id="match-modal-title" className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-6">
               It's a Match! 🎉
             </h2>
             <div className="mb-6">
-              <p className="text-lg text-gray-700">
+              <p className="text-lg text-gray-700 dark:text-gray-300">
                 <span className="font-semibold">{matchModal.matched_user.nickname}</span>님과
                 매칭되었습니다!
               </p>
@@ -254,18 +220,18 @@ export default function MatchingPage() {
               {matchModal.matched_user.instagram_url ? (
                 <button
                   onClick={() => openInstagram(matchModal.matched_user.instagram_url!)}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 font-semibold"
+                  className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 font-semibold transition-colors"
                 >
                   인스타그램 DM 보내기
                 </button>
               ) : (
-                <div className="text-sm text-gray-500 py-3">
+                <div className="text-sm text-gray-500 dark:text-gray-400 py-3">
                   상대방이 인스타그램을 등록하지 않았습니다.
                 </div>
               )}
               <button
                 onClick={closeMatchModal}
-                className="w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+                className="w-full px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 계속 탐색하기
               </button>
@@ -273,6 +239,6 @@ export default function MatchingPage() {
           </div>
         </div>
       )}
-    </div>
+    </Layout>
   );
 }
