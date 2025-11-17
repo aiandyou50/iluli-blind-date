@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class', // Enable class-based dark mode
   theme: {
     extend: {
       colors: {
@@ -32,12 +33,38 @@ export default {
           900: '#e37400',
         },
         success: {
+          50: '#e6f7ed',
+          100: '#c6ead7',
+          200: '#9eddb9',
+          300: '#6fcf97',
+          400: '#4cc17e',
           500: '#34a853',  // Google Green
-          600: '#1e8e3e',
+          600: '#2e9849',
+          700: '#25853d',
+          800: '#1e8e3e',
+          900: '#166534',
         },
-        error: {
-          500: '#ea4335',  // Google Red
+        danger: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#ea4335',  // Google Red - Main danger color
           600: '#d93025',
+          700: '#c5221f',
+          800: '#b91c1c',
+          900: '#991b1b',
+        },
+        'background-light': {
+          DEFAULT: '#ffffff',
+          secondary: '#f8f9fa',
+          tertiary: '#f1f3f4',
+        },
+        'background-dark': {
+          DEFAULT: '#1f2937',
+          secondary: '#111827',
+          tertiary: '#0f172a',
         },
       },
       fontFamily: {
