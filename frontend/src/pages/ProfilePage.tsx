@@ -14,6 +14,8 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<ProfilePhoto | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState({
     nickname: '',
     school: '',
@@ -93,17 +95,40 @@ export default function ProfilePage() {
     if (!file) return;
 
     try {
-      // 이미지 압축
+      setIsUploading(true);
+      setUploadProgress(0);
+
+      // 이미지 압축 - 20% 진행
+      setUploadProgress(20);
       const compressedFile = await imageCompression(file, {
         maxSizeMB: 2,
         maxWidthOrHeight: 1920,
         useWebWorker: true,
+        onProgress: (progress) => {
+          // 압축 진행도: 20% ~ 60%
+          setUploadProgress(20 + (progress * 0.4));
+        },
       });
 
-      uploadMutation.mutate(compressedFile);
+      // 업로드 시작 - 60% 진행
+      setUploadProgress(60);
+      
+      // 업로드 완료 후
+      await uploadMutation.mutateAsync(compressedFile);
+      
+      setUploadProgress(100);
+      setTimeout(() => {
+        setIsUploading(false);
+        setUploadProgress(0);
+      }, 1000);
     } catch (error) {
+      setIsUploading(false);
+      setUploadProgress(0);
       alert('이미지 압축 실패');
     }
+
+    // Reset file input
+    e.target.value = '';
   };
 
   const handleLogout = () => {
@@ -268,15 +293,32 @@ export default function ProfilePage() {
           <h2 className="text-xl font-semibold mb-4">내 사진</h2>
 
           {/* 업로드 버튼 */}
-          <label className="inline-block px-4 py-2 bg-primary-500 text-white rounded-lg cursor-pointer hover:bg-primary-600 mb-4">
-            사진 업로드
+          <label className={`inline-block px-4 py-2 bg-primary-500 text-white rounded-lg cursor-pointer hover:bg-primary-600 mb-4 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+            {isUploading ? '업로드 중...' : '사진 업로드'}
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp"
               onChange={handleFileUpload}
+              disabled={isUploading}
               className="hidden"
             />
           </label>
+
+          {/* 업로드 진행률 바 */}
+          {isUploading && (
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-gray-600">업로드 진행 중...</span>
+                <span className="text-sm text-gray-600">{Math.round(uploadProgress)}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div 
+                  className="bg-primary-500 h-2.5 rounded-full transition-all duration-300 ease-out"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
+            </div>
+          )}
 
           {/* 사진 그리드 */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">

@@ -41,8 +41,11 @@ photos.post('/upload', authMiddleware, async (c) => {
     },
   });
 
-  // R2 공개 URL 생성 (실제로는 R2 bucket의 public URL 설정 필요)
-  const imageUrl = `https://iluli-photos.r2.dev/${r2Key}`;
+  // 이미지 URL 생성 - Worker를 통해 서빙
+  // 프로덕션: https://aiboop.org/images/userId/photoId.ext
+  // 개발: http://localhost:8787/images/userId/photoId.ext
+  const baseUrl = new URL(c.req.url).origin;
+  const imageUrl = `${baseUrl}/images/${r2Key}`;
 
   // DB에 메타데이터 저장
   await c.env.DB.prepare(`
