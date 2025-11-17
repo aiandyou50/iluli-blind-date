@@ -9,19 +9,47 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to Production (aiboop.org)
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Detect package manager and lockfiles
+        id: detect-cache
+        run: |
+          CACHE="npm"
+          PATHS=""
+
+          # If any yarn.lock exists, prefer yarn
+          if [ -f frontend/yarn.lock ] || [ -f worker/yarn.lock ]; then
+            CACHE="yarn"
+            if [ -f frontend/yarn.lock ]; then
+              PATHS="${PATHS}frontend/yarn.lock\n"
+            fi
+            if [ -f worker/yarn.lock ]; then
+              PATHS="${PATHS}worker/yarn.lock\n"
+            fi
+          else
+            # Fall back to package-lock.json for npm
+            if [ -f frontend/package-lock.json ]; then
+              PATHS="${PATHS}frontend/package-lock.json\n"
+            fi
+            if [ -f worker/package-lock.json ]; then
+              PATHS="${PATHS}worker/package-lock.json\n"
+            fi
+          fi
+
+          echo "cache=${CACHE}" >> $GITHUB_OUTPUT
+          echo "paths<<EOF" >> $GITHUB_OUTPUT
+          printf "%b" "${PATHS}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: |
-            frontend/package-lock.json
-            worker/package-lock.json
+          cache: ${{ steps.detect-cache.outputs.cache }}
+          cache-dependency-path: ${{ steps.detect-cache.outputs.paths }}
 
       - name: Install Frontend dependencies
         run: |
