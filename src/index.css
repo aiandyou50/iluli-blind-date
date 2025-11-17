@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f8f5f6; /* background-light from config */
+  font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif; /* display font from config */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #230f11; /* background-dark from config */
+  }
+}
