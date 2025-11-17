@@ -447,6 +447,37 @@ admin.patch('/users/:userId/role', async (c) => {
 });
 
 /**
+ * POST /api/v1/admin/users/invite
+ * Invite/promote a user to admin by email. Only existing users are supported.
+ * Body: { email: string }
+ */
+admin.post('/users/invite', async (c) => {
+  const body = await c.req.json<{ email?: string }>();
+  const email = body?.email?.trim();
+
+  if (!email) {
+    return c.json({ error: 'Email is required' }, 400);
+  }
+
+  try {
+    const user = await c.env.DB.prepare(
+      `SELECT id FROM Users WHERE email = ?`
+    ).bind(email).first<{ id: string }>();
+
+    if (!user) {
+      return c.json({ error: 'User not found' }, 404);
+    }
+
+    await c.env.DB.prepare(`UPDATE Users SET role = 'admin' WHERE id = ?`).bind(user.id).run();
+
+    return c.json({ message: 'User granted admin role successfully' });
+  } catch (error) {
+    console.error('Error inviting admin:', error);
+    return c.json({ error: 'Internal Server Error' }, 500);
+  }
+});
+
+/**
  * GET /api/v1/admin/stats
  * 통계 정보 조회
  */
