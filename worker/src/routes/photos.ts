@@ -123,7 +123,17 @@ photos.delete('/:photoId', authMiddleware, async (c) => {
 
   // R2에서 삭제 (선택적, 비용 절감을 위해 비동기 처리 가능)
   try {
-    const r2Key = photo.image_url.split('.r2.dev/')[1];
+    // Extract R2 key from URL - handle both old (.r2.dev) and new (/images/) formats
+    let r2Key: string | null = null;
+    
+    if (photo.image_url.includes('.r2.dev/')) {
+      // Old format: https://iluli-photos.r2.dev/userId/photoId.ext
+      r2Key = photo.image_url.split('.r2.dev/')[1];
+    } else if (photo.image_url.includes('/images/')) {
+      // New format: https://aiboop.org/images/userId/photoId.ext
+      r2Key = photo.image_url.split('/images/')[1];
+    }
+    
     if (r2Key) {
       await c.env.R2.delete(r2Key);
     }
