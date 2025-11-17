@@ -36,3 +36,6 @@ Thumbs.db
 .dev.vars
 
 *storybook.log
+
+# Demo files
+frontend/demo-*.html
