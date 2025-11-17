@@ -8,10 +8,14 @@ import feed from './routes/feed';
 import likes from './routes/likes';
 import matching from './routes/matching';
 import admin from './routes/admin';
+import images from './routes/images';
 
 const app = new Hono<{ Bindings: Env }>();
 
-// CORS 설정
+// Public image serving route (no CORS restrictions, no auth)
+app.route('/images', images);
+
+// CORS 설정 for API routes
 app.use('/*', async (c, next) => {
   const corsMiddleware = cors({
     origin: c.env.ALLOWED_ORIGIN,
