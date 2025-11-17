@@ -63,7 +63,7 @@ export default function AdminProtectedRoute({ children }: AdminProtectedRoutePro
                 메인으로 돌아가기
               </button>
             </div>
-            <p className="text-xs text-gray-400 mt-4">문제가 계속되면 관리자 계정(예: sungyo0518@gmail.com)에 권한이 있는지 확인하세요.</p>
+            <p className="text-xs text-gray-400 mt-4">문제가 계속되면 관리자에게 문의하여 권한을 확인하세요.</p>
           </div>
         </div>
       );

@@ -26,6 +26,8 @@ export default function AdminVerificationPage() {
   const [error, setError] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPhotos, setSelectedPhotos] = useState<Set<string>>(new Set());
+  const [isBulkApproving, setIsBulkApproving] = useState(false);
 
   useEffect(() => {
     fetchPendingPhotos();
@@ -82,6 +84,59 @@ export default function AdminVerificationPage() {
     setSelectedPhoto(null);
   };
 
+  const togglePhotoSelection = (photoId: string) => {
+    const newSelected = new Set(selectedPhotos);
+    if (newSelected.has(photoId)) {
+      newSelected.delete(photoId);
+    } else {
+      newSelected.add(photoId);
+    }
+    setSelectedPhotos(newSelected);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedPhotos.size === photos.length) {
+      setSelectedPhotos(new Set());
+    } else {
+      setSelectedPhotos(new Set(photos.map(p => p.id)));
+    }
+  };
+
+  const handleBulkApprove = async () => {
+    if (selectedPhotos.size === 0) {
+      alert('승인할 사진을 선택해주세요.');
+      return;
+    }
+
+    if (!confirm(`선택된 ${selectedPhotos.size}개의 사진을 일괄 승인하시겠습니까?`)) {
+      return;
+    }
+
+    setIsBulkApproving(true);
+    try {
+      // 병렬로 모든 승인 요청 실행
+      await Promise.all(
+        Array.from(selectedPhotos).map(photoId =>
+          axios.post(
+            `${API_BASE_URL}/admin/photos/${photoId}/approve`,
+            {},
+            { headers: { Authorization: `Bearer ${idToken}` } }
+          )
+        )
+      );
+
+      // 승인된 사진들 제거
+      setPhotos(photos.filter(p => !selectedPhotos.has(p.id)));
+      setSelectedPhotos(new Set());
+      alert(`${selectedPhotos.size}개의 사진이 승인되었습니다.`);
+    } catch (err) {
+      alert('일괄 승인 중 오류가 발생했습니다.');
+      console.error(err);
+    } finally {
+      setIsBulkApproving(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-background-dark flex items-center justify-center">
@@ -108,6 +163,34 @@ export default function AdminVerificationPage() {
           </p>
         </div>
 
+        {/* 일괄 승인 컨트롤 */}
+        {photos.length > 0 && (
+          <div className="bg-white dark:bg-background-dark-secondary rounded-lg shadow p-4 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selectedPhotos.size === photos.length && photos.length > 0}
+                    onChange={toggleSelectAll}
+                    className="w-4 h-4 text-primary-500 rounded focus:ring-primary-500"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    전체 선택 ({selectedPhotos.size}/{photos.length})
+                  </span>
+                </label>
+              </div>
+              <button
+                onClick={handleBulkApprove}
+                disabled={selectedPhotos.size === 0 || isBulkApproving}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {isBulkApproving ? '승인 중...' : `선택한 ${selectedPhotos.size}개 일괄 승인`}
+              </button>
+            </div>
+          </div>
+        )}
+
         {photos.length === 0 ? (
           <div className="bg-white dark:bg-background-dark-secondary rounded-lg shadow p-8 text-center">
             <p className="text-gray-600 dark:text-gray-400">인증 대기 중인 사진이 없습니다.</p>
@@ -117,14 +200,26 @@ export default function AdminVerificationPage() {
             {photos.map((photo) => (
               <div 
                 key={photo.id} 
-                className="bg-white dark:bg-background-dark-secondary rounded-lg shadow overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => handlePhotoClick(photo)}
+                className="bg-white dark:bg-background-dark-secondary rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="aspect-square relative">
+                  {/* 체크박스 */}
+                  <div 
+                    className="absolute top-2 left-2 z-10"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedPhotos.has(photo.id)}
+                      onChange={() => togglePhotoSelection(photo.id)}
+                      className="w-5 h-5 text-primary-500 rounded focus:ring-primary-500 cursor-pointer"
+                    />
+                  </div>
                   <img
                     src={photo.image_url}
                     alt="Pending verification"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover cursor-pointer"
+                    onClick={() => handlePhotoClick(photo)}
                   />
                 </div>
                 <div className="p-4">
