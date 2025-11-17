@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import AdminPhotoApprovalModal from './AdminPhotoApprovalModal';
 import type { Photo } from './types';
 
@@ -118,9 +118,6 @@ export const WithHighLikes: Story = {
 
 export const DarkMode: Story = {
   args: Default.args,
-  parameters: {
-    backgrounds: { default: 'dark' },
-  },
   decorators: [
     (Story) => (
       <div className="dark">
@@ -128,6 +125,11 @@ export const DarkMode: Story = {
       </div>
     ),
   ],
+  globals: {
+    backgrounds: {
+      value: "dark"
+    }
+  },
 };
 
 export const MobileView: Story = {
