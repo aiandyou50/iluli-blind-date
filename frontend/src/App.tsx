@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/authStore';
 import LoginPage from '@/pages/LoginPage';
-import NewProfilePage from '@/pages/NewProfilePage';
-import NewPublicProfilePage from '@/pages/NewPublicProfilePage';
-import NewFeedPage from '@/pages/NewFeedPage';
-import NewMatchingPage from '@/pages/NewMatchingPage';
+import ProfilePage from '@/pages/ProfilePage';
+import PublicProfilePage from '@/pages/PublicProfilePage';
+import FeedPage from '@/pages/FeedPage';
+import MatchingPage from '@/pages/MatchingPage';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import AdminVerificationPage from '@/pages/AdminVerificationPage';
-import NewAdminPhotosPage from '@/pages/NewAdminPhotosPage';
+import AdminPhotosPage from '@/pages/AdminPhotosPage';
 import AdminUsersPage from '@/pages/AdminUsersPage';
 import AdminProtectedRoute from '@/components/AdminProtectedRoute';
 
@@ -41,7 +41,7 @@ function App() {
             path="/feed"
             element={
               <ProtectedRoute>
-                <NewFeedPage />
+                <FeedPage />
               </ProtectedRoute>
             }
           />
@@ -49,7 +49,7 @@ function App() {
             path="/matching"
             element={
               <ProtectedRoute>
-                <NewMatchingPage />
+                <MatchingPage />
               </ProtectedRoute>
             }
           />
@@ -57,7 +57,7 @@ function App() {
             path="/profile"
             element={
               <ProtectedRoute>
-                <NewProfilePage />
+                <ProfilePage />
               </ProtectedRoute>
             }
           />
@@ -65,7 +65,7 @@ function App() {
             path="/profile/:userId"
             element={
               <ProtectedRoute>
-                <NewPublicProfilePage />
+                <PublicProfilePage />
               </ProtectedRoute>
             }
           />
@@ -89,7 +89,7 @@ function App() {
             path="/admin/photos"
             element={
               <AdminProtectedRoute>
-                <NewAdminPhotosPage />
+                <AdminPhotosPage />
               </AdminProtectedRoute>
             }
           />

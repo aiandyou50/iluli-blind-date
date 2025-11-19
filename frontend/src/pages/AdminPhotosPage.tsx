@@ -1,231 +1,259 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useAuthStore } from '@/store/authStore';
-import { API_BASE_URL } from '@/config/env';
+import { useState } from 'react';
+import VerificationModal from '@/components/VerificationModal';
 
-interface Photo {
+interface PendingPhoto {
   id: string;
-  image_url: string;
-  verification_status: string;
-  rejection_reason: string | null;
-  created_at: string;
-  likes_count: number;
-  user: {
-    id: string;
-    email: string;
-    nickname: string;
-  };
+  thumbnail: string;
+  fullImage: string;
+  userName: string;
+  submittedAt: string;
 }
 
+const mockPendingPhotos: PendingPhoto[] = [
+  {
+    id: '1',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCyYys5pSqX4H47YTEy8mWl0-5e-h5o03YAx6CEVsmSlHj6N0_JCcA8-tekbgIW_Lg9gr5MXT5TyYRJkH7meGk9_WkKn4s-Tml3S63e2zHg-Qq5Gon6jjZYeNi4BARmXYU8idmHyuJU9FTuc0YBDsJyJyh5jfrDxEWuUBY8qS57v4wSWe6kgZcxuRUHuGqXov9jts6Jeaypeg4w9ztgFFpsiZB7kQinz5ytjNCT_CrGpWrLmsthOkRTxoxCOJCYvTQMKtxqCcge_Fz0',
+    fullImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDHAxrP57_pqg4U0F6ZGz95oyrdsbL26w1se6cBVuxwg0NrAK5JP6_K4PgC4-lT7StAE4TIQ6TJ10E2BuxVxTPcJ7-47Djp9wFwC6wdNWymGDlk9CN19GmTwoPMtpKUJSG_I7_lq9BFBvQDXp5RcnQyOfCYc5RRPiZMm7lDMkQdScuh-UjW6Vf25ClBdkGuIyAG0qB5yQ91QUnyDSK4gftTKvHar4mFbgpZdl5E3W5v4jcg2Vx25EUmA5idSU7obHE7-1oToX4NhSVn',
+    userName: 'Korani',
+    submittedAt: '2024-10-26 14:30',
+  },
+  {
+    id: '2',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAlHUpwvCoy8TWimbQpwl7rD_yTO_y2ZYaxcAf4u_RqtgNSIBsvlIHuPXLwukZ1MOTZb54E33qcqtZ2Ls-576EniP2biValO4I2Mz660n5BFRMfKPCmCkm1n-DIpdkaOzcaRwZ5wpsW0VHnyW5qdiVr-4LCj3oivo7IE-EXCgiuzYHlrXTamdAMi8lo39hKkOrxpnim3s4juv4zhbnrWv7Cy4Ej_aYtByCSa6drQBHTdH6SiXvoGohO9JcBTuM2mgt4U63l7268K90-',
+    fullImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAlHUpwvCoy8TWimbQpwl7rD_yTO_y2ZYaxcAf4u_RqtgNSIBsvlIHuPXLwukZ1MOTZb54E33qcqtZ2Ls-576EniP2biValO4I2Mz660n5BFRMfKPCmCkm1n-DIpdkaOzcaRwZ5wpsW0VHnyW5qdiVr-4LCj3oivo7IE-EXCgiuzYHlrXTamdAMi8lo39hKkOrxpnim3s4juv4zhbnrWv7Cy4Ej_aYtByCSa6drQBHTdH6SiXvoGohO9JcBTuM2mgt4U63l7268K90-',
+    userName: 'Ryan',
+    submittedAt: '2024-10-26 13:55',
+  },
+  {
+    id: '3',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCcZYywqziG4xso9SG-3K72PtSwEAG4lwghEQWnmES_rW0pCB1OCUsxzPq6DI-X-Tl8-Aw9DSZo-TF8mSOS_2YzwOe4J58ufAhaWLvUeWsS2hg6D1Lzn-mNzPm-eJe8QmMjvkXCAyl9CNEWfaboOYnsN1ui8kauCLKeyIyUJbYyELGGbOcdjm2eFEqHVAn5fPuxLyk3MRWtxQd0Kq8M7G-N-gDb4eNHpkbmqLDtaa1XVbnrCSJvUGKeLzF21xKklZTryWKEaQNnwZZz',
+    fullImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCcZYywqziG4xso9SG-3K72PtSwEAG4lwghEQWnmES_rW0pCB1OCUsxzPq6DI-X-Tl8-Aw9DSZo-TF8mSOS_2YzwOe4J58ufAhaWLvUeWsS2hg6D1Lzn-mNzPm-eJe8QmMjvkXCAyl9CNEWfaboOYnsN1ui8kauCLKeyIyUJbYyELGGbOcdjm2eFEqHVAn5fPuxLyk3MRWtxQd0Kq8M7G-N-gDb4eNHpkbmqLDtaa1XVbnrCSJvUGKeLzF21xKklZTryWKEaQNnwZZz',
+    userName: 'Phoebe',
+    submittedAt: '2024-10-26 12:10',
+  },
+];
+
 export default function AdminPhotosPage() {
-  const navigate = useNavigate();
-  const { idToken } = useAuthStore();
-  const [photos, setPhotos] = useState<Photo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [filter, setFilter] = useState<string>('');
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<PendingPhoto | null>(null);
+  const [photos, setPhotos] = useState(mockPendingPhotos);
 
-  const fetchPhotos = useCallback(async () => {
-    setLoading(true);
-    try {
-      const url = filter
-        ? `${API_BASE_URL}/admin/photos?status=${filter}&page=${page}`
-        : `${API_BASE_URL}/admin/photos?page=${page}`;
-
-      const response = await axios.get(url, {
-        headers: { Authorization: `Bearer ${idToken}` },
-      });
-      setPhotos(response.data.photos);
-      setHasMore(!!response.data.next_page);
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 403) {
-        setError('관리자 권한이 필요합니다.');
-      } else {
-        setError('사진 목록을 불러오는데 실패했습니다.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [idToken, filter, page]);
-
-  useEffect(() => {
-    fetchPhotos();
-  }, [fetchPhotos]);
-
-  const handleDelete = async (photoId: string) => {
-    if (!confirm('이 사진을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
-
-    setDeletingId(photoId);
-    try {
-      await axios.delete(`${API_BASE_URL}/admin/photos/${photoId}`, {
-        headers: { Authorization: `Bearer ${idToken}` },
-      });
-      setPhotos(photos.filter((p) => p.id !== photoId));
-      alert('사진이 삭제되었습니다.');
-    } catch (error) {
-      alert('사진 삭제에 실패했습니다.');
-      console.error(error);
-    } finally {
-      setDeletingId(null);
+  const handleApprove = () => {
+    if (selectedPhoto) {
+      setPhotos(photos.filter((p) => p.id !== selectedPhoto.id));
+      setSelectedPhoto(null);
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const badges = {
-      not_applied: { text: '미신청', color: 'bg-gray-100 text-gray-800' },
-      pending: { text: '대기중', color: 'bg-orange-100 text-orange-800' },
-      approved: { text: '승인됨', color: 'bg-green-100 text-green-800' },
-      rejected: { text: '거절됨', color: 'bg-red-100 text-red-800' },
-    };
-    const badge = badges[status as keyof typeof badges] || badges.not_applied;
-    return (
-      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${badge.color}`}>
-        {badge.text}
-      </span>
-    );
+  const handleReject = (reason: string) => {
+    if (selectedPhoto) {
+      console.log('Rejecting photo with reason:', reason);
+      setPhotos(photos.filter((p) => p.id !== selectedPhoto.id));
+      setSelectedPhoto(null);
+    }
   };
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-xl text-red-600">{error}</div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">사진 관리</h1>
-          <p className="mt-2 text-sm text-gray-600">전체 사진 목록 조회 및 삭제</p>
-        </div>
-
-        {/* 필터 */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6">
-          <div className="flex gap-2">
-            <button
-              onClick={() => { setFilter(''); setPage(1); }}
-              className={`px-4 py-2 rounded-lg ${!filter ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}
-            >
-              전체
-            </button>
-            <button
-              onClick={() => { setFilter('not_applied'); setPage(1); }}
-              className={`px-4 py-2 rounded-lg ${filter === 'not_applied' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}
-            >
-              미신청
-            </button>
-            <button
-              onClick={() => { setFilter('pending'); setPage(1); }}
-              className={`px-4 py-2 rounded-lg ${filter === 'pending' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}
-            >
-              대기중
-            </button>
-            <button
-              onClick={() => { setFilter('approved'); setPage(1); }}
-              className={`px-4 py-2 rounded-lg ${filter === 'approved' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}
-            >
-              승인됨
-            </button>
-            <button
-              onClick={() => { setFilter('rejected'); setPage(1); }}
-              className={`px-4 py-2 rounded-lg ${filter === 'rejected' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}
-            >
-              거절됨
-            </button>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className="text-center py-8">
-            <div className="text-xl">로딩 중...</div>
-          </div>
-        ) : photos.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-8 text-center">
-            <p className="text-gray-600">사진이 없습니다.</p>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {photos.map((photo) => (
-                <div key={photo.id} className="bg-white rounded-lg shadow overflow-hidden">
-                  <div className="aspect-square relative">
-                    <img
-                      src={photo.image_url}
-                      alt="User photo"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      {getStatusBadge(photo.verification_status)}
-                      <span className="text-xs text-gray-500">
-                        ❤️ {photo.likes_count}
-                      </span>
-                    </div>
-                    <div className="mb-3">
-                      <p className="text-sm font-medium">{photo.user.nickname}</p>
-                      <p className="text-xs text-gray-500">{photo.user.email}</p>
-                    </div>
-                    {photo.rejection_reason && (
-                      <div className="mb-3 p-2 bg-red-50 rounded text-xs text-red-800">
-                        거절 사유: {photo.rejection_reason}
-                      </div>
-                    )}
-                    <div className="mb-3">
-                      <p className="text-xs text-gray-500">
-                        {new Date(photo.created_at).toLocaleString('ko-KR')}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => handleDelete(photo.id)}
-                      disabled={deletingId === photo.id}
-                      className="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      {deletingId === photo.id ? '삭제 중...' : '삭제'}
-                    </button>
-                  </div>
+    <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
+      <div className="flex h-full min-w-0 flex-1">
+        {/* Side Navigation */}
+        <aside className="hidden md:flex md:flex-col md:w-64 flex-shrink-0 bg-white dark:bg-background-dark p-4 border-r border-gray-200 dark:border-gray-800">
+          <div className="flex flex-col h-full">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-3 px-2">
+                <div
+                  className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+                  style={{
+                    backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuDlcjTuEwDoCnz3FccE0A3ofJOL8bbECMSbmdw8j8Vu-dGxUJdYVv-PypJaVqA0CU05Efg3M_65X5oOfFFHQUuVKA1aO65WfsK95ZLFrkLTthvsCCcBWsRZ_-1Ta1ptjWn4CyLyxYieF4bjBhEXw8a7pXskAFSoOYzAnaH0y0x-IGFG9bYV4dieoMQ6Jk7uj7_POtu0LzDBTEuaBPsbpcAOTkXV00Ehk8iIuollaW4uTWyVL4wfe3UFiesc-aWVhNv4_a4LlAzGrihD")`,
+                  }}
+                ></div>
+                <div className="flex flex-col">
+                  <h1 className="text-[#181111] dark:text-white text-base font-medium leading-normal">
+                    Admin
+                  </h1>
+                  <p className="text-[#8a6064] dark:text-gray-400 text-sm font-normal leading-normal">
+                    aiboop.org
+                  </p>
                 </div>
-              ))}
+              </div>
+              <nav className="flex flex-col gap-2 mt-4">
+                <a
+                  className="flex items-center gap-3 px-3 py-2 text-[#181111] dark:text-gray-300 rounded hover:bg-primary/10"
+                  href="/admin"
+                >
+                  <span className="material-symbols-outlined text-xl">dashboard</span>
+                  <p className="text-sm font-medium leading-normal">Dashboard</p>
+                </a>
+                <a
+                  className="flex items-center gap-3 px-3 py-2 rounded bg-primary/20 text-primary dark:text-primary"
+                  href="/admin/photos"
+                >
+                  <span className="material-symbols-outlined text-xl">photo_library</span>
+                  <p className="text-sm font-medium leading-normal">Photo Approval Management</p>
+                </a>
+                <a
+                  className="flex items-center gap-3 px-3 py-2 text-[#181111] dark:text-gray-300 rounded hover:bg-primary/10"
+                  href="/admin/users"
+                >
+                  <span className="material-symbols-outlined text-xl">group</span>
+                  <p className="text-sm font-medium leading-normal">User Management</p>
+                </a>
+              </nav>
             </div>
-
-            {/* 페이지네이션 */}
-            <div className="mt-8 flex justify-center gap-4">
-              <button
-                onClick={() => setPage(page - 1)}
-                disabled={page === 1}
-                className="px-4 py-2 bg-white rounded-lg shadow disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            <div className="mt-auto flex flex-col gap-1">
+              <a
+                className="flex items-center gap-3 px-3 py-2 text-[#181111] dark:text-gray-300 rounded hover:bg-primary/10"
+                href="#"
               >
-                이전
-              </button>
-              <span className="px-4 py-2 bg-white rounded-lg shadow">
-                페이지 {page}
+                <span className="material-symbols-outlined text-xl">settings</span>
+                <p className="text-sm font-medium leading-normal">Settings</p>
+              </a>
+              <a
+                className="flex items-center gap-3 px-3 py-2 text-[#181111] dark:text-gray-300 rounded hover:bg-primary/10"
+                href="/"
+              >
+                <span className="material-symbols-outlined text-xl">logout</span>
+                <p className="text-sm font-medium leading-normal">Logout</p>
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1 p-4 md:p-8 lg:p-12">
+          <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
+            {/* Page Heading */}
+            <header className="flex flex-wrap justify-between gap-3 p-4">
+              <h1 className="text-[#181111] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">
+                Photo Approval Pending List
+              </h1>
+            </header>
+
+            {/* Table */}
+            <section className="w-full">
+              <div className="flex overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-zinc-900">
+                <table className="w-full">
+                  <thead className="bg-gray-50 dark:bg-zinc-800">
+                    <tr className="text-left">
+                      <th className="w-20 px-4 py-3 text-sm font-medium leading-normal text-[#181111] dark:text-gray-300">
+                        Photo
+                      </th>
+                      <th className="w-1/3 px-4 py-3 text-sm font-medium leading-normal text-[#181111] dark:text-gray-300">
+                        User Nickname
+                      </th>
+                      <th className="w-1/3 px-4 py-3 text-sm font-medium leading-normal text-[#181111] dark:text-gray-300">
+                        Application Date/Time
+                      </th>
+                      <th className="w-60 px-4 py-3 text-sm font-medium leading-normal text-[#181111] dark:text-gray-300 text-right">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+                    {photos.map((photo) => (
+                      <tr
+                        key={photo.id}
+                        className="hover:bg-gray-50 dark:hover:bg-zinc-800/50 cursor-pointer"
+                        onClick={() => setSelectedPhoto(photo)}
+                      >
+                        <td className="h-[72px] px-4 py-2">
+                          <div
+                            className="bg-center bg-no-repeat aspect-square bg-cover rounded w-12"
+                            style={{ backgroundImage: `url("${photo.thumbnail}")` }}
+                          ></div>
+                        </td>
+                        <td className="h-[72px] px-4 py-2 text-sm font-normal leading-normal text-[#181111] dark:text-white">
+                          {photo.userName}
+                        </td>
+                        <td className="h-[72px] px-4 py-2 text-sm font-normal leading-normal text-[#8a6064] dark:text-gray-400">
+                          {photo.submittedAt}
+                        </td>
+                        <td className="h-[72px] px-4 py-2">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleReject('Manual rejection');
+                              }}
+                              className="px-4 py-2 text-xs font-bold text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 dark:bg-zinc-700 dark:text-gray-300 dark:hover:bg-zinc-600"
+                            >
+                              Reject
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleApprove();
+                              }}
+                              className="px-4 py-2 text-xs font-bold text-white bg-primary rounded-full hover:bg-primary/90"
+                            >
+                              Approve
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            {/* Pagination */}
+            <nav className="flex items-center justify-center p-4">
+              <a
+                className="flex size-10 items-center justify-center text-[#181111] dark:text-gray-400 hover:bg-primary/10 rounded-full"
+                href="#"
+              >
+                <span className="material-symbols-outlined text-xl">chevron_left</span>
+              </a>
+              <a
+                className="text-sm font-bold leading-normal flex size-10 items-center justify-center text-white bg-primary rounded-full"
+                href="#"
+              >
+                1
+              </a>
+              <a
+                className="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#181111] dark:text-gray-300 rounded-full hover:bg-primary/10"
+                href="#"
+              >
+                2
+              </a>
+              <a
+                className="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#181111] dark:text-gray-300 rounded-full hover:bg-primary/10"
+                href="#"
+              >
+                3
+              </a>
+              <span className="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#181111] dark:text-gray-300 rounded-full">
+                ...
               </span>
-              <button
-                onClick={() => setPage(page + 1)}
-                disabled={!hasMore}
-                className="px-4 py-2 bg-white rounded-lg shadow disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              <a
+                className="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#181111] dark:text-gray-300 rounded-full hover:bg-primary/10"
+                href="#"
               >
-                다음
-              </button>
-            </div>
-          </>
-        )}
-
-        <div className="mt-8">
-          <button
-            onClick={() => navigate('/admin')}
-            className="text-blue-600 hover:text-blue-800 font-medium"
-          >
-            ← 대시보드로 돌아가기
-          </button>
-        </div>
+                10
+              </a>
+              <a
+                className="flex size-10 items-center justify-center text-[#181111] dark:text-gray-400 hover:bg-primary/10 rounded-full"
+                href="#"
+              >
+                <span className="material-symbols-outlined text-xl">chevron_right</span>
+              </a>
+            </nav>
+          </div>
+        </main>
       </div>
+
+      {/* Verification Modal */}
+      {selectedPhoto && (
+        <VerificationModal
+          isOpen={!!selectedPhoto}
+          onClose={() => setSelectedPhoto(null)}
+          photoUrl={selectedPhoto.fullImage}
+          userName={selectedPhoto.userName}
+          submittedAt={selectedPhoto.submittedAt}
+          onApprove={handleApprove}
+          onReject={handleReject}
+        />
+      )}
     </div>
   );
 }
