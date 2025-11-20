@@ -42,7 +42,7 @@
 3. Install Frontend dependencies (프론트엔드 의존성 설치)
 4. Build Frontend (프론트엔드 빌드)
    - VITE_API_BASE_URL=https://aiboop.org/api/v1
-   - VITE_GOOGLE_CLIENT_ID=554594965102-...
+   - VITE_GOOGLE_CLIENT_ID=[환경 변수에서 설정]
 5. Copy to worker/public (빌드 파일 복사)
 6. Install Worker dependencies (워커 의존성 설치)
 7. Deploy to Cloudflare (프로덕션 배포)

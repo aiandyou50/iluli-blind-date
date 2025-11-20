@@ -33,7 +33,7 @@ cp .env.example .env
 `.env` 파일을 열고 다음을 입력:
 ```
 VITE_API_BASE_URL=http://localhost:8787/api/v1
-VITE_GOOGLE_CLIENT_ID=554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com
+VITE_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
 ```
 
 ### 3. Cloudflare 설정
@@ -82,13 +82,11 @@ npx wrangler r2 bucket list
 7. 승인된 리디렉션 URI (개발 + 프로덕션):
    - `http://localhost:5173` (개발)
    - `https://aiboop.org` (프로덕션)
-8. 생성된 "클라이언트 ID"를 확인:
-   - 현재 Client ID: `554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com`
-   - 이 값이 이미 다음 파일들에 설정되어 있는지 확인:
-     - `worker/wrangler.toml`의 `GOOGLE_CLIENT_ID` (로컬 개발용)
-     - `worker/wrangler.toml`의 `[env.production]` 섹션 (프로덕션용)
-     - `frontend/.env`의 `VITE_GOOGLE_CLIENT_ID` (개발용)
-     - `frontend/.env.production`의 `VITE_GOOGLE_CLIENT_ID` (프로덕션용)
+8. 생성된 "클라이언트 ID"를 확인하고 다음 파일들에 설정:
+      - `worker/wrangler.toml`의 `GOOGLE_CLIENT_ID` (로컬 개발용)
+      - `worker/wrangler.toml`의 `[env.production]` 섹션 (프로덕션용)
+      - `frontend/.env`의 `VITE_GOOGLE_CLIENT_ID` (개발용)
+      - `frontend/.env.production`의 `VITE_GOOGLE_CLIENT_ID` (프로덕션용)
 
 ### 5. 개발 서버 실행
 
