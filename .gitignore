@@ -12,6 +12,8 @@ dist
 .wrangler
 .mf
 storybook-static
+.next
+out
 
 # Test coverage
 coverage
@@ -44,3 +46,5 @@ Thumbs.db
 
 # UI/UX reference files
 stitch_public_profile_page.zip
+
+/app/generated/prisma

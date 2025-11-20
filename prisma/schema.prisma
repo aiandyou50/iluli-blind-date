@@ -1,0 +1,80 @@
+// Iluli Blind Date - Prisma Schema for Cloudflare D1
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// User model - 사용자 프로필
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  name          String?
+  bio           String?  // 한 줄 소개
+  instagramId   String?  // 인스타그램 아이디
+  googleId      String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  photos        Photo[]
+  likesSent     Like[]   @relation("LikesSent")
+  likesReceived Like[]   @relation("LikesReceived")
+  matchesAsUser1 Match[] @relation("MatchUser1")
+  matchesAsUser2 Match[] @relation("MatchUser2")
+  
+  @@index([email])
+  @@index([googleId])
+}
+
+// Photo model - 사진 (최대 10장)
+model Photo {
+  id        String   @id @default(uuid())
+  userId    String
+  url       String   // R2 URL
+  thumbnail String?  // 썸네일 URL (optional)
+  order     Int      @default(0) // 표시 순서
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([userId, order])
+}
+
+// Like model - 좋아요/호감 표시
+model Like {
+  id        String   @id @default(uuid())
+  fromUserId String
+  toUserId   String
+  createdAt DateTime @default(now())
+  
+  // Relations
+  fromUser  User     @relation("LikesSent", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser    User     @relation("LikesReceived", fields: [toUserId], references: [id], onDelete: Cascade)
+  
+  @@unique([fromUserId, toUserId])
+  @@index([fromUserId])
+  @@index([toUserId])
+}
+
+// Match model - 매칭 (양방향 좋아요 시 생성)
+model Match {
+  id        String   @id @default(uuid())
+  user1Id   String
+  user2Id   String
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user1     User     @relation("MatchUser1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2     User     @relation("MatchUser2", fields: [user2Id], references: [id], onDelete: Cascade)
+  
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}

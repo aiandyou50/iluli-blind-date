@@ -1,0 +1,59 @@
+{
+  "common": {
+    "appName": "이루리 소개팅",
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "retry": "다시 시도"
+  },
+  "auth": {
+    "login": "로그인",
+    "loginWithGoogle": "Google로 로그인",
+    "logout": "로그아웃",
+    "welcome": "환영합니다"
+  },
+  "nav": {
+    "feed": "피드",
+    "swipe": "매칭",
+    "likes": "좋아요",
+    "profile": "프로필"
+  },
+  "feed": {
+    "title": "피드",
+    "noPhotos": "아직 사진이 없습니다",
+    "loadMore": "더 보기"
+  },
+  "profile": {
+    "editProfile": "프로필 편집",
+    "photos": "사진",
+    "addPhoto": "사진 추가",
+    "deletePhoto": "사진 삭제",
+    "bio": "한 줄 소개",
+    "instagram": "인스타그램",
+    "connectInstagram": "인스타그램 연결",
+    "visitInstagram": "인스타그램 방문"
+  },
+  "swipe": {
+    "like": "좋아요",
+    "pass": "패스",
+    "noMoreProfiles": "더 이상 프로필이 없습니다",
+    "itsAMatch": "매칭되었습니다!"
+  },
+  "likes": {
+    "sent": "보낸 좋아요",
+    "received": "받은 좋아요",
+    "matches": "매칭",
+    "noLikes": "아직 좋아요가 없습니다"
+  },
+  "onboarding": {
+    "welcome": "이루리 소개팅에 오신 것을 환영합니다",
+    "step1Title": "인스타그램 연결",
+    "step1Desc": "프로필에 인스타그램을 연결하세요",
+    "step2Title": "사진 업로드",
+    "step2Desc": "4컷 사진을 최소 1장 업로드하세요",
+    "step3Title": "매칭 시작",
+    "step3Desc": "이제 매칭을 시작할 준비가 되었습니다",
+    "next": "다음",
+    "skip": "건너뛰기",
+    "finish": "시작하기"
+  }
+}
