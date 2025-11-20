@@ -42,7 +42,7 @@
 name = "iluli-worker-prod"
 vars = { 
   ALLOWED_ORIGIN = "https://aiboop.org",
-  GOOGLE_CLIENT_ID = "554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com"
+  GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"
 }
 ```
 
@@ -51,7 +51,7 @@ vars = {
 ```env
 # API는 동일 도메인에서 제공됨
 VITE_API_BASE_URL=https://aiboop.org/api/v1
-VITE_GOOGLE_CLIENT_ID=554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com
+VITE_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
 ```
 
 ---

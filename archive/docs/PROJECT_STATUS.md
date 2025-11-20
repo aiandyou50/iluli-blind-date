@@ -2,7 +2,7 @@
 
 ## 🔑 Google OAuth 클라이언트
 ```
-Client ID: 554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com
+Client ID: [구성 필요 - wrangler.toml 및 .env 파일에 설정]
 ```
 
 ### Google Cloud Console 설정 확인 사항
@@ -31,7 +31,7 @@ Client ID: 554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.
 ### D1 데이터베이스
 ```
 이름: iluli-db
-Database ID: 5d259601-b9ad-4767-8be9-e7eeb540bd66
+Database ID: [구성 필요 - wrangler.toml에 설정]
 상태: ✅ 생성 완료
 ```
 
@@ -63,19 +63,19 @@ npx wrangler r2 bucket list
 ### ✅ 완료된 파일
 
 #### 1. `worker/wrangler.toml`
-- [x] D1 Database ID 설정됨: `5d259601-b9ad-4767-8be9-e7eeb540bd66`
+- [x] D1 Database ID 설정 필요: 환경별로 구성
 - [x] R2 Bucket 설정됨: `iluli-photos`
-- [x] Google Client ID 설정됨 (개발 환경)
-- [x] Google Client ID 설정됨 (프로덕션 환경)
+- [x] Google Client ID 설정 필요 (개발 환경)
+- [x] Google Client ID 설정 필요 (프로덕션 환경)
 - [x] ALLOWED_ORIGIN 설정됨: `https://aiboop.org`
 
 #### 2. `frontend/.env` (개발용)
 - [x] VITE_API_BASE_URL: `http://localhost:8787/api/v1`
-- [x] VITE_GOOGLE_CLIENT_ID 설정됨
+- [x] VITE_GOOGLE_CLIENT_ID 설정 필요
 
 #### 3. `frontend/.env.production` (프로덕션용)
 - [x] VITE_API_BASE_URL: `https://api.aiboop.org/api/v1`
-- [x] VITE_GOOGLE_CLIENT_ID 설정됨
+- [x] VITE_GOOGLE_CLIENT_ID 설정 필요
 
 #### 4. `frontend/.env.example`
 - [x] 예시 파일 업데이트됨
@@ -160,7 +160,7 @@ npx wrangler deploy --env production
 
 ```
 프로젝트: [귀하의 Google Cloud 프로젝트]
-OAuth 2.0 클라이언트 ID: 554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq
+OAuth 2.0 클라이언트 ID: [환경별로 구성]
 
 ✅ 확인 필요:
 1. 승인된 자바스크립트 원본:
