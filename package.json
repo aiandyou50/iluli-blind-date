@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251120.0",
+    "@next/eslint-plugin-next": "^16.0.3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -44,6 +45,7 @@
     "eslint-config-next": "15.5.2",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "typescript-eslint": "^8.47.0",
     "wrangler": "^4.49.0"
   }
 }

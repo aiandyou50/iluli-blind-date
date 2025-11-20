@@ -1,62 +1,205 @@
-# Iluli Blind Date - Archived Repository
+# 이루리 소개팅 (Iluli Blind Date)
 
-## 📦 Repository Status
+> 20대 대학생 대상 축제 인생네컷 사진 기반 소셜 매칭 서비스
 
-This repository has been archived. All project files have been moved to the `archive` folder.
+[![Next.js](https://img.shields.io/badge/Next.js-15.5-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-Workers-orange)](https://workers.cloudflare.com/)
 
-## 🔐 Security Updates
+## 🌟 Features
 
-All hardcoded sensitive values have been removed from configuration and documentation files:
+- 🔐 **Google OAuth 로그인** - 간편한 소셜 로그인
+- 📸 **사진 기반 프로필** - 최대 10장의 4컷 사진 업로드
+- 📱 **인스타그램 연동** - 프로필에 인스타그램 연결
+- 🔄 **틴더식 매칭** - 좌우 스와이프로 매칭
+- 💕 **호감 목록** - 보낸/받은 좋아요 관리
+- 🌍 **다국어 지원** - 한국어, English, 繁體中文, 简体中文
+- 📱 **모바일 최적화** - 모바일 퍼스트 반응형 디자인
 
-- **Google OAuth Client ID**: Replaced with `YOUR_GOOGLE_CLIENT_ID` placeholder
-- **Database ID**: Replaced with `YOUR_DATABASE_ID` placeholder
+## 🏗️ Tech Stack
 
-### Files Updated (Security)
+### Frontend
+- **Framework**: Next.js 15.5.2 (App Router)
+- **UI Library**: React 19
+- **Styling**: Tailwind CSS 4
+- **State Management**: Zustand 5, TanStack Query 5
+- **i18n**: next-intl
+- **Forms**: react-hook-form
+- **Language**: TypeScript
 
-The following files were cleaned of hardcoded credentials:
-- `archive/worker/wrangler.toml`
-- `archive/frontend/.env.production`
-- `archive/frontend/.env.example`
-- `archive/docs/SETUP.md`
-- `archive/docs/PROJECT_STATUS.md`
-- `archive/docs/GITHUB_ACTIONS_SETUP.md`
-- `archive/docs/README.md`
-- `archive/docs/DEPLOYMENT_STATUS.md`
-- `archive/docs/PRODUCTION_DEPLOY.md`
+### Backend
+- **Runtime**: Cloudflare Workers
+- **Database**: Cloudflare D1 (SQLite)
+- **ORM**: Prisma 6 with D1 adapter
+- **Storage**: Cloudflare R2
+- **Authentication**: NextAuth v5 (Auth.js)
 
-## 📁 Repository Structure
+## 📦 Installation
+
+```bash
+# Clone repository
+git clone https://github.com/aiandyou50/iluli-blind-date.git
+cd iluli-blind-date
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your credentials
+
+# Generate Prisma Client
+npx prisma generate
+
+# Run development server
+npm run dev
+```
+
+## 🔧 Environment Variables
+
+Create a `.env` file with the following variables:
+
+```env
+# Database
+DATABASE_URL="file:./dev.db"
+
+# Auth (NextAuth v5)
+AUTH_SECRET="your-secret-key"
+AUTH_GOOGLE_ID="your-google-client-id"
+AUTH_GOOGLE_SECRET="your-google-client-secret"
+
+# Cloudflare
+NEXT_PUBLIC_API_URL="http://localhost:3000"
+```
+
+## 🚀 Development
+
+```bash
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Build for Cloudflare Pages
+npm run pages:build
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
+
+# Generate Prisma Client
+npm run db:generate
+```
+
+## 📱 App Structure
 
 ```
-.
-├── LICENSE                 # MIT License (kept in root)
-├── .gitignore             # Git ignore rules
-├── .github/               # GitHub Actions workflows
-├── README.md              # This file
-└── archive/               # All archived project files
-    ├── worker/            # Backend worker code
-    ├── frontend/          # Frontend React app
-    ├── docs/              # Documentation
-    └── ...                # Other project files
+app/
+├── [locale]/               # Internationalized routes
+│   ├── page.tsx           # Landing/Login
+│   ├── feed/              # Main photo feed
+│   ├── profile/[id]/      # User profiles
+│   ├── swipe/             # Swipe matching
+│   ├── likes/             # Likes management
+│   └── onboarding/        # User onboarding
+└── api/                   # API routes
+    ├── auth/              # Authentication
+    ├── photos/            # Photo management
+    ├── likes/             # Like operations
+    └── matches/           # Match operations
 ```
 
-## ⚠️ Important Notes
+## 🗄️ Database Schema
 
-1. **License**: The MIT License file remains in the root directory as required.
-2. **Sensitive Data**: All hardcoded API keys, client IDs, and database IDs have been removed for security.
-3. **Configuration Required**: To use this project, you must configure your own credentials in the appropriate configuration files within the archive folder.
+### Models
 
-## 🔧 To Restore and Use This Project
+- **User**: User profiles with Google OAuth integration
+- **Photo**: Up to 10 photos per user stored in R2
+- **Like**: One-way like relationships
+- **Match**: Mutual likes create matches
 
-1. Extract files from the `archive` folder
-2. Set up your own Google OAuth credentials
-3. Create a Cloudflare D1 database and update the database ID
-4. Configure environment variables in:
-   - `worker/wrangler.toml`
-   - `frontend/.env`
-   - `frontend/.env.production`
+See `prisma/schema.prisma` for detailed schema.
 
-For detailed setup instructions, see `archive/docs/SETUP.md`
+## 🌐 Deployment
+
+### Cloudflare Pages
+
+1. **Create D1 Database**:
+```bash
+npx wrangler d1 create iluli-db
+```
+
+2. **Create R2 Bucket**:
+```bash
+npx wrangler r2 bucket create iluli-photos
+```
+
+3. **Build and Deploy**:
+```bash
+npm run pages:build
+npx wrangler pages deploy
+```
+
+See [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md) for detailed deployment instructions.
+
+## 🌍 Internationalization
+
+Supported languages:
+- 🇰🇷 Korean (default)
+- 🇺🇸 English
+- 🇹🇼 Traditional Chinese
+- 🇨🇳 Simplified Chinese
+
+Language files are in `messages/` directory.
+
+## 📚 Documentation
+
+- [Implementation Guide](./IMPLEMENTATION_GUIDE.md) - Detailed technical documentation
+- [Security Summary](./SECURITY_SUMMARY.md) - Security considerations
+- [Archived Docs](./archive/docs/) - Previous implementation documentation
+
+## 🔒 Security
+
+- NextAuth v5 for secure authentication
+- HTTPS-only in production
+- Input validation on all forms
+- Prisma ORM prevents SQL injection
+- Rate limiting on API routes
+
+See [SECURITY_SUMMARY.md](./SECURITY_SUMMARY.md) for details.
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+This is a private project. For any questions or suggestions, please contact the repository owner.
+
+## 📞 Support
+
+For technical issues, please refer to:
+- [Implementation Guide](./IMPLEMENTATION_GUIDE.md)
+- [GitHub Issues](https://github.com/aiandyou50/iluli-blind-date/issues)
+- Archive documentation in `/archive/docs/`
+
+## 🎯 Roadmap
+
+- [x] Project setup with Next.js 15.5
+- [x] Prisma schema for D1
+- [x] Multi-language support (4 languages)
+- [ ] Google OAuth authentication
+- [ ] Photo upload to R2
+- [ ] Feed page with infinite scroll
+- [ ] Swipe matching
+- [ ] Likes management
+- [ ] Instagram integration
+- [ ] Production deployment
+
+---
+
+**Built with ❤️ for university students**
