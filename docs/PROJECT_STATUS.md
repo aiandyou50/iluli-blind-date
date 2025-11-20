@@ -160,7 +160,7 @@ npx wrangler deploy --env production
 
 ```
 프로젝트: [귀하의 Google Cloud 프로젝트]
-OAuth 2.0 클라이언트 ID: 554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq
+OAuth 2.0 클라이언트 ID: [환경별로 구성]
 
 ✅ 확인 필요:
 1. 승인된 자바스크립트 원본:
