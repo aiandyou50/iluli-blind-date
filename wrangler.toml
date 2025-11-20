@@ -16,7 +16,7 @@ bucket_name = "iluli-photos"
 # Environment variables
 [vars]
 AUTH_SECRET = "your-production-secret-change-this"
-NEXT_PUBLIC_API_URL = "iluli-worker-prod.x00518.workers.dev
+NEXT_PUBLIC_API_URL = "https://iluli-worker-prod.x00518.workers.dev"
 
 # Production environment
 [env.production]
