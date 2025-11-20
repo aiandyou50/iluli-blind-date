@@ -1,0 +1,26 @@
+name = "iluli-blind-date"
+compatibility_date = "2025-11-20"
+pages_build_output_dir = ".vercel/output/static"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "iluli-db"
+database_id = "YOUR_DATABASE_ID" # Replace with your actual D1 database ID
+
+# R2 Storage binding for photos
+[[r2_buckets]]
+binding = "PHOTOS_BUCKET"
+bucket_name = "iluli-photos"
+
+# Environment variables
+[vars]
+AUTH_SECRET = "your-production-secret-change-this"
+NEXT_PUBLIC_API_URL = "https://your-domain.pages.dev"
+
+# Production environment
+[env.production]
+name = "iluli-blind-date-production"
+
+[env.production.vars]
+NEXT_PUBLIC_API_URL = "https://aiboop.org"
