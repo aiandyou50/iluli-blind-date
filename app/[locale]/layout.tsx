@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import "./globals.css";
 
+export const runtime = 'edge';
+
 export const metadata: Metadata = {
   title: "이루리 소개팅 - Iluli Blind Date",
   description: "20대 대학생 대상 소셜 매칭 서비스",
