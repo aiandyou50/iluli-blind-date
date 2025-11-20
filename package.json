@@ -1,0 +1,49 @@
+{
+  "name": "iluli-blind-date",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Iluli Blind Date - 20대 대학생 대상 소셜 매칭 서비스",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy",
+    "start": "next start",
+    "lint": "eslint",
+    "db:generate": "prisma generate",
+    "db:push": "wrangler d1 execute iluli-db --remote --command=\"$(cat prisma/schema.sql)\"",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@auth/prisma-adapter": "^2.11.1",
+    "@cloudflare/next-on-pages": "^1.13.16",
+    "@prisma/adapter-d1": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "@tanstack/react-query": "^5.90.10",
+    "axios": "^1.13.2",
+    "browser-image-compression": "^2.0.2",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "next": "15.5.2",
+    "next-auth": "^5.0.0-beta.30",
+    "next-intl": "^3.26.5",
+    "prisma": "^6.19.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-hook-form": "^7.66.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251120.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "wrangler": "^4.49.0"
+  }
+}
