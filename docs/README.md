@@ -153,14 +153,14 @@ npm run deploy
 ```toml
 # 개발 환경
 [vars]
-GOOGLE_CLIENT_ID = "554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com"
+GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"
 ALLOWED_ORIGIN = "http://localhost:5173"
 
 # 프로덕션 환경
 [env.production]
 vars = { 
   ALLOWED_ORIGIN = "https://aiboop.org",
-  GOOGLE_CLIENT_ID = "554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com"
+  GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"
 }
 ```
 
@@ -168,13 +168,13 @@ vars = {
 **개발 환경 (`.env`)**
 ```
 VITE_API_BASE_URL=http://localhost:8787/api/v1
-VITE_GOOGLE_CLIENT_ID=554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com
+VITE_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
 ```
 
 **프로덕션 환경 (`.env.production`)**
 ```
 VITE_API_BASE_URL=https://api.aiboop.org/api/v1
-VITE_GOOGLE_CLIENT_ID=554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq.apps.googleusercontent.com
+VITE_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
 ```
 
 ## 📝 라이선스
