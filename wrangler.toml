@@ -6,7 +6,7 @@ pages_build_output_dir = ".vercel/output/static"
 [[d1_databases]]
 binding = "DB"
 database_name = "iluli-db"
-database_id = "YOUR_DATABASE_ID" # Replace with your actual D1 database ID
+database_id = "5d259601-b9ad-4767-8be9-e7eeb540bd66" # Replace with your actual D1 database ID
 
 # R2 Storage binding for photos
 [[r2_buckets]]
@@ -16,7 +16,7 @@ bucket_name = "iluli-photos"
 # Environment variables
 [vars]
 AUTH_SECRET = "your-production-secret-change-this"
-NEXT_PUBLIC_API_URL = "https://your-domain.pages.dev"
+NEXT_PUBLIC_API_URL = "iluli-worker-prod.x00518.workers.dev
 
 # Production environment
 [env.production]
