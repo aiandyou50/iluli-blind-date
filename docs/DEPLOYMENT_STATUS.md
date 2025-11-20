@@ -8,7 +8,7 @@
 - **배포 시간**: 2025-11-16 15:55:51
 
 ### 2. D1 데이터베이스 스키마 적용 완료
-- **Database**: iluli-db (5d259601-b9ad-4767-8be9-e7eeb540bd66)
+- **Database**: iluli-db ([환경별로 구성된 Database ID])
 - **Queries Executed**: 14
 - **Rows Written**: 29
 - **Database Size**: 0.11 MB
@@ -55,7 +55,7 @@
 **Google Cloud Console**: https://console.cloud.google.com/apis/credentials
 
 **설정 방법**:
-1. OAuth 2.0 클라이언트 ID 선택 (554594965102-vpqdkqfugdm2vqh7q35oi7ghtopb7mvq)
+1. OAuth 2.0 클라이언트 ID 선택 (환경별로 구성)
 2. '승인된 자바스크립트 원본'에 추가:
    - `https://aiboop.org`
 3. '승인된 리디렉션 URI'에 추가:
