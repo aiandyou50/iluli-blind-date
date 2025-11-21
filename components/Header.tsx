@@ -1,8 +1,11 @@
 'use client';
 
 import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslations } from 'next-intl';
 
 export default function Header({ title, rightAction }: { title?: string, rightAction?: React.ReactNode }) {
+  const t = useTranslations('common');
+  
   return (
     <header className="sticky top-0 z-40 flex items-center justify-between border-b border-primary/20 bg-white/80 px-4 py-3 backdrop-blur-sm dark:bg-black/80 dark:border-primary/30">
       <div className="flex items-center gap-2 text-primary">
@@ -13,7 +16,7 @@ export default function Header({ title, rightAction }: { title?: string, rightAc
           </svg>
         </div>
         <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] text-inherit">
-          {title || '이루리 소개팅'}
+          {title || t('appName')}
         </h2>
       </div>
       <div className="flex items-center gap-2">
