@@ -4,7 +4,7 @@ import type { PrismaClient } from "@prisma/client";
 import type { Session, User } from "next-auth";
 
 export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv) => ({
-  // adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" as const },
   secret: env.AUTH_SECRET,
   trustHost: true,
