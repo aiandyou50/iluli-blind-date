@@ -22,5 +22,15 @@ NEXT_PUBLIC_API_URL = "https://iluli-blind-date.pages.dev"
 [env.production]
 name = "iluli-blind-date-production"
 
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "iluli-db"
+database_id = "5d259601-b9ad-4767-8be9-e7eeb540bd66"
+
+[[env.production.r2_buckets]]
+binding = "PHOTOS_BUCKET"
+bucket_name = "iluli-photos"
+
 [env.production.vars]
+AUTH_SECRET = "your-production-secret-change-this"
 NEXT_PUBLIC_API_URL = "https://aiboop.org"
