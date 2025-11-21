@@ -1,10 +1,9 @@
 import Google from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { PrismaClient } from "@prisma/client";
 import type { NextAuthConfig } from "next-auth";
 
 export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv): NextAuthConfig => ({
-  adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
   secret: env.AUTH_SECRET,
   trustHost: true,
   providers: [
@@ -14,9 +13,79 @@ export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv): Next
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
-      if (session.user && user) {
-        session.user.id = user.id;
+    async signIn({ user, account }) {
+      if (!user.email || !account) return false;
+
+      try {
+        // 1. Upsert User
+        const dbUser = await prisma.user.upsert({
+          where: { email: user.email },
+          update: {
+            name: user.name,
+            image: user.image,
+          },
+          create: {
+            email: user.email,
+            name: user.name,
+            image: user.image,
+          },
+        });
+
+        // 2. Upsert Account
+        await prisma.account.upsert({
+          where: {
+            provider_providerAccountId: {
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+            },
+          },
+          update: {
+            access_token: account.access_token,
+            refresh_token: account.refresh_token,
+            expires_at: account.expires_at,
+            token_type: account.token_type,
+            scope: account.scope,
+            id_token: account.id_token,
+            session_state: typeof account.session_state === 'string' ? account.session_state : undefined,
+          },
+          create: {
+            userId: dbUser.id,
+            type: account.type,
+            provider: account.provider,
+            providerAccountId: account.providerAccountId,
+            access_token: account.access_token,
+            refresh_token: account.refresh_token,
+            expires_at: account.expires_at,
+            token_type: account.token_type,
+            scope: account.scope,
+            id_token: account.id_token,
+            session_state: typeof account.session_state === 'string' ? account.session_state : undefined,
+          },
+        });
+
+        return true;
+      } catch (error) {
+        console.error("Sign in sync error:", error);
+        return false;
+      }
+    },
+    async jwt({ token, user }) {
+      if (user && user.email) {
+        // Fetch user ID from DB to ensure we have the correct ID in the token
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email },
+          select: { id: true }
+        });
+        if (dbUser) {
+          token.sub = dbUser.id;
+          token.id = dbUser.id;
+        }
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
       }
       return session;
     },
