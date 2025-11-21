@@ -5,7 +5,7 @@
   "description": "Iluli Blind Date - 20대 대학생 대상 소셜 매칭 서비스",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "pages:build": "npx @cloudflare/next-on-pages",
     "preview": "npm run pages:build && wrangler pages dev",
     "deploy": "npm run pages:build && wrangler pages deploy",
