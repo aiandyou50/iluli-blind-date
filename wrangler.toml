@@ -1,0 +1,33 @@
+name = "iluli-blind-date"
+compatibility_date = "2024-11-20"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "iluli-db"
+database_id = "5d259601-b9ad-4767-8be9-e7eeb540bd66"
+
+# R2 Storage binding
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "iluli-photos"
+
+[vars]
+NEXT_PUBLIC_API_URL = "https://aiboop.org"
+
+[env.production]
+name = "iluli-blind-date-production"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "iluli-db"
+database_id = "5d259601-b9ad-4767-8be9-e7eeb540bd66"
+
+[[env.production.r2_buckets]]
+binding = "R2"
+bucket_name = "iluli-photos"
+
+[env.production.vars]
+NEXT_PUBLIC_API_URL = "https://aiboop.org"
