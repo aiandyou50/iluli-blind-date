@@ -10,7 +10,7 @@ async function handler(req: NextRequest) {
   const ctx = getRequestContext();
   const db = ctx.env.DB;
   const prisma = getPrisma(db);
-  const config = createAuthConfig(prisma);
+  const config = createAuthConfig(prisma, ctx.env);
   const auth = NextAuth(config);
   return auth.handlers.GET(req);
 }

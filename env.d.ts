@@ -5,6 +5,8 @@ declare global {
     DB: D1Database;
     PHOTOS_BUCKET: R2Bucket;
     AUTH_SECRET: string;
+    AUTH_GOOGLE_ID: string;
+    AUTH_GOOGLE_SECRET: string;
     NEXT_PUBLIC_API_URL: string;
   }
 }
