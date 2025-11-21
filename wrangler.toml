@@ -1,4 +1,4 @@
-name = "iluli-blind-date"
+name = 'iluli-worker-prod'
 compatibility_date = "2025-11-20"
 pages_build_output_dir = ".vercel/output/static"
 
