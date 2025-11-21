@@ -25,6 +25,9 @@ async function handler(req: NextRequest) {
   const prisma = getPrisma(db);
   const config = createAuthConfig(prisma, ctx.env);
   const auth = NextAuth(config);
+  if (req.method === "POST") {
+    return auth.handlers.POST(req);
+  }
   return auth.handlers.GET(req);
 }
 
