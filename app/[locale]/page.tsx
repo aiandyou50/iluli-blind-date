@@ -5,8 +5,10 @@ import { signIn } from 'next-auth/react';
 
 export default function Home() {
   const t = useTranslations();
-  
+
   const handleGoogleLogin = () => {
+    // [EN] Initiate Google login flow and redirect to feed on success
+    // [KR] Google 로그인 흐름을 시작하고 성공 시 피드로 리다이렉트
     signIn('google', { callbackUrl: '/feed' });
   };
 

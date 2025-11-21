@@ -27,8 +27,8 @@ export default async function LocaleLayout({
     notFound();
   }
  
-  // Providing all messages to the client
-  // side is the easiest way to get started
+  // [EN] Providing all messages to the client side is the easiest way to get started
+  // [KR] 클라이언트 측에 모든 메시지를 제공하는 것이 시작하기 가장 쉬운 방법입니다
   const messages = await getMessages();
 
   return (
@@ -40,7 +40,9 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <div className="flex min-h-screen w-full justify-center">
-              <div className="relative flex w-full max-w-[480px] flex-col bg-white dark:bg-black min-h-screen shadow-2xl">
+              {/* [EN] Mobile-first layout container with max width 430px */}
+              {/* [KR] 최대 너비 430px의 모바일 우선 레이아웃 컨테이너 */}
+              <div className="relative flex w-full max-w-[430px] flex-col bg-white dark:bg-black min-h-screen shadow-2xl">
                 {children}
               </div>
             </div>
