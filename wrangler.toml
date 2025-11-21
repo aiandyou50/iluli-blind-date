@@ -17,6 +17,7 @@ bucket_name = "iluli-photos"
 # Environment variables
 [vars]
 NEXT_PUBLIC_API_URL = "https://iluli-blind-date.pages.dev"
+R2_PUBLIC_URL = "https://photos.aiboop.org"
 
 # Production environment
 [env.production]
@@ -33,3 +34,4 @@ bucket_name = "iluli-photos"
 
 [env.production.vars]
 NEXT_PUBLIC_API_URL = "https://aiboop.org"
+R2_PUBLIC_URL = "https://photos.aiboop.org"
