@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import { Providers } from '@/components/Providers';
 import "./globals.css";
 
 export const runtime = 'edge';
@@ -34,7 +35,9 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className="antialiased font-sans">
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <Providers>
+            {children}
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html>
