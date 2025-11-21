@@ -13,7 +13,7 @@ export default function FeedPage() {
   useEffect(() => {
     fetch('/api/photos')
       .then(res => res.json())
-      .then(data => {
+      .then((data: any) => {
         setPhotos(data);
         setLoading(false);
       })
