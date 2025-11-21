@@ -1,16 +1,11 @@
-네, 아주 중요한 정보입니다\! AI 에이전트가 `wrangler.toml` 파일을 설정할 때 이 **실제 리소스 이름**을 모르면 에러가 발생합니다.
-
-제공해주신 \*\*D1 데이터베이스명(`iluli-db`)\*\*과 \*\*R2 버킷명(`iluli-photos`)\*\*을 반영하여, AI가 설정 파일까지 완벽하게 작성할 수 있도록 \*\*[Master Spec v2.1]\*\*로 업데이트했습니다.
-
-이 내용을 그대로 복사해서 `SPEC.md`로 저장하세요.
 
 -----
 
-# [Master Spec] 이루리 소개팅 개발 명세서 (v2.1)
+# [Master Spec] 이루리 소개팅 개발 명세서 (v2.2)
 
 > **AI Agent 지시 사항**:
 > 이 문서는 프로젝트의 \*\*유일한 진실 공급원(Source of Truth)\*\*입니다.
-> **이미 생성된 Cloudflare 리소스(D1, R2)** 정보를 `wrangler.toml`에 정확히 바인딩하고, 아래 명세를 준수하여 개발하십시오.
+> \*\*이미 생성된 Cloudflare 리소스(D1, R2)\*\*와 **이미 등록된 환경 변수**를 기반으로 개발을 진행하십시오.
 
 ## 1\. 프로젝트 개요 (Overview)
 
@@ -32,7 +27,7 @@
 
 ## 3\. Cloudflare 리소스 구성 (Infrastructure)
 
-이미 생성된 리소스를 사용하므로 `wrangler.toml` 설정 시 아래 정보를 사용하십시오.
+이미 생성된 리소스를 사용하므로 `wrangler.toml` 설정 시 아래 정보를 바인딩하여 사용하십시오.
 
 ### 3.1 D1 Database
 
@@ -59,13 +54,16 @@
 
 ## 4\. 환경 변수 (Environment Variables)
 
-Cloudflare Pages 대시보드 및 로컬 `.env`에서 관리해야 할 필수 변수.
+아래 변수들은 **이미 Cloudflare Pages 프로젝트 설정(Settings \> Environment variables)에 암호화된 비밀 변수(Secret)로 완벽하게 등록되어 있습니다.**
+따라서 배포 환경에서는 별도의 설정이 필요 없으며, 코드에서 `process.env`로 호출하여 사용하면 됩니다.
 
 | 변수명 | 설명 | 비고 |
 |--------|------|------|
-| `AUTH_GOOGLE_ID` | Google OAuth Client ID | 구글 클라우드 콘솔 발급 |
-| `AUTH_GOOGLE_SECRET` | Google OAuth Client Secret | 보안 주의 (Secret) |
-| `AUTH_SECRET` | NextAuth 암호화 키 | `openssl rand -base64 32` |
+| `AUTH_GOOGLE_ID` | Google OAuth Client ID | **Cloudflare Pages에 이미 등록됨** |
+| `AUTH_GOOGLE_SECRET` | Google OAuth Client Secret | **Cloudflare Pages에 이미 등록됨** |
+| `AUTH_SECRET` | NextAuth 암호화 키 | **Cloudflare Pages에 이미 등록됨** (임의의 문자열 값) |
+
+*(로컬 개발 시에만 `.env.local` 파일에 동일한 값을 복사하여 사용하십시오)*
 
 ## 5\. 데이터베이스 모델링 (Prisma Schema)
 
@@ -184,13 +182,3 @@ model Like {
   - **Tablet/PC**: 배경색을 어둡게 하거나 블러 처리하고, 앱 화면만 중앙에 위치시킴.
 
 -----
-
-### **이루리의 팁: AI에게 이렇게 명령하세요**
-
-파일을 저장한 후, AI 에이전트에게 첫 번째로 내릴 명령입니다:
-
-> "`SPEC.md`를 확인해.
-> 이미 `iluli-db`라는 이름의 D1 데이터베이스와 `iluli-photos`라는 R2 버킷이 생성되어 있어.
-> 이 정보를 바탕으로 `wrangler.toml` 설정을 먼저 잡아주고, 프로젝트 초기 세팅을 시작해 줘."
-
-이제 정말 준비가 완벽하게 되었습니다\! 개발을 시작해 보세요.
