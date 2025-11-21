@@ -23,7 +23,9 @@ export async function POST(req: NextRequest) {
     const uniqueFilename = `${Date.now()}-${file.name}`;
     
     // Upload directly to R2 via Cloudflare Binding (No AWS SDK needed)
-    await ctx.env.PHOTOS_BUCKET.put(uniqueFilename, file.stream(), {
+    // Convert ReadableStream to ArrayBuffer for compatibility
+    const arrayBuffer = await file.arrayBuffer();
+    await ctx.env.PHOTOS_BUCKET.put(uniqueFilename, arrayBuffer, {
       httpMetadata: {
         contentType: file.type,
       },
