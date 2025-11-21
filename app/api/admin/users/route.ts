@@ -1,29 +1,40 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { PrismaD1 } from '@prisma/adapter-d1';
+import { getPrisma } from '@/lib/db';
+import { NextRequest, NextResponse } from 'next/server';
+import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getToken } from 'next-auth/jwt';
 
-// Note: In a real Cloudflare Workers environment, we need to access D1 via context.
-// For local dev with SQLite file, we use standard PrismaClient.
-// This is a simplified version.
+export const runtime = 'edge';
 
-let prisma: PrismaClient;
-
-if (process.env.NODE_ENV === 'production') {
-  // In production (Cloudflare), we'd need the D1 adapter.
-  // For now, we assume standard client for local dev or specific setup.
-  prisma = new PrismaClient();
-} else {
-  if (!(global as any).prisma) {
-    (global as any).prisma = new PrismaClient();
-  }
-  prisma = (global as any).prisma;
-}
-
-export async function GET(request: Request) {
+export async function GET(req: NextRequest) {
   try {
-    // TODO: Check for Admin role here
-    // const session = await auth();
-    // if (session?.user?.role !== 'ADMIN') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const ctx = getRequestContext();
+    // Fallback to process.env for local dev if ctx.env is empty (though getRequestContext should handle it if configured right)
+    // @ts-ignore
+    const db = ctx.env.DB || (process.env as any).DB;
+    // @ts-ignore
+    const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+    
+    if (!db) {
+      return new NextResponse('Database binding not found', { status: 500 });
+    }
+
+    // Auth Check
+    const token = await getToken({ req, secret });
+    if (!token || !token.email) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    const prisma = getPrisma(db);
+    
+    // Check Admin Role
+    const user = await prisma.user.findUnique({
+      where: { email: token.email },
+      select: { role: true }
+    });
+
+    if (!user || user.role !== 'ADMIN') {
+      return new NextResponse('Forbidden', { status: 403 });
+    }
 
     const users = await prisma.user.findMany({
       orderBy: { createdAt: 'desc' },
@@ -37,18 +48,40 @@ export async function GET(request: Request) {
     return NextResponse.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
-    return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
+    return new NextResponse('Internal Server Error', { status: 500 });
   }
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(req: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 
     if (!id) {
       return NextResponse.json({ error: 'User ID required' }, { status: 400 });
     }
+
+    const ctx = getRequestContext();
+    // @ts-ignore
+    const db = ctx.env.DB || (process.env as any).DB;
+    // @ts-ignore
+    const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+
+    if (!db) return new NextResponse('Database binding not found', { status: 500 });
+
+    // Auth Check
+    const token = await getToken({ req, secret });
+    if (!token || !token.email) return new NextResponse('Unauthorized', { status: 401 });
+
+    const prisma = getPrisma(db);
+    
+    // Check Admin Role
+    const admin = await prisma.user.findUnique({
+      where: { email: token.email },
+      select: { role: true }
+    });
+
+    if (!admin || admin.role !== 'ADMIN') return new NextResponse('Forbidden', { status: 403 });
 
     await prisma.user.delete({
       where: { id }
