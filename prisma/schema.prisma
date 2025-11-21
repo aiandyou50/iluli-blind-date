@@ -19,6 +19,7 @@ model User {
   gender        String?   // 'MALE' | 'FEMALE'
   instagramId   String?   // 필수 입력
   introduction  String?   
+  role          String    @default("USER") // 'USER' | 'ADMIN'
   
   accounts      Account[]
   sessions      Session[]
