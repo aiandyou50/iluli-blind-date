@@ -8,7 +8,8 @@ import { useState, useEffect } from 'react';
 import PhotoUpload from '@/components/PhotoUpload';
 
 export default function ProfilePage() {
-  const t = useTranslations('common');
+  const t = useTranslations('profile');
+  const tCommon = useTranslations('common');
   const { data: session } = useSession();
   const [instagramId, setInstagramId] = useState('');
   const [bio, setBio] = useState('');
@@ -65,9 +66,28 @@ export default function ProfilePage() {
     }
   };
 
+  const handleDeletePhoto = async (photoId: string) => {
+    if (!confirm(t('deletePhoto') + '?')) return;
+
+    try {
+      const res = await fetch(`/api/photos/${photoId}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        fetchProfile();
+      } else {
+        alert(tCommon('error'));
+      }
+    } catch (error) {
+      console.error(error);
+      alert(tCommon('error'));
+    }
+  };
+
   return (
     <>
-      <Header title={t('appName')} />
+      <Header title={tCommon('appName')} />
       <main className="flex flex-col gap-4 p-4 pb-24">
         <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm">
           <div className="flex flex-col items-center mb-6">
@@ -83,7 +103,7 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Instagram ID (Required for matching)
+                {t('instagramLabel')}
               </label>
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-primary">
                 <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">@</span>
@@ -99,7 +119,7 @@ export default function ProfilePage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Bio (One line introduction)
+                {t('bioLabel')}
               </label>
               <input
                 type="text"
@@ -115,7 +135,7 @@ export default function ProfilePage() {
               disabled={isSaving}
               className="w-full rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50"
             >
-              {isSaving ? 'Saving...' : 'Save Profile'}
+              {isSaving ? t('savingButton') : t('saveButton')}
             </button>
             {message && <p className="text-center text-sm text-green-600 mt-2">{message}</p>}
           </div>
@@ -123,18 +143,27 @@ export default function ProfilePage() {
 
         {/* Photos Section */}
         <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm">
-          <h3 className="text-lg font-bold mb-4">My Photos</h3>
+          <h3 className="text-lg font-bold mb-4">{t('myPhotos')}</h3>
           
           {photos.length > 0 ? (
             <div className="grid grid-cols-3 gap-2 mb-4">
               {photos.map((photo: any) => (
-                <div key={photo.id} className="aspect-square relative overflow-hidden rounded-md">
+                <div key={photo.id} className="aspect-square relative overflow-hidden rounded-md group">
                   <img src={photo.url} alt="User photo" className="w-full h-full object-cover" />
+                  <button 
+                    onClick={() => handleDeletePhoto(photo.id)}
+                    className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-4">No photos yet.</p>
+            <p className="text-gray-500 text-center py-4">{t('noPhotos')}</p>
           )}
 
           {userId && (

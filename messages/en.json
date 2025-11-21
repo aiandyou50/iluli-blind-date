@@ -30,7 +30,13 @@
     "bio": "Bio",
     "instagram": "Instagram",
     "connectInstagram": "Connect Instagram",
-    "visitInstagram": "Visit Instagram"
+    "visitInstagram": "Visit Instagram",
+    "instagramLabel": "Instagram ID (Required for matching)",
+    "bioLabel": "Bio (One line introduction)",
+    "saveButton": "Save Profile",
+    "savingButton": "Saving...",
+    "myPhotos": "My Photos",
+    "noPhotos": "No photos yet."
   },
   "swipe": {
     "like": "Like",

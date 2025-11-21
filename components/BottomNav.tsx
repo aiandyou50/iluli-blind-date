@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 export default function BottomNav() {
   const pathname = usePathname();
-  const t = useTranslations('common'); // Assuming we'll add these keys later
+  const t = useTranslations('nav');
 
   const isActive = (path: string) => pathname.includes(path);
 
@@ -20,7 +20,7 @@ export default function BottomNav() {
           <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/feed') ? "'FILL' 1" : "'FILL' 0" }}>
             home
           </span>
-          <p className="text-xs font-bold">Feed</p>
+          <p className="text-xs font-bold">{t('feed')}</p>
         </Link>
         
         <Link 
@@ -30,7 +30,7 @@ export default function BottomNav() {
           <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/matching') ? "'FILL' 1" : "'FILL' 0" }}>
             favorite
           </span>
-          <p className="text-xs font-bold">Matching</p>
+          <p className="text-xs font-bold">{t('swipe')}</p>
         </Link>
 
         <Link 
@@ -40,7 +40,7 @@ export default function BottomNav() {
           <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/profile') ? "'FILL' 1" : "'FILL' 0" }}>
             person
           </span>
-          <p className="text-xs font-bold">Profile</p>
+          <p className="text-xs font-bold">{t('profile')}</p>
         </Link>
       </div>
     </nav>
