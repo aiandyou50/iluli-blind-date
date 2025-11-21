@@ -1,4 +1,4 @@
-name = 'iluli-worker-prod'
+name = "iluli-blind-date"
 compatibility_date = "2025-11-20"
 pages_build_output_dir = ".vercel/output/static"
 
@@ -16,7 +16,7 @@ bucket_name = "iluli-photos"
 # Environment variables
 [vars]
 AUTH_SECRET = "your-production-secret-change-this"
-NEXT_PUBLIC_API_URL = "https://iluli-worker-prod.x00518.workers.dev"
+NEXT_PUBLIC_API_URL = "https://iluli-blind-date.pages.dev"
 
 # Production environment
 [env.production]
