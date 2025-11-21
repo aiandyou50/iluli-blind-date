@@ -4,18 +4,20 @@ import { useTranslations } from 'next-intl';
 import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 export default function MatchingPage() {
   const t = useTranslations('swipe');
+  const { data: session } = useSession();
   const [candidates, setCandidates] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [matchAlert, setMatchAlert] = useState(false);
   
-  // Mock user ID
-  const currentUserId = 'user-id-placeholder';
+  const currentUserId = session?.user?.id;
 
   useEffect(() => {
+    if (!currentUserId) return;
+
     fetch(`/api/matches/candidates?userId=${currentUserId}`)
       .then(res => res.json())
       .then(data => {
@@ -37,20 +39,17 @@ export default function MatchingPage() {
     setCurrentIndex(prev => prev + 1);
 
     try {
-      const res = await fetch('/api/matches/action', {
+      if (!targetUser.photos?.[0]?.id) return;
+
+      await fetch('/api/matches/action', {
         method: 'POST',
         body: JSON.stringify({
-          fromUserId: currentUserId,
-          toUserId: targetUser.id,
+          userId: currentUserId,
+          photoId: targetUser.photos[0].id,
           action
         })
       });
       
-      const data = await res.json() as { match: boolean };
-      if (data.match) {
-        setMatchAlert(true);
-        setTimeout(() => setMatchAlert(false), 3000);
-      }
     } catch (error) {
       console.error(error);
     }
@@ -62,11 +61,6 @@ export default function MatchingPage() {
     <>
       <Header title={t('like')} />
       <main className="flex flex-col items-center justify-center min-h-[80vh] p-4 pb-24 relative">
-        {matchAlert && (
-          <div className="absolute top-10 z-50 bg-pink-500 text-white px-8 py-4 rounded-full shadow-lg animate-bounce font-bold text-xl">
-            {t('itsAMatch')}
-          </div>
-        )}
 
         {loading ? (
           <div>Loading...</div>
@@ -90,7 +84,7 @@ export default function MatchingPage() {
               )}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 text-white">
                 <h2 className="text-2xl font-bold">{currentProfile.nickname || currentProfile.name}</h2>
-                <p className="text-sm opacity-90">{currentProfile.bio || 'No bio'}</p>
+                <p className="text-sm opacity-90">{currentProfile.introduction || 'No introduction'}</p>
               </div>
             </div>
             

@@ -51,7 +51,12 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
                 </span>
              </div>
             <h2 className="text-xl font-bold">{user.name}</h2>
-            <p className="text-gray-500">{user.bio || t('bioLabel')}</p>
+            <p className="text-gray-500">{user.introduction || t('introductionLabel')}</p>
+            {user.gender && (
+              <span className="mt-1 inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                {user.gender === 'MALE' ? t('male') : t('female')}
+              </span>
+            )}
           </div>
 
           {user.instagramId && (
