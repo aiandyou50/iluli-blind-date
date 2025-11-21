@@ -30,7 +30,13 @@
     "bio": "简介",
     "instagram": "Instagram",
     "connectInstagram": "连接Instagram",
-    "visitInstagram": "访问Instagram"
+    "visitInstagram": "访问Instagram",
+    "instagramLabel": "Instagram ID (配对需要)",
+    "bioLabel": "简介 (一句话介绍)",
+    "saveButton": "保存资料",
+    "savingButton": "保存中...",
+    "myPhotos": "我的照片",
+    "noPhotos": "还没有照片。"
   },
   "swipe": {
     "like": "喜欢",

@@ -5,6 +5,8 @@ import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 import { useEffect, useState } from 'react';
 
+import Link from 'next/link';
+
 export default function FeedPage() {
   const t = useTranslations('feed');
   const [photos, setPhotos] = useState<any[]>([]);
@@ -35,7 +37,7 @@ export default function FeedPage() {
         ) : (
           photos.map((item) => (
             <div key={item.id} className="flex flex-col rounded-lg bg-white dark:bg-zinc-800 shadow-sm overflow-hidden">
-              <div className="flex items-center gap-3 p-3">
+              <Link href={`/profile/${item.userId}`} className="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors">
                 <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                    {/* Placeholder avatar if no user image */}
                    <span className="text-lg font-bold text-gray-500">
@@ -45,7 +47,7 @@ export default function FeedPage() {
                 <p className="text-sm font-bold text-[#181011] dark:text-background-light">
                   {item.user?.name || 'Unknown User'}
                 </p>
-              </div>
+              </Link>
               <div className="relative w-full">
                 <img 
                   className="w-full h-auto object-cover" 

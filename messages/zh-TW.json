@@ -30,7 +30,13 @@
     "bio": "簡介",
     "instagram": "Instagram",
     "connectInstagram": "連接Instagram",
-    "visitInstagram": "訪問Instagram"
+    "visitInstagram": "訪問Instagram",
+    "instagramLabel": "Instagram ID (配對需要)",
+    "bioLabel": "簡介 (一句話介紹)",
+    "saveButton": "儲存資料",
+    "savingButton": "儲存中...",
+    "myPhotos": "我的照片",
+    "noPhotos": "還沒有照片。"
   },
   "swipe": {
     "like": "喜歡",
