@@ -10,7 +10,7 @@ async function handler(req: Request) {
   const db = ctx.env.DB;
   const prisma = getPrisma(db);
   const config = createAuthConfig(prisma);
-  // @ts-ignore
+  // @ts-expect-error NextAuth type definition mismatch with Edge Runtime
   return NextAuth(config).handlers.GET(req);
 }
 
