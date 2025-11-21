@@ -6,19 +6,20 @@ export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as { email: string; instagramId?: string; bio?: string };
-    const { email, instagramId, bio } = body;
+    const body = await req.json() as { email: string; instagramId?: string; bio?: string; nickname?: string };
+    const { email, instagramId, bio, nickname } = body;
 
     if (!email) {
       return new NextResponse("Email is required", { status: 400 });
     }
 
-    const ctx = getRequestContext();
-    if (!ctx.env.DB) {
+    // @ts-ignore
+    const db = (process.env as any).DB || (req as any).env?.DB;
+    if (!db) {
       return new NextResponse("Database binding missing", { status: 500 });
     }
 
-    const prisma = getPrisma(ctx.env.DB);
+    const prisma = getPrisma(db);
 
     // Update user profile
     const updatedUser = await prisma.user.update({
@@ -26,6 +27,7 @@ export async function POST(req: NextRequest) {
       data: {
         instagramId,
         bio,
+        nickname,
       },
     });
 
@@ -44,12 +46,13 @@ export async function GET(req: NextRequest) {
     return new NextResponse("Email is required", { status: 400 });
   }
 
-  const ctx = getRequestContext();
-  if (!ctx.env.DB) {
+  // @ts-ignore
+  const db = (process.env as any).DB || (req as any).env?.DB;
+  if (!db) {
     return new NextResponse("Database binding missing", { status: 500 });
   }
 
-  const prisma = getPrisma(ctx.env.DB);
+  const prisma = getPrisma(db);
 
   try {
     const user = await prisma.user.findUnique({

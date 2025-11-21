@@ -85,7 +85,7 @@ export default function FeedPage() {
                    </span>
                 </div>
                 <p className="text-sm font-bold text-[#181011] dark:text-background-light">
-                  {item.user?.name || 'Unknown User'}
+                  {item.user?.nickname || item.user?.name || 'Unknown User'}
                 </p>
               </Link>
               <div className="relative w-full">
