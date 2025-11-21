@@ -18,6 +18,8 @@ export default function ProfilePage() {
   const [userId, setUserId] = useState('');
   const [photos, setPhotos] = useState<any[]>([]);
 
+  const [selectedPhoto, setSelectedPhoto] = useState<any>(null);
+
   const fetchProfile = () => {
     if (session?.user?.email) {
       fetch(`/api/profile?email=${session.user.email}`)
@@ -75,6 +77,7 @@ export default function ProfilePage() {
       });
 
       if (res.ok) {
+        setSelectedPhoto(null);
         fetchProfile();
       } else {
         alert(tCommon('error'));
@@ -88,7 +91,40 @@ export default function ProfilePage() {
   return (
     <>
       <Header title={tCommon('appName')} />
-      <main className="flex flex-col gap-4 p-4 pb-24">
+      <main className="flex flex-col gap-4 p-4 pb-24 relative">
+        {selectedPhoto && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={() => setSelectedPhoto(null)}>
+            <div className="bg-white dark:bg-zinc-800 rounded-lg overflow-hidden max-w-sm w-full" onClick={e => e.stopPropagation()}>
+              <div className="relative">
+                <img src={selectedPhoto.url} alt="Selected" className="w-full h-auto max-h-[60vh] object-contain bg-black" />
+                <button 
+                  onClick={() => setSelectedPhoto(null)}
+                  className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+              <div className="p-4 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-pink-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className="w-6 h-6">
+                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                  </svg>
+                  <span className="font-bold">{selectedPhoto._count?.likes || 0} Likes</span>
+                </div>
+                <button 
+                  onClick={() => handleDeletePhoto(selectedPhoto.id)}
+                  className="text-red-500 hover:text-red-700 font-medium px-3 py-1 border border-red-500 rounded hover:bg-red-50 dark:hover:bg-red-900/20"
+                >
+                  {t('deletePhoto')}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm">
           <div className="flex flex-col items-center mb-6">
             {session?.user?.image ? (
@@ -148,17 +184,12 @@ export default function ProfilePage() {
           {photos.length > 0 ? (
             <div className="grid grid-cols-3 gap-2 mb-4">
               {photos.map((photo: any) => (
-                <div key={photo.id} className="aspect-square relative overflow-hidden rounded-md group">
+                <div 
+                  key={photo.id} 
+                  className="aspect-square relative overflow-hidden rounded-md group cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => setSelectedPhoto(photo)}
+                >
                   <img src={photo.url} alt="User photo" className="w-full h-full object-cover" />
-                  <button 
-                    onClick={() => handleDeletePhoto(photo.id)}
-                    className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
                 </div>
               ))}
             </div>
