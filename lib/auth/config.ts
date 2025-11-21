@@ -4,7 +4,8 @@ import type { PrismaClient } from "@prisma/client";
 import type { Session, User } from "next-auth";
 
 export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv) => ({
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
   secret: env.AUTH_SECRET,
   trustHost: true,
   providers: [
@@ -14,9 +15,10 @@ export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv) => ({
     }),
   ],
   callbacks: {
-    async session({ session, user }: { session: Session; user: User }) {
-      if (session.user) {
-        session.user.id = user.id;
+    // @ts-expect-error - Session type mismatch
+    async session({ session, token }) {
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
       }
       return session;
     },
