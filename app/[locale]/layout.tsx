@@ -32,11 +32,18 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body className="antialiased font-sans">
+    <html lang={locale} className="h-full">
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+      </head>
+      <body className="antialiased font-display bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 h-full">
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            {children}
+            <div className="flex min-h-screen w-full justify-center">
+              <div className="relative flex w-full max-w-[480px] flex-col bg-white dark:bg-black min-h-screen shadow-2xl">
+                {children}
+              </div>
+            </div>
           </Providers>
         </NextIntlClientProvider>
       </body>
