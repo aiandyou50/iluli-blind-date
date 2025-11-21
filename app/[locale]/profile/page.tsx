@@ -12,8 +12,9 @@ export default function ProfilePage() {
   const tCommon = useTranslations('common');
   const { data: session } = useSession();
   const [instagramId, setInstagramId] = useState('');
-  const [bio, setBio] = useState('');
+  const [introduction, setIntroduction] = useState('');
   const [nickname, setNickname] = useState('');
+  const [gender, setGender] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [userId, setUserId] = useState('');
@@ -28,8 +29,9 @@ export default function ProfilePage() {
         .then((data: any) => {
           if (data.id) setUserId(data.id);
           if (data.instagramId) setInstagramId(data.instagramId);
-          if (data.bio) setBio(data.bio);
+          if (data.introduction) setIntroduction(data.introduction);
           if (data.nickname) setNickname(data.nickname);
+          if (data.gender) setGender(data.gender);
           if (data.photos) setPhotos(data.photos);
         })
         .catch(err => console.error("Failed to load profile", err));
@@ -53,8 +55,9 @@ export default function ProfilePage() {
         body: JSON.stringify({
           email: session.user.email,
           instagramId,
-          bio,
-          nickname
+          introduction,
+          nickname,
+          gender
         })
       });
 
@@ -172,12 +175,27 @@ export default function ProfilePage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {t('bioLabel')}
+                {t('genderLabel')}
+              </label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 dark:bg-zinc-700 dark:text-white dark:ring-zinc-600"
+              >
+                <option value="">Select Gender</option>
+                <option value="MALE">{t('male')}</option>
+                <option value="FEMALE">{t('female')}</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {t('introductionLabel')}
               </label>
               <input
                 type="text"
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
+                value={introduction}
+                onChange={(e) => setIntroduction(e.target.value)}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 dark:bg-zinc-700 dark:text-white dark:ring-zinc-600"
                 placeholder="Hello, I like coffee!"
               />
@@ -216,9 +234,9 @@ export default function ProfilePage() {
 
           {userId && (
             <>
-              {(!nickname || !bio || !instagramId) ? (
+              {(!nickname || !introduction || !instagramId || !gender) ? (
                 <div className="text-center p-4 bg-yellow-50 text-yellow-800 rounded-md text-sm">
-                  Please complete your profile (Nickname, Bio, Instagram) to upload photos.
+                  Please complete your profile (Nickname, Gender, Introduction, Instagram) to upload photos.
                 </div>
               ) : (
                 <PhotoUpload userId={userId} onUploadSuccess={fetchProfile} />
