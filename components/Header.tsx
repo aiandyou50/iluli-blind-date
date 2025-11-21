@@ -1,5 +1,7 @@
 'use client';
 
+import LanguageSwitcher from './LanguageSwitcher';
+
 export default function Header({ title, rightAction }: { title?: string, rightAction?: React.ReactNode }) {
   return (
     <header className="sticky top-0 z-40 flex items-center justify-between border-b border-primary/20 bg-white/80 px-4 py-3 backdrop-blur-sm dark:bg-black/80 dark:border-primary/30">
@@ -11,14 +13,17 @@ export default function Header({ title, rightAction }: { title?: string, rightAc
           </svg>
         </div>
         <h2 className="text-lg font-bold leading-tight tracking-[-0.015em] text-inherit">
-          {title || 'aiboop.org'}
+          {title || '이루리 소개팅'}
         </h2>
       </div>
-      {rightAction && (
-        <div className="relative">
-          {rightAction}
-        </div>
-      )}
+      <div className="flex items-center gap-2">
+        <LanguageSwitcher />
+        {rightAction && (
+          <div className="relative">
+            {rightAction}
+          </div>
+        )}
+      </div>
     </header>
   );
 }
