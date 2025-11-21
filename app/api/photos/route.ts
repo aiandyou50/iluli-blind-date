@@ -20,20 +20,34 @@ export async function GET(req: NextRequest) {
       const photos = await prisma.photo.findMany({
         where: { userId },
         orderBy: { createdAt: 'desc' },
+        include: {
+          _count: { select: { likes: true } }
+        }
       });
       return NextResponse.json(photos);
     } else {
       // Feed: Get all photos with user info
+      const sort = searchParams.get('sort') || 'latest';
+      let orderBy: any = { createdAt: 'desc' };
+      
+      if (sort === 'popular') {
+        orderBy = { likes: { _count: 'desc' } };
+      }
+
       const photos = await prisma.photo.findMany({
         include: {
           user: {
             select: {
+              id: true,
               name: true,
               instagramId: true,
             }
+          },
+          _count: {
+            select: { likes: true }
           }
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy,
         take: 50,
       });
       return NextResponse.json(photos);

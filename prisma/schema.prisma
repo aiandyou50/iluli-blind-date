@@ -17,6 +17,7 @@ model User {
   bio           String?  // 한 줄 소개
   instagramId   String?  // 인스타그램 아이디
   googleId      String   @unique
+  role          String   @default("USER") // USER, ADMIN
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   
@@ -26,6 +27,7 @@ model User {
   likesReceived Like[]   @relation("LikesReceived")
   matchesAsUser1 Match[] @relation("MatchUser1")
   matchesAsUser2 Match[] @relation("MatchUser2")
+  photoLikes    PhotoLike[]
   
   @@index([email])
   @@index([googleId])
@@ -42,9 +44,26 @@ model Photo {
   
   // Relations
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes     PhotoLike[]
   
   @@index([userId])
   @@index([userId, order])
+}
+
+// PhotoLike model - 사진 좋아요
+model PhotoLike {
+  id        String   @id @default(uuid())
+  userId    String
+  photoId   String
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photo     Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, photoId])
+  @@index([userId])
+  @@index([photoId])
 }
 
 // Like model - 좋아요/호감 표시

@@ -50,10 +50,6 @@ export default function Home() {
             </svg>
             {t('auth.loginWithGoogle')}
           </button>
-
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            20대 대학생 대상 소셜 매칭 서비스
-          </p>
         </div>
       </main>
     </div>
