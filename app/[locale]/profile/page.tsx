@@ -13,6 +13,7 @@ export default function ProfilePage() {
   const { data: session } = useSession();
   const [instagramId, setInstagramId] = useState('');
   const [bio, setBio] = useState('');
+  const [nickname, setNickname] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [userId, setUserId] = useState('');
@@ -28,6 +29,7 @@ export default function ProfilePage() {
           if (data.id) setUserId(data.id);
           if (data.instagramId) setInstagramId(data.instagramId);
           if (data.bio) setBio(data.bio);
+          if (data.nickname) setNickname(data.nickname);
           if (data.photos) setPhotos(data.photos);
         })
         .catch(err => console.error("Failed to load profile", err));
@@ -51,12 +53,14 @@ export default function ProfilePage() {
         body: JSON.stringify({
           email: session.user.email,
           instagramId,
-          bio
+          bio,
+          nickname
         })
       });
 
       if (res.ok) {
         setMessage('Profile updated successfully!');
+        fetchProfile();
       } else {
         setMessage('Failed to update profile.');
       }
@@ -139,6 +143,19 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Nickname
+              </label>
+              <input
+                type="text"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6 dark:bg-zinc-700 dark:text-white dark:ring-zinc-600"
+                placeholder="Your nickname"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {t('instagramLabel')}
               </label>
               <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-primary">
@@ -198,7 +215,15 @@ export default function ProfilePage() {
           )}
 
           {userId && (
-            <PhotoUpload userId={userId} onUploadSuccess={fetchProfile} />
+            <>
+              {(!nickname || !bio || !instagramId) ? (
+                <div className="text-center p-4 bg-yellow-50 text-yellow-800 rounded-md text-sm">
+                  Please complete your profile (Nickname, Bio, Instagram) to upload photos.
+                </div>
+              ) : (
+                <PhotoUpload userId={userId} onUploadSuccess={fetchProfile} />
+              )}
+            </>
           )}
         </div>
       </main>
