@@ -15,7 +15,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const db = (process.env as any).DB || (req as any).env?.DB;
     const prisma = getPrisma(db);
 
-    const existing = await prisma.photoLike.findUnique({
+    const existing = await prisma.like.findUnique({
       where: {
         userId_photoId: {
           userId,
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     });
 
     if (existing) {
-      await prisma.photoLike.delete({
+      await prisma.like.delete({
         where: {
           userId_photoId: {
             userId,
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       });
       return NextResponse.json({ liked: false });
     } else {
-      await prisma.photoLike.create({
+      await prisma.like.create({
         data: {
           userId,
           photoId: id
