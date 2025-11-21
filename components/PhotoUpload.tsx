@@ -31,7 +31,8 @@ export default function PhotoUpload({ userId, onUploadSuccess }: PhotoUploadProp
 
       if (!uploadRes.ok) throw new Error('Upload failed');
 
-      const { fileUrl } = await uploadRes.json();
+      const data = await uploadRes.json() as { fileUrl: string };
+      const { fileUrl } = data;
 
       // 2. Save metadata to DB
       const saveRes = await fetch('/api/photos', {
