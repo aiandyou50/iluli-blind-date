@@ -22,6 +22,8 @@ export default function ProfilePage() {
 
   const [selectedPhoto, setSelectedPhoto] = useState<any>(null);
 
+  // [EN] Fetch user profile from API, supporting both 'introduction' and 'bio' field names
+  // [KR] API에서 사용자 프로필 조회, 'introduction'과 'bio' 필드명 모두 지원
   const fetchProfile = () => {
     if (session?.user?.email) {
       fetch(`/api/profile?email=${session.user.email}`)
@@ -29,7 +31,9 @@ export default function ProfilePage() {
         .then((data: any) => {
           if (data.id) setUserId(data.id);
           if (data.instagramId) setInstagramId(data.instagramId);
-          if (data.introduction) setIntroduction(data.introduction);
+          // [EN] Support both 'introduction' and 'bio' field names for API compatibility
+          // [KR] API 호환성을 위해 'introduction'과 'bio' 필드명 모두 지원
+          if (data.introduction || data.bio) setIntroduction(data.introduction || data.bio);
           if (data.nickname) setNickname(data.nickname);
           if (data.gender) setGender(data.gender);
           if (data.photos) setPhotos(data.photos);
