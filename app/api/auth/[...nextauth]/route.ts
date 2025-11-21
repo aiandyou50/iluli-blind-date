@@ -7,12 +7,11 @@ export const runtime = 'edge';
 
 async function handler(req: Request) {
   const ctx = getRequestContext();
-  // @ts-expect-error CloudflareEnv type augmentation might not be picked up during build
   const db = ctx.env.DB;
   const prisma = getPrisma(db);
   const config = createAuthConfig(prisma);
-  // @ts-expect-error NextAuth type definition mismatch with Edge Runtime
-  return NextAuth(config).handlers.GET(req);
+  const auth = NextAuth(config);
+  return auth.handlers.GET(req);
 }
 
 export const GET = handler;
