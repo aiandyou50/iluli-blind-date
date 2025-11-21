@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
     const ctx = getRequestContext();
     
     // Check if the bucket binding exists
-    if (!ctx.env.PHOTOS_BUCKET) {
-      console.error("PHOTOS_BUCKET binding missing");
+    if (!ctx.env.R2) {
+      console.error("R2 binding missing");
       return new NextResponse("Server Configuration Error: R2 Binding Missing", { status: 500 });
     }
 
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     // Upload directly to R2 via Cloudflare Binding (No AWS SDK needed)
     // Convert ReadableStream to ArrayBuffer for compatibility
     const arrayBuffer = await file.arrayBuffer();
-    await ctx.env.PHOTOS_BUCKET.put(uniqueFilename, arrayBuffer, {
+    await ctx.env.R2.put(uniqueFilename, arrayBuffer, {
       httpMetadata: {
         contentType: file.type,
       },
