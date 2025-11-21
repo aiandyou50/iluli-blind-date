@@ -6,6 +6,12 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // Required for Cloudflare Pages
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'photos.aiboop.org',
+      },
+    ],
   },
   // Enable experimental features for Cloudflare compatibility
   experimental: {
