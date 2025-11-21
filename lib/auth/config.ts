@@ -3,12 +3,13 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { PrismaClient } from "@prisma/client";
 import type { Session, User } from "next-auth";
 
-export const createAuthConfig = (prisma: PrismaClient) => ({
+export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv) => ({
   adapter: PrismaAdapter(prisma),
+  secret: env.AUTH_SECRET,
   providers: [
     Google({
-      clientId: process.env.AUTH_GOOGLE_ID!,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+      clientId: env.AUTH_GOOGLE_ID,
+      clientSecret: env.AUTH_GOOGLE_SECRET,
     }),
   ],
   callbacks: {
