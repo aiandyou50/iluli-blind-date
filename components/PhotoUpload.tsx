@@ -13,6 +13,8 @@ export default function PhotoUpload({ userId, onUploadSuccess }: PhotoUploadProp
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // [EN] Handle file selection and upload to R2 storage + database
+  // [KR] 파일 선택 및 R2 스토리지 + 데이터베이스 업로드 처리
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -29,7 +31,12 @@ export default function PhotoUpload({ userId, onUploadSuccess }: PhotoUploadProp
         body: formData,
       });
 
-      if (!uploadRes.ok) throw new Error('Upload failed');
+      if (!uploadRes.ok) {
+        // [EN] Log upload failure for debugging
+        // [KR] 디버깅을 위한 업로드 실패 로그
+        console.error('Upload failed:', await uploadRes.text());
+        throw new Error('Upload failed');
+      }
 
       const data = await uploadRes.json() as { fileUrl: string };
       const { fileUrl } = data;
@@ -44,12 +51,19 @@ export default function PhotoUpload({ userId, onUploadSuccess }: PhotoUploadProp
         }),
       });
 
-      if (!saveRes.ok) throw new Error('Failed to save photo info');
+      if (!saveRes.ok) {
+        // [EN] Log database save failure for debugging
+        // [KR] 디버깅을 위한 데이터베이스 저장 실패 로그
+        console.error('Failed to save photo metadata:', await saveRes.text());
+        throw new Error('Failed to save photo info');
+      }
 
       onUploadSuccess();
       if (fileInputRef.current) fileInputRef.current.value = '';
     } catch (error) {
-      console.error(error);
+      // [EN] Log error to console for debugging
+      // [KR] 디버깅을 위한 에러 로그
+      console.error('Photo upload error:', error);
       alert(t('error') || 'Failed to upload photo');
     } finally {
       setIsUploading(false);
