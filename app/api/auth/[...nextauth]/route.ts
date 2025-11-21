@@ -7,6 +7,7 @@ export const runtime = 'edge';
 
 async function handler(req: Request) {
   const ctx = getRequestContext();
+  // @ts-expect-error CloudflareEnv type augmentation might not be picked up during build
   const db = ctx.env.DB;
   const prisma = getPrisma(db);
   const config = createAuthConfig(prisma);
