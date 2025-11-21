@@ -25,9 +25,21 @@ model User {
   sessions      Session[]
   photos        Photo[]   
   likes         Like[]    
+  matchesAsUser1 Match[]  @relation("User1Matches")
+  matchesAsUser2 Match[]  @relation("User2Matches")
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  user1Id   String
+  user2Id   String
+  user1     User     @relation("User1Matches", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2     User     @relation("User2Matches", fields: [user2Id], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
 }
 
 model Account {
