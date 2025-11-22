@@ -69,8 +69,8 @@ export default function MatchingPage() {
             <p>{t('noMoreProfiles')}</p>
           </div>
         ) : (
-          <div className="w-full max-w-sm bg-white dark:bg-zinc-800 rounded-2xl shadow-xl overflow-hidden">
-            <div className="relative h-96 bg-gray-200">
+          <div className="w-full max-w-sm md:max-w-md bg-white dark:bg-zinc-800 rounded-2xl shadow-xl overflow-hidden transition-all duration-300">
+            <div className="relative h-96 md:h-[500px] bg-gray-200">
               {currentProfile.photos?.[0]?.url ? (
                 <img 
                   src={currentProfile.photos[0].url} 

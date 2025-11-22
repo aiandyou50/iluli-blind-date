@@ -2,9 +2,15 @@
 
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
+import { usePathname } from 'next/navigation';
 
 export default function Header({ title, rightAction }: { title?: string, rightAction?: React.ReactNode }) {
   const t = useTranslations('common');
+  const tNav = useTranslations('nav');
+  const pathname = usePathname();
+
+  const isActive = (path: string) => pathname.includes(path);
   
   return (
     <header className="sticky top-0 z-40 flex items-center justify-between border-b border-primary/20 bg-white/80 px-4 py-3 backdrop-blur-sm dark:bg-black/80 dark:border-primary/30">
@@ -19,6 +25,29 @@ export default function Header({ title, rightAction }: { title?: string, rightAc
           {title || t('appName')}
         </h2>
       </div>
+
+      {/* Desktop Navigation */}
+      <nav className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
+        <Link 
+          href="/feed" 
+          className={`text-sm font-bold transition-colors ${isActive('/feed') ? 'text-primary' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'}`}
+        >
+          {tNav('feed')}
+        </Link>
+        <Link 
+          href="/matching" 
+          className={`text-sm font-bold transition-colors ${isActive('/matching') ? 'text-primary' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'}`}
+        >
+          {tNav('swipe')}
+        </Link>
+        <Link 
+          href="/profile" 
+          className={`text-sm font-bold transition-colors ${isActive('/profile') ? 'text-primary' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'}`}
+        >
+          {tNav('profile')}
+        </Link>
+      </nav>
+
       <div className="flex items-center gap-2">
         <LanguageSwitcher />
         {rightAction && (

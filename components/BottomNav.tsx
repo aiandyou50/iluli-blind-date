@@ -13,7 +13,7 @@ export default function BottomNav() {
   const isActive = (path: string) => pathname.includes(path);
 
   return (
-    <nav className="fixed bottom-0 z-50 w-full max-w-[430px] border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
+    <nav className="fixed bottom-0 z-50 w-full md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black bg-opacity-95 dark:bg-opacity-95 backdrop-blur-sm">
       <div className="flex h-16 justify-around">
         <Link
           href="/feed"

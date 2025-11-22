@@ -102,7 +102,7 @@ export default function ProfilePage() {
   return (
     <>
       <Header title={tCommon('appName')} />
-      <main className="flex flex-col gap-4 p-4 pb-24 relative">
+      <main className="flex flex-col md:flex-row gap-4 p-4 pb-32">
         {selectedPhoto && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={() => setSelectedPhoto(null)}>
             <div className="bg-white dark:bg-zinc-800 rounded-lg overflow-hidden max-w-sm w-full" onClick={e => e.stopPropagation()}>
@@ -136,7 +136,7 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm">
+        <div className="w-full md:w-1/3 bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm h-fit sticky top-20">
           <div className="flex flex-col items-center mb-6">
             {session?.user?.image ? (
               <img src={session.user.image} alt="Profile" className="w-24 h-24 rounded-full mb-4 object-cover" />
@@ -217,11 +217,11 @@ export default function ProfilePage() {
         </div>
 
         {/* Photos Section */}
-        <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm">
+        <div className="w-full md:w-2/3 bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm">
           <h3 className="text-lg font-bold mb-4">{t('myPhotos')}</h3>
           
           {photos.length > 0 ? (
-            <div className="grid grid-cols-3 gap-2 mb-4">
+            <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-4">
               {photos.map((photo: any) => (
                 <div 
                   key={photo.id} 

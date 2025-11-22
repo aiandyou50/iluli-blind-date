@@ -39,10 +39,10 @@ export default async function LocaleLayout({
       <body className="antialiased font-display bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 h-full">
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            <div className="flex min-h-screen w-full justify-center">
-              {/* [EN] Mobile-first layout container with max width 430px */}
-              {/* [KR] 최대 너비 430px의 모바일 우선 레이아웃 컨테이너 */}
-              <div className="relative flex w-full max-w-[430px] flex-col bg-white dark:bg-black min-h-screen shadow-2xl">
+            <div className="flex min-h-screen w-full justify-center bg-gray-50 dark:bg-zinc-900">
+              {/* [EN] Responsive layout container */}
+              {/* [KR] 반응형 레이아웃 컨테이너 */}
+              <div className="relative flex w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl flex-col bg-white dark:bg-black min-h-screen shadow-2xl transition-all duration-300">
                 {children}
               </div>
             </div>
