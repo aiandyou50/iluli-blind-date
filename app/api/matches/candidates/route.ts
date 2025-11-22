@@ -54,7 +54,21 @@ export async function GET(req: NextRequest) {
       take: 20
     });
 
-    return NextResponse.json(users);
+    // Patch photo URLs if missing domain
+    const publicUrl = ctx.env.R2_PUBLIC_URL || "https://photos.aiboop.org";
+    const usersWithPhotos = users.map((user: any) => {
+      if (user.photos) {
+        user.photos = user.photos.map((photo: any) => {
+          if (photo.url && !photo.url.startsWith('http')) {
+            return { ...photo, url: `${publicUrl}/${photo.url}` };
+          }
+          return photo;
+        });
+      }
+      return user;
+    });
+
+    return NextResponse.json(usersWithPhotos);
   } catch (error: any) {
     console.error("Error fetching candidates:", error);
     return new NextResponse(JSON.stringify({ error: error.message, stack: error.stack }), { status: 500, headers: { 'Content-Type': 'application/json' } });

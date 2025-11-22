@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
     });
 
     // Return the filename. The frontend needs to know the public domain to display it.
-    // We use R2_PUBLIC_URL if available, otherwise just return the filename.
-    const publicUrl = ctx.env.R2_PUBLIC_URL || ""; 
+    // We use R2_PUBLIC_URL if available, otherwise fallback to the known domain or return filename
+    const publicUrl = ctx.env.R2_PUBLIC_URL || "https://photos.aiboop.org"; 
 
     return NextResponse.json({
       success: true,

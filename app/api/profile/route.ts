@@ -67,6 +67,17 @@ export async function GET(req: NextRequest) {
       return new NextResponse("User not found", { status: 404 });
     }
 
+    // Patch photo URLs if missing domain
+    const publicUrl = ctx.env.R2_PUBLIC_URL || "https://photos.aiboop.org";
+    if (user.photos) {
+      user.photos = user.photos.map((photo: any) => {
+        if (photo.url && !photo.url.startsWith('http')) {
+          return { ...photo, url: `${publicUrl}/${photo.url}` };
+        }
+        return photo;
+      });
+    }
+
     return NextResponse.json(user);
   } catch (error: any) {
     console.error("Profile fetch error:", error);

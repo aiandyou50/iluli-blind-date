@@ -16,6 +16,14 @@ export async function GET(req: NextRequest) {
     }
 
     const prisma = getPrisma(db);
+    const publicUrl = ctx.env.R2_PUBLIC_URL || "https://photos.aiboop.org";
+
+    const patchPhotoUrl = (photo: any) => {
+      if (photo.url && !photo.url.startsWith('http')) {
+        return { ...photo, url: `${publicUrl}/${photo.url}` };
+      }
+      return photo;
+    };
 
     if (userId) {
       const photos = await prisma.photo.findMany({
@@ -25,7 +33,7 @@ export async function GET(req: NextRequest) {
           _count: { select: { likes: true } }
         }
       });
-      return NextResponse.json(photos);
+      return NextResponse.json(photos.map(patchPhotoUrl));
     } else {
       // Feed: Get all photos with user info
       const sort = searchParams.get('sort') || 'latest';
@@ -53,7 +61,7 @@ export async function GET(req: NextRequest) {
         orderBy,
         take: 50,
       });
-      return NextResponse.json(photos);
+      return NextResponse.json(photos.map(patchPhotoUrl));
     }
   } catch (error: any) {
     console.error('Error fetching photos:', error);
