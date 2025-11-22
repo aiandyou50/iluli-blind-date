@@ -26,7 +26,7 @@ export default function ProfilePage() {
   // [KR] API에서 사용자 프로필 조회, 'introduction'과 'bio' 필드명 모두 지원
   const fetchProfile = () => {
     if (session?.user?.email) {
-      fetch(`/api/profile?email=${session.user.email}`)
+      fetch(`/api/profile?email=${session.user.email}`, { cache: 'no-store' })
         .then(res => res.json())
         .then((data: any) => {
           if (data.id) setUserId(data.id);
