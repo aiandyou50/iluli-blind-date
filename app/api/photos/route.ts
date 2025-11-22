@@ -55,9 +55,9 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.json(photos);
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching photos:', error);
-    return new NextResponse('Internal Server Error', { status: 500 });
+    return new NextResponse(JSON.stringify({ error: error.message, stack: error.stack }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
 
@@ -87,8 +87,8 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(photo);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error saving photo:', error);
-    return new NextResponse('Internal Server Error', { status: 500 });
+    return new NextResponse(JSON.stringify({ error: error.message, stack: error.stack }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }

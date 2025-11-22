@@ -33,6 +33,7 @@
     "visitInstagram": "访问 Instagram",
     "instagramLabel": "Instagram ID (匹配必需)",
     "introductionLabel": "简介 (一句话介绍)",
+    "nickname": "昵称",
     "gender": "性别",
     "genderLabel": "性别",
     "male": "男",

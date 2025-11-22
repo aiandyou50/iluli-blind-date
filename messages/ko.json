@@ -33,6 +33,7 @@
     "visitInstagram": "인스타그램 방문",
     "instagramLabel": "인스타그램 아이디 (매칭 시 필수)",
     "introductionLabel": "한 줄 소개",
+    "nickname": "닉네임",
     "gender": "성별",
     "genderLabel": "성별",
     "male": "남성",

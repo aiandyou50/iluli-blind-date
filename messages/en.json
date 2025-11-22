@@ -33,6 +33,7 @@
     "visitInstagram": "Visit Instagram",
     "instagramLabel": "Instagram ID (Required for matching)",
     "introductionLabel": "Introduction (One line)",
+    "nickname": "Nickname",
     "gender": "Gender",
     "genderLabel": "Gender",
     "male": "Male",

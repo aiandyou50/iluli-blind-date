@@ -33,9 +33,9 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(updatedUser);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Profile update error:", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse(JSON.stringify({ error: error.message, stack: error.stack }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
 
@@ -70,8 +70,8 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(user);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Profile fetch error:", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse(JSON.stringify({ error: error.message, stack: error.stack }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }

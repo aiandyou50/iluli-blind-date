@@ -55,8 +55,8 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.json(users);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error fetching candidates:", error);
-    return new NextResponse('Error', { status: 500 });
+    return new NextResponse(JSON.stringify({ error: error.message, stack: error.stack }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
