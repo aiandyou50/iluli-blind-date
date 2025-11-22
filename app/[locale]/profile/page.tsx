@@ -136,7 +136,7 @@ export default function ProfilePage() {
           </div>
         )}
 
-        <div className="w-full md:w-1/3 bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm h-fit sticky top-20">
+        <div className="w-full md:w-1/3 bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm h-fit md:sticky md:top-20">
           <div className="flex flex-col items-center mb-6">
             {session?.user?.image ? (
               <img src={session.user.image} alt="Profile" className="w-24 h-24 rounded-full mb-4 object-cover" />

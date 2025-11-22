@@ -69,7 +69,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
     <>
       <Header title={user.nickname || user.name} />
       <main className="flex flex-col md:flex-row gap-4 p-4 pb-32">
-        <div className="w-full md:w-1/3 bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm h-fit sticky top-20">
+        <div className="w-full md:w-1/3 bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm h-fit md:sticky md:top-20">
           <div className="flex flex-col items-center mb-6">
              <div className="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden mb-4">
                 <span className="text-3xl font-bold text-gray-500">
