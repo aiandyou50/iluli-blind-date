@@ -8,6 +8,7 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get('userId');
+    const viewerId = searchParams.get('viewerId');
     
     const ctx = getRequestContext();
     const db = ctx.env.DB;
@@ -56,12 +57,23 @@ export async function GET(req: NextRequest) {
           },
           _count: {
             select: { likes: true }
-          }
+          },
+          likes: viewerId ? {
+            where: { userId: viewerId },
+            select: { userId: true }
+          } : false
         },
         orderBy,
         take: 50,
       });
-      return NextResponse.json(photos.map(patchPhotoUrl));
+      
+      const photosWithLikeStatus = photos.map((photo: any) => ({
+        ...patchPhotoUrl(photo),
+        isLiked: viewerId ? photo.likes?.length > 0 : false,
+        likes: undefined // Remove the likes array from response to keep it clean
+      }));
+
+      return NextResponse.json(photosWithLikeStatus);
     }
   } catch (error: any) {
     console.error('Error fetching photos:', error);

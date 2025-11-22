@@ -4,20 +4,25 @@ import { useTranslations } from 'next-intl';
 import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import Link from 'next/link';
 
 export default function FeedPage() {
   const t = useTranslations('feed');
+  const { data: session } = useSession();
   const [photos, setPhotos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState('latest');
-  // Mock user ID for now - in real app use session
-  const currentUserId = 'user-id-placeholder'; 
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/photos?sort=${sortBy}`)
+    const viewerId = session?.user?.id;
+    const url = viewerId 
+      ? `/api/photos?sort=${sortBy}&viewerId=${viewerId}`
+      : `/api/photos?sort=${sortBy}`;
+
+    fetch(url)
       .then(res => res.json())
       .then((data: any) => {
         if (Array.isArray(data)) {
@@ -32,13 +37,15 @@ export default function FeedPage() {
         console.error(err);
         setLoading(false);
       });
-  }, [sortBy]);
+  }, [sortBy, session]);
 
   const handleLike = async (photoId: string) => {
+    if (!session?.user?.id) return;
+    
     // Optimistic update
     setPhotos(prev => prev.map(p => {
       if (p.id === photoId) {
-        const isLiked = p.isLiked; // We need to track this state, for now toggle count
+        const isLiked = p.isLiked;
         return {
           ...p,
           _count: { likes: p._count.likes + (isLiked ? -1 : 1) },
@@ -51,7 +58,7 @@ export default function FeedPage() {
     try {
       await fetch(`/api/photos/${photoId}/like`, {
         method: 'POST',
-        body: JSON.stringify({ userId: currentUserId })
+        body: JSON.stringify({ userId: session.user.id })
       });
     } catch (error) {
       console.error(error);
@@ -63,7 +70,7 @@ export default function FeedPage() {
     <>
       <Header />
       
-      <main className="flex flex-col gap-4 p-2 md:p-4 pb-24">
+      <main className="flex flex-col gap-4 p-2 md:p-4 pb-32">
         <div className="flex justify-end px-2">
           <select 
             value={sortBy} 
