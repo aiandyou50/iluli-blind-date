@@ -5,10 +5,12 @@ import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function MatchingPage() {
   const t = useTranslations('swipe');
   const { data: session } = useSession();
+  const router = useRouter();
   const [candidates, setCandidates] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -99,7 +101,7 @@ export default function MatchingPage() {
               </button>
               
               <button 
-                onClick={() => handleAction('like')}
+                onClick={() => router.push(`/profile/${currentProfile.id}`)}
                 className="w-16 h-16 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center hover:bg-pink-200 transition-colors shadow-md"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8">
