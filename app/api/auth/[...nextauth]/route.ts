@@ -4,7 +4,7 @@ import { getPrisma } from "@/lib/db";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 import type { NextRequest } from "next/server";
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 async function handler(req: NextRequest) {
   const ctx = getRequestContext();

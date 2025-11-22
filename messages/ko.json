@@ -66,5 +66,21 @@
     "next": "다음",
     "skip": "건너뛰기",
     "finish": "시작하기"
+  },
+  "admin": {
+    "dashboardTitle": "관리자 대시보드",
+    "usersTab": "사용자",
+    "photosTab": "사진",
+    "loading": "로딩 중...",
+    "colName": "이름",
+    "colEmail": "이메일",
+    "colRole": "권한",
+    "colStats": "통계",
+    "colActions": "작업",
+    "photos": "사진",
+    "likes": "좋아요",
+    "delete": "삭제",
+    "confirmDeleteUser": "이 사용자를 삭제하시겠습니까?",
+    "confirmDeletePhoto": "이 사진을 삭제하시겠습니까?"
   }
 }

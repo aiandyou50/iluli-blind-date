@@ -66,5 +66,21 @@
     "next": "下一步",
     "skip": "跳過",
     "finish": "開始"
+  },
+  "admin": {
+    "dashboardTitle": "管理員儀表板",
+    "usersTab": "用戶",
+    "photosTab": "照片",
+    "loading": "載入中...",
+    "colName": "姓名",
+    "colEmail": "電子郵件",
+    "colRole": "角色",
+    "colStats": "統計",
+    "colActions": "操作",
+    "photos": "照片",
+    "likes": "按讚",
+    "delete": "刪除",
+    "confirmDeleteUser": "確定要刪除此用戶嗎？",
+    "confirmDeletePhoto": "確定要刪除此照片嗎？"
   }
 }

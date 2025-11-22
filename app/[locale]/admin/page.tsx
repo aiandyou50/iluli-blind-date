@@ -3,29 +3,57 @@
 import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function AdminPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const t = useTranslations('admin');
+  
   const [activeTab, setActiveTab] = useState<'users' | 'photos'>('users');
   const [users, setUsers] = useState<any[]>([]);
   const [photos, setPhotos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
+    if (status === 'loading') return;
+    
+    if (!session) {
+      router.push('/');
+      return;
+    }
+
+    // Check if user is admin via API or session
+    // Since session might not have role updated immediately, we rely on API 403/401
+    // But for better UX, we can check session if we added role to it.
+    // For now, let's try to fetch. If 403/401, we redirect.
     fetchData();
-  }, [activeTab]);
+  }, [session, status, activeTab]);
 
   const fetchData = async () => {
     setLoading(true);
     try {
+      const endpoint = activeTab === 'users' ? '/api/admin/users' : '/api/admin/photos';
+      const res = await fetch(endpoint);
+      
+      if (res.status === 401 || res.status === 403) {
+        setIsAuthorized(false);
+        router.push('/'); // Redirect to home if unauthorized
+        return;
+      }
+
+      if (!res.ok) throw new Error('Failed to fetch');
+
+      const data = await res.json();
       if (activeTab === 'users') {
-        const res = await fetch('/api/admin/users');
-        const data = await res.json();
         setUsers(Array.isArray(data) ? data : []);
       } else {
-        const res = await fetch('/api/admin/photos');
-        const data = await res.json();
         setPhotos(Array.isArray(data) ? data : []);
       }
+      setIsAuthorized(true);
     } catch (error) {
       console.error(error);
     } finally {
@@ -33,8 +61,16 @@ export default function AdminPage() {
     }
   };
 
+  if (status === 'loading' || (session && loading && !isAuthorized)) {
+    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+  }
+
+  if (!isAuthorized) {
+    return null; // Will redirect
+  }
+
   const handleDeleteUser = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this user?')) return;
+    if (!confirm(t('confirmDeleteUser'))) return;
     try {
       await fetch(`/api/admin/users?id=${id}`, { method: 'DELETE' });
       fetchData();
@@ -44,7 +80,7 @@ export default function AdminPage() {
   };
 
   const handleDeletePhoto = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this photo?')) return;
+    if (!confirm(t('confirmDeletePhoto'))) return;
     try {
       await fetch(`/api/admin/photos?id=${id}`, { method: 'DELETE' });
       fetchData();
@@ -55,35 +91,35 @@ export default function AdminPage() {
 
   return (
     <>
-      <Header title="Admin Dashboard" />
+      <Header title={t('dashboardTitle')} />
       <main className="p-4 pb-24 max-w-4xl mx-auto">
         <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700">
           <button
             className={`pb-2 px-4 font-medium ${activeTab === 'users' ? 'text-primary border-b-2 border-primary' : 'text-gray-500'}`}
             onClick={() => setActiveTab('users')}
           >
-            Users
+            {t('usersTab')}
           </button>
           <button
             className={`pb-2 px-4 font-medium ${activeTab === 'photos' ? 'text-primary border-b-2 border-primary' : 'text-gray-500'}`}
             onClick={() => setActiveTab('photos')}
           >
-            Photos
+            {t('photosTab')}
           </button>
         </div>
 
         {loading ? (
-          <div className="text-center py-8">Loading...</div>
+          <div className="text-center py-8">{t('loading')}</div>
         ) : activeTab === 'users' ? (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th className="px-6 py-3">Name</th>
-                  <th className="px-6 py-3">Email</th>
-                  <th className="px-6 py-3">Role</th>
-                  <th className="px-6 py-3">Stats</th>
-                  <th className="px-6 py-3">Actions</th>
+                  <th className="px-6 py-3">{t('colName')}</th>
+                  <th className="px-6 py-3">{t('colEmail')}</th>
+                  <th className="px-6 py-3">{t('colRole')}</th>
+                  <th className="px-6 py-3">{t('colStats')}</th>
+                  <th className="px-6 py-3">{t('colActions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -93,15 +129,15 @@ export default function AdminPage() {
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">{user.role || 'USER'}</td>
                     <td className="px-6 py-4">
-                      Photos: {user._count?.photos || 0}<br/>
-                      Likes: {user._count?.likesReceived || 0}
+                      {t('photos')}: {user._count?.photos || 0}<br/>
+                      {t('likes')}: {user._count?.likes || 0}
                     </td>
                     <td className="px-6 py-4">
                       <button 
                         onClick={() => handleDeleteUser(user.id)}
                         className="text-red-600 hover:text-red-900"
                       >
-                        Delete
+                        {t('delete')}
                       </button>
                     </td>
                   </tr>
@@ -120,7 +156,7 @@ export default function AdminPage() {
                     onClick={() => handleDeletePhoto(photo.id)}
                     className="bg-red-600 text-white px-3 py-1 rounded text-xs"
                   >
-                    Delete
+                    {t('delete')}
                   </button>
                 </div>
               </div>

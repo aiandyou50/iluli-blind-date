@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getRequestContext } from '@cloudflare/next-on-pages';
 import { getToken } from 'next-auth/jwt';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,9 +14,9 @@ export async function GET(req: NextRequest) {
     // @ts-ignore
     const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
     
-    if (!db) {
-      return new NextResponse('Database binding not found', { status: 500 });
-    }
+    // if (!db) {
+    //   return new NextResponse('Database binding not found', { status: 500 });
+    // }
 
     // Auth Check
     const token = await getToken({ req, secret });

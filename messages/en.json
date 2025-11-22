@@ -66,5 +66,21 @@
     "next": "Next",
     "skip": "Skip",
     "finish": "Get Started"
+  },
+  "admin": {
+    "dashboardTitle": "Admin Dashboard",
+    "usersTab": "Users",
+    "photosTab": "Photos",
+    "loading": "Loading...",
+    "colName": "Name",
+    "colEmail": "Email",
+    "colRole": "Role",
+    "colStats": "Stats",
+    "colActions": "Actions",
+    "photos": "Photos",
+    "likes": "Likes",
+    "delete": "Delete",
+    "confirmDeleteUser": "Are you sure you want to delete this user?",
+    "confirmDeletePhoto": "Are you sure you want to delete this photo?"
   }
 }
