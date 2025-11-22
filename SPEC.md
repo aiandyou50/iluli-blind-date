@@ -1,7 +1,7 @@
 
 -----
 
-# [Master Spec] 이루리 소개팅 개발 명세서 (v2.2)
+# [Master Spec] 이루리 소개팅 개발 명세서 (v2.3)
 
 > **AI Agent 지시 사항**:
 > 이 문서는 프로젝트의 \*\*유일한 진실 공급원(Source of Truth)\*\*입니다.
@@ -16,13 +16,13 @@
 
 ## 2\. 기술 스택 (Tech Stack)
 
-  - **Framework**: Next.js 15 (App Router)
+  - **Framework**: Next.js 15.5.2 (App Router)
   - **Language**: TypeScript
   - **Auth**: **Auth.js (NextAuth v5)** - Google Provider Only.
   - **Database**: Cloudflare D1 (SQLite)
-  - **ORM**: Prisma (Adapter: `@prisma/adapter-d1`)
+  - **ORM**: Prisma 7.0.0 (Adapter: `@prisma/adapter-d1`)
   - **Storage**: Cloudflare R2 (이미지 저장)
-  - **Styling**: Tailwind CSS
+  - **Styling**: Tailwind CSS 4
   - **i18n**: `next-intl` (미들웨어 기반 라우팅)
 
 ## 3\. Cloudflare 리소스 구성 (Infrastructure)
@@ -82,14 +82,27 @@ model User {
   gender        String?   // 'MALE' | 'FEMALE'
   instagramId   String?   // 필수 입력
   introduction  String?   
+  role          String    @default("USER") // 'USER' | 'ADMIN'
   
   accounts      Account[]
   sessions      Session[]
   photos        Photo[]   
   likes         Like[]    
+  matchesAsUser1 Match[]  @relation("User1Matches")
+  matchesAsUser2 Match[]  @relation("User2Matches")
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  user1Id   String
+  user2Id   String
+  user1     User     @relation("User1Matches", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2     User     @relation("User2Matches", fields: [user2Id], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }
 
 model Account {
@@ -147,13 +160,14 @@ model Like {
 
 ### 6.1 다국어 및 초기 진입
 
-  - **언어 감지**: 브라우저 설정 기반 (`ko`, `zh-CN`, `zh-TW`, `en`).
+  - **언어 감지**: 브라우저 설정 기반. (`next-intl` 미들웨어 사용)
+  - **지원 언어**: 한국어(`ko`), 영어(`en`), 중국어(`zh-CN`, `zh-TW`) 등 설정 가능.
   - **기본값**: 지원하지 않는 언어일 경우 `en`(영어)로 표시.
 
 ### 6.2 인증 (Auth)
 
-  - **로그인**: Google 소셜 로그인 전용.
-  - **회원가입 후처리**: 최초 로그인 시 `instagramId`, `nickname`, `gender`가 `null`이면 **필수 정보 입력 페이지**로 리다이렉트.
+  - **로그인**: Google 소셜 로그인 전용 (NextAuth v5).
+  - **회원가입 후처리**: 최초 로그인 시 필수 정보(`instagramId`, `nickname`, `gender`)가 없는 경우 입력 페이지로 유도.
 
 ### 6.3 피드 (Feed)
 
@@ -162,19 +176,34 @@ model Like {
 
 ### 6.4 소개팅 매칭 (Discovery)
 
-  - **UI**: 틴더 스타일 카드 뷰.
-  - **로직**: 내 성별과 반대되는(`Opposite`) 성별의 유저 사진만 랜덤 노출.
-  - **액션**: 하트 클릭 시 좋아요 → 프로필 조회 페이지로 이동 유도.
+  - **대상 추출**:
+    - 내 성별과 반대되는(`Opposite`) 성별의 유저만 노출.
+    - 이미 좋아요/패스한 유저 제외 (TODO).
+  - **액션**:
+    - **Like**: 마음에 드는 사진에 하트 클릭. DB `Like` 테이블에 저장.
+    - **Pass**: 다음 카드로 넘기기. (현재 DB 저장 없음).
 
 ### 6.5 프로필 조회 (Profile View)
 
   - **핵심 기능**: **[Instagram DM 보내기]** 버튼 (외부 링크 연결).
-  - **정보**: 닉네임, 소개, 업로드한 사진 목록 및 총 좋아요 수.
+  - **정보**: 닉네임, 소개, 업로드한 사진 목록, 총 좋아요 수.
 
 ### 6.6 마이페이지 (CRUD)
 
-  - **내 정보**: 닉네임, 인스타그램 ID 수정.
-  - **사진 관리**: R2 업로드 및 삭제 기능. 내가 받은 좋아요 수 확인.
+  - **내 정보 수정**: 닉네임, 인스타그램 ID, 자기소개, 성별 수정 가능.
+  - **사진 관리**: R2 이미지 업로드 및 삭제 기능.
+  - **현황 확인**: 내가 받은 좋아요 수 확인.
+
+### 6.7 관리자 (Admin)
+
+  - **접근 권한**: `User.role`이 `ADMIN`인 계정만 접근 가능 (`/admin`).
+  - **유저 관리**:
+    - 전체 가입 유저 목록 조회 (최신순).
+    - 유저별 사진 수, 받은 좋아요 수, 매칭 수 통계 확인.
+    - 유저 삭제 기능.
+  - **사진 관리**:
+    - 전체 업로드 사진 목록 조회 (최신순).
+    - 부적절한 사진 삭제 기능.
 
 ## 7\. UI/UX 가이드라인
 
