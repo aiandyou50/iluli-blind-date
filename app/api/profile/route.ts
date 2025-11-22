@@ -58,7 +58,10 @@ export async function GET(req: NextRequest) {
       where: { email },
       include: {
         photos: {
-          orderBy: { createdAt: 'desc' }
+          orderBy: { createdAt: 'desc' },
+          include: {
+            _count: { select: { likes: true } }
+          }
         }
       }
     });

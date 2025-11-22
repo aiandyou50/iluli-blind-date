@@ -5,9 +5,11 @@ import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 import { useEffect, useState } from 'react';
 import { use } from 'react';
+import { useSession } from 'next-auth/react';
 
 export default function PublicProfilePage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = use(params);
+  const { data: session } = useSession();
   const t = useTranslations('profile');
   const tCommon = useTranslations('common');
   const [user, setUser] = useState<any>(null);
@@ -16,33 +18,57 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
 
   useEffect(() => {
     if (userId) {
-      fetch(`/api/photos?userId=${userId}`)
-        .then(res => res.json())
-        .then((data) => {
-          setPhotos(data as any[]);
-          // We also need user info. The photos API returns photos, but we might need a separate call or extract from photos if included.
-          // Let's fetch user profile separately or assume the first photo has user info if we modified the API.
-          // Actually, let's fetch the user profile by ID. We need a new endpoint or modify existing one.
-          // Existing /api/profile takes email. Let's modify it to take userId too or create a new one.
-          // For now, let's try to get user info from the feed page data passed via state? No, that's complex.
-          // Let's fetch user info by ID.
-          fetch(`/api/users/${userId}`)
-            .then(res => res.json())
-            .then(userData => setUser(userData))
-            .catch(err => console.error(err));
-        })
-        .catch(err => console.error(err))
-        .finally(() => setLoading(false));
+      const viewerId = session?.user?.id;
+      const photosUrl = viewerId 
+        ? `/api/photos?userId=${userId}&viewerId=${viewerId}`
+        : `/api/photos?userId=${userId}`;
+
+      Promise.all([
+        fetch(photosUrl).then(res => res.json()),
+        fetch(`/api/users/${userId}`).then(res => res.json())
+      ])
+      .then(([photosData, userData]) => {
+        setPhotos(photosData as any[]);
+        setUser(userData);
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
     }
-  }, [userId]);
+  }, [userId, session]);
+
+  const handleLike = async (photoId: string) => {
+    if (!session?.user?.id) return;
+    
+    // Optimistic update
+    setPhotos(prev => prev.map(p => {
+      if (p.id === photoId) {
+        const isLiked = p.isLiked;
+        return {
+          ...p,
+          _count: { likes: p._count.likes + (isLiked ? -1 : 1) },
+          isLiked: !isLiked
+        };
+      }
+      return p;
+    }));
+
+    try {
+      await fetch(`/api/photos/${photoId}/like`, {
+        method: 'POST',
+        body: JSON.stringify({ userId: session.user.id })
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (loading) return <div className="p-8 text-center">{tCommon('loading')}</div>;
   if (!user) return <div className="p-8 text-center">{tCommon('error')}</div>;
 
   return (
     <>
-      <Header title={user.name} />
-      <main className="flex flex-col gap-4 p-4 pb-24">
+      <Header title={user.nickname || user.name} />
+      <main className="flex flex-col gap-4 p-4 pb-32">
         <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 shadow-sm">
           <div className="flex flex-col items-center mb-6">
              <div className="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden mb-4">
@@ -50,7 +76,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
                   {user.name?.[0] || '?'}
                 </span>
              </div>
-            <h2 className="text-xl font-bold">{user.name}</h2>
+            <h2 className="text-xl font-bold">{user.nickname || user.name}</h2>
             <p className="text-gray-500">{user.introduction || t('introductionLabel')}</p>
             {user.gender && (
               <span className="mt-1 inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
@@ -81,8 +107,18 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
           {photos.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
               {photos.map((photo: any) => (
-                <div key={photo.id} className="rounded-lg overflow-hidden">
+                <div key={photo.id} className="rounded-lg overflow-hidden bg-gray-50 dark:bg-zinc-900">
                   <img src={photo.url} alt="User photo" className="w-full h-auto object-cover" />
+                  <div className="flex items-center justify-between p-3">
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleLike(photo.id)} className="group flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill={photo.isLiked ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-6 h-6 ${photo.isLiked ? "text-red-500" : "text-zinc-600 group-hover:text-red-500"} dark:text-zinc-400`}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                        </svg>
+                        <span className="text-sm text-gray-600 dark:text-gray-300">{photo._count?.likes || 0}</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

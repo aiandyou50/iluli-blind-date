@@ -24,6 +24,7 @@ export async function GET(
       select: {
         id: true,
         name: true,
+        nickname: true,
         introduction: true,
         instagramId: true,
         image: true,
