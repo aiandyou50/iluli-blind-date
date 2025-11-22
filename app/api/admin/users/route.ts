@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getRequestContext } from '@cloudflare/next-on-pages';
 import { getToken } from 'next-auth/jwt';
 
-// export const runtime = 'edge';
+export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
   try {

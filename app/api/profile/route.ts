@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 
-// export const runtime = 'edge';
+export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
   try {
