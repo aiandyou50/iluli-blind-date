@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
 
     const ctx = getRequestContext();
     const db = ctx.env.DB;
-    if (!db) {
-      return new NextResponse("Database binding missing", { status: 500 });
-    }
+    // if (!db) {
+    //   return new NextResponse("Database binding missing", { status: 500 });
+    // }
 
     const prisma = getPrisma(db);
 
@@ -47,15 +47,13 @@ export async function GET(req: NextRequest) {
     return new NextResponse("Email is required", { status: 400 });
   }
 
-  const ctx = getRequestContext();
-  const db = ctx.env.DB;
-  if (!db) {
-    return new NextResponse("Database binding missing", { status: 500 });
-  }
+    const ctx = getRequestContext();
+    const db = ctx.env.DB;
+    // if (!db) {
+    //   return new NextResponse("Database binding missing", { status: 500 });
+    // }
 
-  const prisma = getPrisma(db);
-
-  try {
+    const prisma = getPrisma(db);  try {
     const user = await prisma.user.findUnique({
       where: { email },
       include: {

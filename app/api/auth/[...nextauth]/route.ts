@@ -16,14 +16,18 @@ async function handler(req: NextRequest) {
   console.log("AUTH_GOOGLE_ID present:", !!ctx.env.AUTH_GOOGLE_ID);
   console.log("AUTH_GOOGLE_SECRET present:", !!ctx.env.AUTH_GOOGLE_SECRET);
 
-  if (!ctx.env.DB || !ctx.env.AUTH_SECRET || !ctx.env.AUTH_GOOGLE_ID || !ctx.env.AUTH_GOOGLE_SECRET) {
-    console.error("Missing required environment variables or bindings");
-    return new Response("Server Configuration Error: Missing Environment Variables", { status: 500 });
-  }
+  // if (!ctx.env.DB || !ctx.env.AUTH_SECRET || !ctx.env.AUTH_GOOGLE_ID || !ctx.env.AUTH_GOOGLE_SECRET) {
+  //   console.error("Missing required environment variables or bindings");
+  //   return new Response("Server Configuration Error: Missing Environment Variables", { status: 500 });
+  // }
 
   const db = ctx.env.DB;
   const prisma = getPrisma(db);
-  const config = createAuthConfig(prisma, ctx.env);
+  
+  // Merge process.env (for local dev) and ctx.env (for Cloudflare)
+  const env = { ...process.env, ...ctx.env } as any;
+  
+  const config = createAuthConfig(prisma, env);
   const auth = NextAuth(config);
   if (req.method === "POST") {
     return auth.handlers.POST(req);

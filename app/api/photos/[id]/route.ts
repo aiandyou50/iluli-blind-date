@@ -13,9 +13,9 @@ export async function DELETE(
 
     const ctx = getRequestContext();
     const db = ctx.env.DB;
-    if (!db) {
-      return new NextResponse('Database binding not found', { status: 500 });
-    }
+    // if (!db) {
+    //   return new NextResponse('Database binding not found', { status: 500 });
+    // }
 
     const prisma = getPrisma(db);
 

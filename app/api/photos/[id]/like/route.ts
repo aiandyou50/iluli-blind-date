@@ -1,5 +1,6 @@
 import { getPrisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
+import { getRequestContext } from "@cloudflare/next-on-pages";
 
 export const runtime = 'edge';
 
@@ -11,8 +12,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     if (!userId) return new NextResponse('Unauthorized', { status: 401 });
 
-    // @ts-ignore
-    const db = (process.env as any).DB || (req as any).env?.DB;
+    const ctx = getRequestContext();
+    const db = ctx.env.DB;
     const prisma = getPrisma(db);
 
     const existing = await prisma.like.findUnique({

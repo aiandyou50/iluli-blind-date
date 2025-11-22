@@ -20,7 +20,12 @@ export default function FeedPage() {
     fetch(`/api/photos?sort=${sortBy}`)
       .then(res => res.json())
       .then((data: any) => {
-        setPhotos(data);
+        if (Array.isArray(data)) {
+          setPhotos(data);
+        } else {
+          console.error("API returned non-array:", data);
+          setPhotos([]);
+        }
         setLoading(false);
       })
       .catch(err => {
