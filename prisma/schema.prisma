@@ -48,6 +48,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   photos        Photo[]
+  photoLikes    PhotoLike[]
   
   // 매칭 관련 관계
   sentLikes     Like[]    @relation("UserSentLikes")
@@ -103,6 +104,7 @@ model Photo {
   order     Int      @default(0)
   
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes     PhotoLike[]
   
   createdAt DateTime @default(now())
 }
