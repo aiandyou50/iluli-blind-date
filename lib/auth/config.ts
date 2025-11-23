@@ -70,10 +70,12 @@ export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv): Next
       }
     },
     async jwt({ token, user }) {
-      if (user && user.email) {
+      const email = user?.email || token.email;
+
+      if (email) {
         // Fetch user ID and Role from DB
         const dbUser = await prisma.user.findUnique({
-          where: { email: user.email },
+          where: { email },
           select: { id: true, role: true }
         });
 
@@ -84,15 +86,17 @@ export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv): Next
 
           // Auto-Promotion Logic
           const adminEmails = env.ADMIN_EMAILS ? env.ADMIN_EMAILS.split(',') : [];
-          if (adminEmails.includes(user.email) && dbUser.role !== 'ADMIN') {
+          const cleanAdminEmails = adminEmails.map((e: string) => e.trim());
+          
+          if (cleanAdminEmails.includes(email) && dbUser.role !== 'ADMIN') {
             try {
               const updatedUser = await prisma.user.update({
-                where: { email: user.email },
+                where: { email },
                 data: { role: 'ADMIN' },
                 select: { role: true }
               });
               token.role = updatedUser.role;
-              console.log(`Auto-promoted user ${user.email} to ADMIN`);
+              console.log(`Auto-promoted user ${email} to ADMIN`);
             } catch (error) {
               console.error("Failed to auto-promote user:", error);
             }
