@@ -85,10 +85,11 @@ export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv): Next
           token.role = dbUser.role;
 
           // Auto-Promotion Logic
-          const adminEmails = env.ADMIN_EMAILS ? env.ADMIN_EMAILS.split(',') : [];
-          const cleanAdminEmails = adminEmails.map((e: string) => e.trim());
+          const adminEmailsEnv = env.ADMIN_EMAILS || process.env.ADMIN_EMAILS || "";
+          const adminEmails = adminEmailsEnv.split(',').map((e: string) => e.trim().toLowerCase());
+          const userEmail = email.toLowerCase();
           
-          if (cleanAdminEmails.includes(email) && dbUser.role !== 'ADMIN') {
+          if (adminEmails.includes(userEmail) && dbUser.role !== 'ADMIN') {
             try {
               const updatedUser = await prisma.user.update({
                 where: { email },
