@@ -81,6 +81,14 @@
     "likes": "点赞",
     "delete": "删除",
     "confirmDeleteUser": "确定要删除此用户吗？",
-    "confirmDeletePhoto": "确定要删除此照片吗？"
+    "confirmDeletePhoto": "确定要删除此照片吗？",
+    "accessRequired": "需要管理员权限",
+    "accessRequiredDesc": "请使用授权的 Google 账号登录以访问管理员仪表板。"
+  },
+  "landing": {
+    "simpleMatchingTitle": "简单匹配",
+    "simpleMatchingDesc": "轻松与其他大学的学生建立联系。",
+    "verifiedUsersTitle": "已验证用户",
+    "verifiedUsersDesc": "通过验证的学生档案提供安全环境。"
   }
 }

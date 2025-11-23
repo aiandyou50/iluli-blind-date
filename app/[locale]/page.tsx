@@ -64,18 +64,18 @@ export default function Home() {
           <div className="mt-8 grid gap-8 text-left md:grid-cols-2 max-w-2xl">
             <div className="rounded-xl bg-pink-50 p-6 dark:bg-gray-800">
               <h3 className="mb-2 text-xl font-semibold text-pink-700 dark:text-pink-400">
-                Simple Matching
+                {t('landing.simpleMatchingTitle')}
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Connect with students from other universities easily.
+                {t('landing.simpleMatchingDesc')}
               </p>
             </div>
             <div className="rounded-xl bg-purple-50 p-6 dark:bg-gray-800">
               <h3 className="mb-2 text-xl font-semibold text-purple-700 dark:text-purple-400">
-                Verified Users
+                {t('landing.verifiedUsersTitle')}
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Safe environment with verified student profiles.
+                {t('landing.verifiedUsersDesc')}
               </p>
             </div>
           </div>

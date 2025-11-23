@@ -21,7 +21,15 @@ export default function MatchingPage() {
     if (!currentUserId) return;
 
     fetch(`/api/matches/candidates?userId=${currentUserId}`)
-      .then(res => res.json())
+      .then(async res => {
+        if (res.status === 401) {
+          // Session expired or invalid
+          window.location.href = '/'; // Redirect to landing for login
+          return [];
+        }
+        if (!res.ok) throw new Error('Failed to fetch');
+        return res.json();
+      })
       .then(data => {
         setCandidates(Array.isArray(data) ? data : []);
         setLoading(false);

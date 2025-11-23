@@ -81,6 +81,14 @@
     "likes": "按讚",
     "delete": "刪除",
     "confirmDeleteUser": "確定要刪除此用戶嗎？",
-    "confirmDeletePhoto": "確定要刪除此照片嗎？"
+    "confirmDeletePhoto": "確定要刪除此照片嗎？",
+    "accessRequired": "需要管理員權限",
+    "accessRequiredDesc": "請使用授權的 Google 帳號登入以存取管理員儀表板。"
+  },
+  "landing": {
+    "simpleMatchingTitle": "簡單配對",
+    "simpleMatchingDesc": "輕鬆與其他大學的學生建立聯繫。",
+    "verifiedUsersTitle": "已驗證用戶",
+    "verifiedUsersDesc": "透過驗證的學生檔案提供安全環境。"
   }
 }

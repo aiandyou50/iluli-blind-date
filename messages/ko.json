@@ -81,6 +81,14 @@
     "likes": "좋아요",
     "delete": "삭제",
     "confirmDeleteUser": "이 사용자를 삭제하시겠습니까?",
-    "confirmDeletePhoto": "이 사진을 삭제하시겠습니까?"
+    "confirmDeletePhoto": "이 사진을 삭제하시겠습니까?",
+    "accessRequired": "관리자 권한 필요",
+    "accessRequiredDesc": "관리자 대시보드에 접근하려면 승인된 Google 계정으로 로그인하세요."
+  },
+  "landing": {
+    "simpleMatchingTitle": "간편한 매칭",
+    "simpleMatchingDesc": "다른 대학교 학생들과 쉽게 연결되세요.",
+    "verifiedUsersTitle": "검증된 사용자",
+    "verifiedUsersDesc": "검증된 학생 프로필로 안전한 환경을 제공합니다."
   }
 }

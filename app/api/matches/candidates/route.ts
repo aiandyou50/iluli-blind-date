@@ -10,10 +10,17 @@ export async function GET(req: NextRequest) {
     const ctx = getRequestContext();
     // @ts-ignore
     const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+    
+    if (!secret) {
+      console.error("AUTH_SECRET is missing in API route");
+      return NextResponse.json({ error: 'Server Configuration Error' }, { status: 500 });
+    }
+
     const token = await getToken({ req, secret });
 
     if (!token || !token.sub) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      console.log("Token not found or invalid", { hasToken: !!token, sub: token?.sub });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const userId = token.sub;

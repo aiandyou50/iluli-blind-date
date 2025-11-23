@@ -15,14 +15,16 @@ export async function GET(req: NextRequest) {
     // @ts-ignore
     const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
     
-    // if (!db) {
-    //   return new NextResponse('Database binding not found', { status: 500 });
-    // }
+    if (!secret) {
+      console.error("AUTH_SECRET is missing in Admin API route");
+      return NextResponse.json({ error: 'Server Configuration Error' }, { status: 500 });
+    }
 
     // Auth Check
     const token = await getToken({ req, secret });
     if (!token || !token.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      console.log("Admin API: Token not found or invalid", { hasToken: !!token });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const prisma = getPrisma(db);
