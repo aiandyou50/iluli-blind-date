@@ -107,6 +107,19 @@ model Photo {
   createdAt DateTime @default(now())
 }
 
+model PhotoLike {
+  id        String   @id @default(cuid())
+  userId    String
+  photoId   String
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photo     Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, photoId])
+}
+
 model Like {
   id         String   @id @default(cuid())
   fromUserId String
