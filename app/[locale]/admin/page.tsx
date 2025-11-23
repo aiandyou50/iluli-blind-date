@@ -6,6 +6,7 @@ import BottomNav from '@/components/BottomNav';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -65,6 +66,11 @@ export default function AdminPage() {
   if (!session || !isAuthorized) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
+        {/* Language Switcher */}
+        <div className="absolute top-4 right-4">
+          <LanguageSwitcher />
+        </div>
+
         <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg text-center">
           <h1 className="mb-6 text-2xl font-bold text-gray-900">Admin Access Required</h1>
           <p className="mb-8 text-gray-600">
