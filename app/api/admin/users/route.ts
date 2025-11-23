@@ -30,7 +30,11 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Server Configuration Error' }, { status: 500 });
       }
 
-      const token = await getToken({ req, secret });
+      let token = await getToken({ req, secret });
+      if (!token) {
+        token = await getToken({ req, secret, cookieName: '__Secure-authjs.session-token' });
+      }
+
       if (token && token.email) {
         const prisma = getPrisma(db);
         const user = await prisma.user.findUnique({

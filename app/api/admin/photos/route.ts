@@ -25,7 +25,11 @@ export async function GET(req: NextRequest) {
       isAuthenticated = true;
     } else {
       // 2. Check NextAuth Session
-      const token = await getToken({ req, secret });
+      let token = await getToken({ req, secret });
+      if (!token) {
+        token = await getToken({ req, secret, cookieName: '__Secure-authjs.session-token' });
+      }
+
       if (token && token.email) {
         const prisma = getPrisma(db);
         const user = await prisma.user.findUnique({
@@ -87,7 +91,11 @@ export async function DELETE(req: NextRequest) {
       isAuthenticated = true;
     } else {
       // 2. Check NextAuth Session
-      const token = await getToken({ req, secret });
+      let token = await getToken({ req, secret });
+      if (!token) {
+        token = await getToken({ req, secret, cookieName: '__Secure-authjs.session-token' });
+      }
+
       if (token && token.email) {
         const prisma = getPrisma(db);
         const user = await prisma.user.findUnique({

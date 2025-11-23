@@ -19,7 +19,12 @@ export async function GET(req: NextRequest) {
     // Debug: Check if secret is available
     // console.log("Secret length:", secret.length);
 
-    const token = await getToken({ req, secret });
+    let token = await getToken({ req, secret });
+
+    if (!token) {
+      // Try with NextAuth v5 default cookie name
+      token = await getToken({ req, secret, cookieName: '__Secure-authjs.session-token' });
+    }
 
     if (!token || !token.sub) {
       // Debugging: Check cookies
@@ -30,7 +35,8 @@ export async function GET(req: NextRequest) {
         error: 'Unauthorized', 
         debug: { 
           cookies: cookieList,
-          hasSecret: !!secret
+          hasSecret: !!secret,
+          triedCookieName: '__Secure-authjs.session-token'
         } 
       }, { status: 401 });
     }
