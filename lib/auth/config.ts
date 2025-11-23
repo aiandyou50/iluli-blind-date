@@ -71,14 +71,32 @@ export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv): Next
     },
     async jwt({ token, user }) {
       if (user && user.email) {
-        // Fetch user ID from DB to ensure we have the correct ID in the token
+        // Fetch user ID and Role from DB
         const dbUser = await prisma.user.findUnique({
           where: { email: user.email },
-          select: { id: true }
+          select: { id: true, role: true }
         });
+
         if (dbUser) {
           token.sub = dbUser.id;
           token.id = dbUser.id;
+          token.role = dbUser.role;
+
+          // Auto-Promotion Logic
+          const adminEmails = env.ADMIN_EMAILS ? env.ADMIN_EMAILS.split(',') : [];
+          if (adminEmails.includes(user.email) && dbUser.role !== 'ADMIN') {
+            try {
+              const updatedUser = await prisma.user.update({
+                where: { email: user.email },
+                data: { role: 'ADMIN' },
+                select: { role: true }
+              });
+              token.role = updatedUser.role;
+              console.log(`Auto-promoted user ${user.email} to ADMIN`);
+            } catch (error) {
+              console.error("Failed to auto-promote user:", error);
+            }
+          }
         }
       }
       return token;
@@ -86,6 +104,8 @@ export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv): Next
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;
+        // @ts-ignore
+        session.user.role = token.role;
       }
       return session;
     },
@@ -94,4 +114,3 @@ export const createAuthConfig = (prisma: PrismaClient, env: CloudflareEnv): Next
     signIn: "/",
   }
 });
-

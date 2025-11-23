@@ -9,5 +9,6 @@ declare global {
     AUTH_GOOGLE_SECRET: string;
     NEXT_PUBLIC_API_URL: string;
     R2_PUBLIC_URL: string;
+    ADMIN_EMAILS?: string;
   }
 }

@@ -1,6 +1,6 @@
 # [Master Spec] 이루리 소개팅 (Iruri Dating) 개발 명세서
 
-> **문서 버전**: 3.0.1 (2025-11-22 현행화)
+> **문서 버전**: 3.1.0 (2025-11-22 현행화)
 > **상태**: Final (Codebase Synchronized)
 > **목적**: 이 문서는 프로젝트의 **유일한 진실 공급원(Source of Truth)**으로서, 현재 구현된 코드와 100% 일치하는 시스템 아키텍처, 데이터 모델, API 및 기능을 정의합니다.
 
@@ -118,7 +118,9 @@ model Like {
 ### 4.1 인증 (Auth)
 - **Endpoint**: `/api/auth/[...nextauth]`
 - **Provider**: Google
-- **Logic**: `getPrisma(ctx.env.DB)`를 통해 D1 어댑터 연결.
+- **Logic**:
+  - `getPrisma(ctx.env.DB)`를 통해 D1 어댑터 연결.
+  - **Auto-Promotion**: `jwt` callback에서 로그인한 이메일이 `ADMIN_EMAILS` 환경변수에 포함된 경우 `User.role`을 즉시 `ADMIN`으로 승격.
 
 ### 4.2 매칭 (Matching)
 - **후보 추천 (`GET /api/matches/candidates`)**:
@@ -135,7 +137,7 @@ model Like {
 - **수정 (`POST /api/profile`)**: `instagramId`, `nickname`, `gender`, `introduction` 업데이트.
 
 ### 4.4 관리자 (Admin)
-- **권한 체크**: `User.role === 'ADMIN'` 인지 확인.
+- **권한 체크**: `User.role === 'ADMIN'` 인지 확인 (Middleware 및 API 레벨 이중 체크).
 - **유저 관리 (`/api/admin/users`)**:
   - `GET`: 전체 유저 목록 및 통계(사진 수, 좋아요 수 등) 반환.
   - `DELETE`: 특정 유저 계정 삭제.
@@ -143,29 +145,48 @@ model Like {
   - `GET`: 전체 업로드 사진 목록 반환.
   - `DELETE`: 부적절한 사진 DB 레코드 삭제 (R2 파일 삭제는 별도 구현 필요).
 
-### 4.5 유틸리티 (Utility)
-- **관리자 승격 (`GET /api/setup/admin`)**:
-  - **URL**: `/api/setup/admin?email=...&secret=...`
-  - **기능**: 특정 `email`을 가진 유저의 `role`을 `ADMIN`으로 즉시 변경.
-  - **보안**: 하드코딩된 `secret` 키(`iluli-admin-setup-2024`) 검증 필요.
+---
+
+## 5. 관리자 시스템 명세 (Admin Specifications)
+
+### 5.1 관리자 승격 및 인증 전략 (Auth Strategy)
+가장 중요한 보안 섹션입니다. 구현 시 엄격히 준수하십시오.
+
+#### 슈퍼 관리자 자동 승격 (Auto-Promotion)
+- **Trigger**: 사용자가 구글 로그인을 시도하는 시점 (jwt callback).
+- **Logic**:
+  1. 로그인한 `email`이 환경변수 `ADMIN_EMAILS` 문자열에 포함되어 있는지 확인.
+  2. 포함되어 있고, 현재 DB의 `role`이 `USER`라면 → 즉시 DB의 `role`을 `ADMIN`으로 업데이트.
+  3. 포함되어 있지 않다면 → DB 값을 그대로 유지.
+
+#### JWT 및 세션 관리 (Role Persistence)
+- **JWT Callback**: DB의 최신 `role` 값을 가져와 `token.role`에 저장.
+- **Session Callback**: `token.role` 값을 `session.user.role`로 전달. 클라이언트에서 `useSession()`으로 접근 가능해야 함.
+
+#### 미들웨어 보안 (Middleware Security)
+- **대상 경로**: `/admin`으로 시작하는 모든 경로 (`/admin/:path*`).
+- **검사 로직**:
+  1. 로그인 여부 확인 (`req.auth`).
+  2. `req.auth.user.role === 'ADMIN'` 확인.
+- **실패 시 동작**: 메인 페이지(`/`)로 리다이렉트 (권한 없음 메시지 출력 권장).
 
 ---
 
-## 5. 기능 시나리오 (User Flows)
+## 6. 기능 시나리오 (User Flows)
 
-### 5.1 회원가입 및 온보딩
+### 6.1 회원가입 및 온보딩
 1. 사용자가 구글 소셜 로그인 시도.
 2. DB에 `User` 레코드 생성(없는 경우).
 3. 로그인 직후 `instagramId`나 `nickname`이 없으면 **프로필 설정 페이지**로 리다이렉트.
 4. 필수 정보 입력 후 메인 피드로 진입.
 
-### 5.2 매칭 (Matching)
+### 6.2 매칭 (Matching)
 1. 사용자가 **매칭 탭**(`app/[locale]/matching`) 진입.
 2. 시스템이 이성 유저의 프로필 카드(사진 포함)를 제시.
 3. 사용자는 **Like(하트)** 또는 **Pass(X)** 버튼 클릭.
 4. Like 시 상대방에게 좋아요 알림(기능 예정) 또는 매칭 성사 로직 트리거.
 
-### 5.3 사진 업로드
+### 6.3 사진 업로드
 1. 마이페이지 또는 업로드 버튼 클릭.
 2. `PhotoUpload` 컴포넌트를 통해 이미지 선택.
 3. `/api/upload` (Presigned URL 또는 직접 업로드 방식)를 통해 Cloudflare R2에 저장.
@@ -173,9 +194,9 @@ model Like {
 
 ---
 
-## 6. 인프라 설정 (Infrastructure)
+## 7. 인프라 설정 (Infrastructure)
 
-### 6.1 환경 변수 (Environment Variables)
+### 7.1 환경 변수 (Environment Variables)
 Cloudflare Pages 설정 메뉴에서 관리됩니다.
 
 | 변수명 | 설명 |
@@ -184,8 +205,9 @@ Cloudflare Pages 설정 메뉴에서 관리됩니다.
 | `AUTH_GOOGLE_SECRET` | Google OAuth Client Secret |
 | `AUTH_SECRET` | NextAuth 암호화 키 |
 | `R2_PUBLIC_URL` | R2 버킷의 공개 도메인 (예: `https://photos.aiboop.org`) |
+| `ADMIN_EMAILS` | 관리자로 자동 승격될 이메일 목록 (쉼표로 구분, 예: `admin1@test.com,admin2@test.com`) |
 
-### 6.2 바인딩 (Bindings)
+### 7.2 바인딩 (Bindings)
 `wrangler.toml` 및 Cloudflare Dashboard에서 연결된 리소스입니다.
 
 | 바인딩 이름 | 리소스 타입 | 연결 대상 |
