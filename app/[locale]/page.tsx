@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { signIn } from 'next-auth/react';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Home() {
   const t = useTranslations();
@@ -13,24 +14,18 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
-      <main className="flex flex-col items-center justify-center gap-8 px-4 py-16 text-center">
-        <div className="flex flex-col items-center gap-4">
-          <h1 className="text-6xl font-bold text-pink-600 dark:text-pink-400">
-            💕
-          </h1>
-          <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-            {t('common.appName')}
-          </h2>
-          <p className="max-w-md text-lg text-gray-600 dark:text-gray-300">
-            {t('onboarding.welcome')}
-          </p>
-        </div>
+    <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
+      {/* Top Bar with Language Switcher */}
+      <div className="flex justify-end p-4">
+        <LanguageSwitcher />
+      </div>
 
-        <div className="flex flex-col gap-4 w-full max-w-sm">
+      <main className="flex flex-1 flex-col items-center px-4 pt-10 pb-20 text-center">
+        {/* Google Login Button Section */}
+        <div className="mb-16 w-full max-w-xs">
           <button
             onClick={handleGoogleLogin}
-            className="flex items-center justify-center gap-3 rounded-full bg-white px-8 py-4 text-gray-700 shadow-lg transition-all hover:shadow-xl hover:scale-105 dark:bg-gray-800 dark:text-gray-200"
+            className="flex w-full items-center justify-center gap-3 rounded-full border border-gray-300 bg-white px-8 py-4 text-lg font-medium text-gray-700 shadow-md transition-all hover:bg-gray-50 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
           >
             <svg className="h-6 w-6" viewBox="0 0 24 24">
               <path
@@ -52,6 +47,38 @@ export default function Home() {
             </svg>
             {t('auth.loginWithGoogle')}
           </button>
+        </div>
+
+        {/* Landing Page Content */}
+        <div className="flex flex-col items-center gap-6">
+          <h1 className="text-5xl font-bold text-pink-600 dark:text-pink-400">
+            💕
+          </h1>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            {t('common.appName')}
+          </h2>
+          <p className="max-w-md text-lg text-gray-600 dark:text-gray-300">
+            {t('onboarding.welcome')}
+          </p>
+          
+          <div className="mt-8 grid gap-8 text-left md:grid-cols-2 max-w-2xl">
+            <div className="rounded-xl bg-pink-50 p-6 dark:bg-gray-800">
+              <h3 className="mb-2 text-xl font-semibold text-pink-700 dark:text-pink-400">
+                Simple Matching
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Connect with students from other universities easily.
+              </p>
+            </div>
+            <div className="rounded-xl bg-purple-50 p-6 dark:bg-gray-800">
+              <h3 className="mb-2 text-xl font-semibold text-purple-700 dark:text-purple-400">
+                Verified Users
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300">
+                Safe environment with verified student profiles.
+              </p>
+            </div>
+          </div>
         </div>
       </main>
     </div>
