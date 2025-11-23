@@ -1,216 +1,275 @@
-# [Master Spec] 이루리 소개팅 (Iruri Dating) 개발 명세서
+[Master Spec] 이루리 소개팅 (Iruri Dating) 개발 명세서
+> 문서 버전: 7.0.0 (Updated: Deployment Flow & D1 Name)
+> 상태: Production Ready
+> 원칙: 이 문서는 프로젝트의 유일한 진실 공급원(Source of Truth)입니다. 이 문서에 정의된 모든 내용은 생략 없이 구현되어야 합니다.
+> 
+1. 시스템 개요 (System Overview)
+1.1 프로젝트 정의
+ * 서비스명: 이루리 소개팅 (Iruri Dating)
+ * 핵심 가치: 사진을 매개로 자연스러운 만남을 추구하는 글로벌 대학생 소개팅 플랫폼.
+ * 주요 기능: 고화질 사진 프로필(업로드 개수 무제한), 스와이프 방식의 매칭(Like/Pass), 매칭 성사 시 인스타그램 DM 연결.
+ * 타겟 유저: 한국 거주 대학생 및 글로벌 유학생 (다국적 지원 필수).
+1.2 배포 및 인프라
+ * Main URL: https://aiboop.org
+ * Image URL: https://photos.aiboop.org (R2 Custom Domain)
+ * 배포 플랫폼: Cloudflare Pages
+ * Backend Runtime: Cloudflare Workers (Edge Runtime)
+   * 제약 사항: Node.js Native Modules (fs, crypto, os 등) 사용 불가. 표준 Web API (fetch, Request)만 사용 가능.
+ * Database: Cloudflare D1 (SQLite)
+ * Object Storage: Cloudflare R2 (이미지 저장소)
+2. 아키텍처 및 기술 스택 (Architecture & Tech Stack)
+2.1 Frontend (Next.js App Router)
+ * Framework: Next.js 15.x (App Router 필수)
+ * Language: TypeScript (Strict Mode 필수)
+ * Styling: Tailwind CSS 4.0
+   * 모바일 퍼스트 디자인 (sm: 브레이크포인트 기준 작업).
+   * 다크 모드 미지원 (화이트 테마 고정).
+   * RTL(Right-to-Left) 지원: 페르시아어(fa) 지원을 위해 ms-(margin-start), pe-(padding-end) 등 논리적 속성 사용 필수.
+ * State Management: React Query (TanStack Query) v5
+ * i18n Library: next-intl (Middleware 기반 라우팅)
+ * 지원 언어 목록 (총 11개국):
+   * ko: 한국어
+   * en: 영어 (기본값)
+   * zh-CN: 중국어 (간체)
+   * zh-TW: 중국어 (번체)
+   * ru: 러시아어
+   * vi: 베트남어
+   * uz: 우즈베크어
+   * mn: 몽골어
+   * ne: 네팔어
+   * fa: 페르시아어 (이란) - RTL 레이아웃 적용
+   * es: 스페인어
+2.2 Backend (Serverless / Edge)
+ * Database ORM: Prisma 7.x (@prisma/adapter-d1 사용 필수)
+ * Auth: Auth.js (NextAuth v5 beta) - Google Provider Only
+ * Image Handling: No Server-Side Compression. 클라이언트에서 원본을 R2로 직접 업로드(Direct Upload) 처리.
+3. 디렉토리 구조 (Directory Structure)
+AI는 아래 구조를 엄격히 준수해야 하며, 임의로 구조를 변경해서는 안 됩니다.
+/
+├── .wrangler/                # Cloudflare Local Development state
+├── app/
+│   ├── [locale]/             # 다국어 라우팅 루트
+│   │   ├── layout.tsx        # Root Layout (i18n Provider, AuthProvider, QueryProvider, RTL Direction 설정)
+│   │   ├── page.tsx          # 랜딩 페이지 (로그인 전 소개 화면)
+│   │   ├── home/             # 메인 피드 (카드 스택 - 로그인 후 진입)
+│   │   ├── profile/          # 내 프로필 설정 및 수정
+│   │   │   └── photos/       # 사진 관리 페이지 (무제한 업로드)
+│   │   ├── matching/         # 매칭된 목록 확인 및 인스타 ID 확인
+│   │   └── admin/            # 관리자 전용 대시보드
+│   ├── api/                  # Edge API Routes (Backend Logic)
+│   │   ├── auth/             # NextAuth Endpoints
+│   │   ├── upload/           # R2 Presigned URL 발급
+│   │   ├── matches/          # 매칭 후보 추천 및 액션 처리
+│   │   └── admin/            # 관리자 데이터 조회
+│   └── globals.css           # Tailwind CSS directives
+├── components/
+│   ├── ui/                   # 재사용 가능한 원자 단위 UI (Button, Input, Dialog...)
+│   ├── features/             # 도메인 로직이 포함된 컴포넌트 (CardStack, ProfileForm...)
+│   ├── layout/               # 레이아웃 컴포넌트 (Header, BottomNav)
+│   └── providers/            # Client Component Providers wrapper
+├── lib/
+│   ├── db.ts                 # Prisma Client Instance (Edge Compatible)
+│   ├── auth.ts               # NextAuth Configuration
+│   ├── utils.ts              # 공용 유틸리티 함수 (cn 등)
+│   └── constants.ts          # 상수 관리 (언어 목록 등)
+├── messages/                 # i18n JSON Files
+│   ├── ko.json
+│   ├── en.json
+│   ├── ru.json
+│   ├── ... (모든 11개 언어 파일 필수)
+├── prisma/
+│   └── schema.prisma         # 데이터베이스 모델 정의
+├── public/                   # 정적 자산
+├── next.config.ts            # Next.js Config
+├── tailwind.config.ts        # Tailwind Config
+└── wrangler.toml             # Cloudflare Configuration
 
-> **문서 버전**: 3.1.0 (2025-11-22 현행화)
-> **상태**: Final (Codebase Synchronized)
-> **목적**: 이 문서는 프로젝트의 **유일한 진실 공급원(Source of Truth)**으로서, 현재 구현된 코드와 100% 일치하는 시스템 아키텍처, 데이터 모델, API 및 기능을 정의합니다.
+4. 데이터 모델 (Data Model - Prisma Schema)
+아래 코드는 prisma/schema.prisma의 전체 내용입니다. 생략된 부분은 없습니다.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
 
----
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
 
-## 1. 시스템 개요 (System Overview)
-
-### 1.1 프로젝트 정의
-- **서비스명**: 이루리 소개팅 (Iruri Dating)
-- **핵심 가치**: 사진을 매개로 자연스러운 만남을 추구하는 글로벌 대학생 소개팅 플랫폼.
-- **주요 기능**: 사진 프로필 업로드, 이성 매칭(스와이프 방식), 인스타그램 DM 연결.
-- **타겟 유저**: 한국 및 글로벌(중화권/영어권) 대학생.
-
-### 1.2 배포 환경
-- **URL**: `https://aiboop.org`
-- **배포 플랫폼**: Cloudflare Pages
-- **CI/CD**: GitHub Repository (`main` branch push) -> Cloudflare Build System
-
----
-
-## 2. 아키텍처 및 기술 스택 (Architecture & Tech Stack)
-
-### 2.1 Frontend (App Router)
-- **Framework**: Next.js 15.5.2
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS 4
-- **i18n**: `next-intl` (Middleware Routing)
-  - 지원 언어: `ko` (한국어), `en` (영어 - 기본값), `zh-CN` (간체), `zh-TW` (번체)
-- **Components**:
-  - `BottomNav`: 하단 탭 네비게이션
-  - `PhotoUpload`: 이미지 업로드 및 미리보기
-
-### 2.2 Backend (Serverless / Edge)
-- **Runtime**: Cloudflare Workers (Edge Runtime)
-- **Database**: Cloudflare D1 (SQLite)
-- **Storage**: Cloudflare R2 (Object Storage for Images)
-- **ORM**: Prisma 7.0.0 (`@prisma/adapter-d1`)
-- **Auth**: NextAuth v5 (Auth.js) - Google Provider Only
-
----
-
-## 3. 데이터 모델 (Data Model)
-
-Cloudflare D1(SQLite)을 사용하며, `prisma/schema.prisma`에 정의된 모델은 다음과 같습니다.
-
-```prisma
+// 사용자 모델
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
-  image         String?   // 구글 프로필 사진
+  image         String?   // 구글 프로필 사진 (기본값)
   
-  // 프로필 정보
+  // 서비스 전용 프로필 정보
   nickname      String?
   gender        String?   // 'MALE' | 'FEMALE'
-  instagramId   String?   // 필수 입력 사항
-  introduction  String?   
-  role          String    @default("USER") // 'USER' | 'ADMIN'
+  instagramId   String?   // 매칭 성공 시 상대에게 공개됨
+  introduction  String?   // 자기소개 (최대 100자)
   
-  // 관계
+  role          String    @default("USER") // 'USER' | 'ADMIN'
+  status        String    @default("ACTIVE") // 'ACTIVE' | 'BANNED' | 'PENDING'
+  
+  // 관계 정의
   accounts      Account[]
   sessions      Session[]
-  photos        Photo[]   
-  likes         Like[]    
+  photos        Photo[]
+  
+  // 매칭 관련 관계
+  sentLikes     Like[]    @relation("UserSentLikes")
+  
   matchesAsUser1 Match[]  @relation("User1Matches")
   matchesAsUser2 Match[]  @relation("User2Matches")
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  @@index([email])
+  @@index([gender])
 }
 
+// NextAuth 필수 Account 모델
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// NextAuth 필수 Session 모델
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// 프로필 사진 모델
+model Photo {
+  id        String   @id @default(cuid())
+  userId    String
+  url       String   // R2 Public URL (photos.aiboop.org/...)
+  caption   String?  // 사진 설명 (선택)
+  order     Int      @default(0) // 출력 순서 (0번이 대표 사진)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+}
+
+// 좋아요(Like) 액션 모델
+model Like {
+  id         String   @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  
+  user       User     @relation("UserSentLikes", fields: [fromUserId], references: [id], onDelete: Cascade)
+  
+  createdAt  DateTime @default(now())
+  
+  @@unique([fromUserId, toUserId]) // 중복 좋아요 방지
+}
+
+// 성사된 매칭 모델
 model Match {
   id        String   @id @default(cuid())
   user1Id   String
   user2Id   String
+  
   user1     User     @relation("User1Matches", fields: [user1Id], references: [id], onDelete: Cascade)
   user2     User     @relation("User2Matches", fields: [user2Id], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
-}
-
-model Photo {
-  id        String   @id @default(cuid())
-  userId    String
-  url       String   // R2 Public URL
-  caption   String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  likes     Like[]   
   
-  createdAt DateTime @default(now())
+  @@unique([user1Id, user2Id])
 }
 
-model Like {
-  id        String   @id @default(cuid())
-  userId    String   // 좋아요를 누른 사람 (Actor)
-  photoId   String   // 좋아요 받은 사진 (Target Photo)
-  
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  photo     Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  @@unique([userId, photoId]) // 중복 좋아요 방지
-}
-
-// NextAuth 필수 모델 (Account, Session) 생략 (표준 스키마 준수)
-```
-
----
-
-## 4. API 명세 (API Specification)
-
-모든 API는 `app/api` 경로 하위에 위치하며 Cloudflare Edge Runtime에서 동작합니다.
-
-### 4.1 인증 (Auth)
-- **Endpoint**: `/api/auth/[...nextauth]`
-- **Provider**: Google
-- **Logic**:
-  - `getPrisma(ctx.env.DB)`를 통해 D1 어댑터 연결.
-  - **Auto-Promotion**: `jwt` callback에서 로그인한 이메일이 `ADMIN_EMAILS` 환경변수에 포함된 경우 `User.role`을 즉시 `ADMIN`으로 승격.
-
-### 4.2 매칭 (Matching)
-- **후보 추천 (`GET /api/matches/candidates`)**:
-  - `userId` 파라미터 필수.
-  - 요청자의 성별(`gender`)을 확인 후, 반대 성별(`Opposite Gender`) 유저 목록 반환.
-  - 이미 본 유저 제외 로직(TODO) 및 랜덤 셔플링 포함.
-- **액션 수행 (`POST /api/matches/action`)**:
-  - Payload: `{ userId, photoId, action }` (`action`: 'like' | 'pass')
-  - **Like**: `Like` 테이블에 레코드 생성 (Upsert).
-  - **Pass**: DB에 저장하지 않고 성공 응답만 반환 (Stateless).
-
-### 4.3 프로필 (Profile)
-- **조회 (`GET /api/profile`)**: `email` 파라미터로 유저 및 사진 목록(`photos`) 조회.
-- **수정 (`POST /api/profile`)**: `instagramId`, `nickname`, `gender`, `introduction` 업데이트.
-
-### 4.4 관리자 (Admin)
-- **권한 체크**: `User.role === 'ADMIN'` 인지 확인 (Middleware 및 API 레벨 이중 체크).
-- **유저 관리 (`/api/admin/users`)**:
-  - `GET`: 전체 유저 목록 및 통계(사진 수, 좋아요 수 등) 반환.
-  - `DELETE`: 특정 유저 계정 삭제.
-- **사진 관리 (`/api/admin/photos`)**:
-  - `GET`: 전체 업로드 사진 목록 반환.
-  - `DELETE`: 부적절한 사진 DB 레코드 삭제 (R2 파일 삭제는 별도 구현 필요).
-
----
-
-## 5. 관리자 시스템 명세 (Admin Specifications)
-
-### 5.1 관리자 승격 및 인증 전략 (Auth Strategy)
-가장 중요한 보안 섹션입니다. 구현 시 엄격히 준수하십시오.
-
-#### 슈퍼 관리자 자동 승격 (Auto-Promotion)
-- **Trigger**: 사용자가 구글 로그인을 시도하는 시점 (jwt callback).
-- **Logic**:
-  1. 로그인한 `email`이 환경변수 `ADMIN_EMAILS` 문자열에 포함되어 있는지 확인.
-  2. 포함되어 있고, 현재 DB의 `role`이 `USER`라면 → 즉시 DB의 `role`을 `ADMIN`으로 업데이트.
-  3. 포함되어 있지 않다면 → DB 값을 그대로 유지.
-
-#### JWT 및 세션 관리 (Role Persistence)
-- **JWT Callback**: DB의 최신 `role` 값을 가져와 `token.role`에 저장.
-- **Session Callback**: `token.role` 값을 `session.user.role`로 전달. 클라이언트에서 `useSession()`으로 접근 가능해야 함.
-
-#### 미들웨어 보안 (Middleware Security)
-- **대상 경로**: `/admin`으로 시작하는 모든 경로 (`/admin/:path*`).
-- **검사 로직**:
-  1. 로그인 여부 확인 (`req.auth`).
-  2. `req.auth.user.role === 'ADMIN'` 확인.
-- **실패 시 동작**: 메인 페이지(`/`)로 리다이렉트 (권한 없음 메시지 출력 권장).
-
----
-
-## 6. 기능 시나리오 (User Flows)
-
-### 6.1 회원가입 및 온보딩
-1. 사용자가 구글 소셜 로그인 시도.
-2. DB에 `User` 레코드 생성(없는 경우).
-3. 로그인 직후 `instagramId`나 `nickname`이 없으면 **프로필 설정 페이지**로 리다이렉트.
-4. 필수 정보 입력 후 메인 피드로 진입.
-
-### 6.2 매칭 (Matching)
-1. 사용자가 **매칭 탭**(`app/[locale]/matching`) 진입.
-2. 시스템이 이성 유저의 프로필 카드(사진 포함)를 제시.
-3. 사용자는 **Like(하트)** 또는 **Pass(X)** 버튼 클릭.
-4. Like 시 상대방에게 좋아요 알림(기능 예정) 또는 매칭 성사 로직 트리거.
-
-### 6.3 사진 업로드
-1. 마이페이지 또는 업로드 버튼 클릭.
-2. `PhotoUpload` 컴포넌트를 통해 이미지 선택.
-3. `/api/upload` (Presigned URL 또는 직접 업로드 방식)를 통해 Cloudflare R2에 저장.
-4. DB `Photo` 테이블에 Public URL 저장.
-
----
-
-## 7. 인프라 설정 (Infrastructure)
-
-### 7.1 환경 변수 (Environment Variables)
-Cloudflare Pages 설정 메뉴에서 관리됩니다.
-
-| 변수명 | 설명 |
-|--------|------|
-| `AUTH_GOOGLE_ID` | Google OAuth Client ID |
-| `AUTH_GOOGLE_SECRET` | Google OAuth Client Secret |
-| `AUTH_SECRET` | NextAuth 암호화 키 |
-| `R2_PUBLIC_URL` | R2 버킷의 공개 도메인 (예: `https://photos.aiboop.org`) |
-| `ADMIN_EMAILS` | 관리자로 자동 승격될 이메일 목록 (쉼표로 구분, 예: `admin1@test.com,admin2@test.com`) |
-
-### 7.2 바인딩 (Bindings)
-`wrangler.toml` 및 Cloudflare Dashboard에서 연결된 리소스입니다.
-
-| 바인딩 이름 | 리소스 타입 | 연결 대상 |
-|-------------|-------------|-----------|
-| `DB` | D1 Database | `iluli-db` |
-| `R2` | R2 Bucket | `iluli-photos` |
+5. API 명세 (API Specification)
+모든 API는 app/api 하위에 위치하며 Edge Runtime에서 동작합니다.
+5.1 인증 (Authentication)
+ * Path: /api/auth/[...nextauth]
+ * Logic:
+   * Google OAuth 로그인 처리.
+   * jwt 콜백: 로그인 시 env.ADMIN_EMAILS를 확인하여 관리자 이메일일 경우 DB의 role을 즉시 ADMIN으로 업데이트.
+   * session 콜백: 클라이언트가 user.id, user.role, user.instagramId에 접근할 수 있도록 세션 객체 확장.
+5.2 프로필 (Profile)
+ * GET /api/profile: 현재 로그인한 유저의 정보와 사진 목록 반환.
+ * POST /api/profile: 닉네임, 성별, 인스타그램ID, 자기소개 수정.
+5.3 이미지 업로드 (R2 Storage - Critical)
+ * Path: /api/upload/presigned
+ * Method: POST
+ * Payload: { filename: string, filetype: string }
+ * Logic:
+   * 인증된 유저인지 확인.
+   * R2 버킷에 업로드할 수 있는 Presigned URL 생성 (만료시간 5분).
+   * URL 반환.
+ * 클라이언트 동작:
+   * 절대 압축 금지: 사용자가 선택한 파일을 바이트 그대로 유지.
+   * 지원 포맷: image/jpeg, image/png, image/webp, image/gif, image/avif, image/heic, image/heif, image/jxl (JPEG XL).
+   * PUT 메서드로 Presigned URL에 직접 바이너리 전송.
+   * 업로드 성공 시 /api/profile/photos를 호출하여 DB에 Key(URL) 저장.
+5.4 매칭 시스템 (Matching)
+ * GET /api/matches/candidates:
+   * 나의 성별(gender)과 반대되는 유저 목록 조회.
+   * 제외 조건: 내가 이미 Like한 유저.
+   * 정렬: 랜덤(Random) 셔플.
+   * 반환: 최대 10명의 유저 프로필(사진 포함) 배열.
+ * POST /api/matches/action:
+   * Payload: { targetUserId: string, action: 'LIKE' | 'PASS' }
+   * LIKE 일 경우:
+     * Like 테이블에 레코드 추가.
+     * 매칭 검사: Like 테이블에서 targetUserId가 나를 좋아요 했는지 확인 (findFirst).
+     * 존재하면 Match 테이블 레코드 생성 후 isMatch: true 반환.
+     * 없으면 isMatch: false 반환.
+   * PASS 일 경우:
+     * DB에 저장하지 않음 (Stateless). 다음 카드로 넘어감.
+5.5 관리자 (Admin)
+ * Middleware: /admin 및 /api/admin 경로는 user.role === 'ADMIN' 일 때만 접근 허용.
+ * GET /api/admin/users: 전체 회원 목록, 가입일, 매칭 수 등 통계 조회.
+ * DELETE /api/admin/users: 악성 유저 강제 탈퇴 처리.
+6. 인프라 및 환경 변수 (Infrastructure & Env)
+환경 변수는 **1. 클라우드플레어 대시보드 등록(Secret)**과 **2. 로컬/프로젝트 설정(Public/Config)**으로 나뉩니다.
+6.1 클라우드플레어 대시보드 등록 (Secrets)
+보안이 필수적인 값들입니다. Cloudflare Pages Dashboard -> Settings -> Environment Variables에 등록되어 있습니다.
+| 변수명 | 값(예시) | 설명 |
+|---|---|---|
+| AUTH_GOOGLE_ID | 123...apps.googleusercontent.com | Google OAuth Client ID |
+| AUTH_GOOGLE_SECRET | GOCSPX-... | Google OAuth Client Secret |
+| AUTH_SECRET | asef... | NextAuth 암호화 키 |
+| ADMIN_EMAILS | admin@a.com,ceo@b.com | 관리자 이메일 목록 (쉼표 구분) |
+6.2 로컬 개발 및 설정 파일 (Config)
+.env.local 또는 wrangler.toml에 AI가 등록하거나 참조해야 할 값들입니다.
+| 변수명 | 값 | 설명 |
+|---|---|---|
+| NEXT_PUBLIC_R2_URL | https://photos.aiboop.org | [중요] 클라이언트에서 이미지를 로드할 때 사용하는 도메인 |
+| R2_BUCKET_NAME | iluli-photos | R2 버킷 이름 |
+| D1_DATABASE_NAME | iluli-db | [추가] Cloudflare D1 데이터베이스 이름 |
+7. 배포 및 운영 플로우 (Deployment & Operations)
+본 프로젝트는 GitHub와 Cloudflare Pages 간의 CI/CD 파이프라인을 통해 배포됩니다.
+7.1 소스 코드 관리 및 CI/CD
+ * Repository: GitHub
+ * Production Branch: main
+ * Deployment Strategy:
+   * 개발 (Local): 개발자가 로컬 환경에서 기능 개발 및 테스트.
+   * 커밋 및 푸시 (Push): 코드를 수정 후 GitHub 리포지토리의 main 브랜치로 커밋 및 푸시.
+   * 자동 빌드 (Build): Cloudflare Pages가 main 브랜치의 변경 사항을 감지하여 자동으로 빌드 시작.
+   * 배포 (Deploy): 빌드 성공 시 전 세계 Edge Network에 즉시 배포 및 반영.
+7.2 데이터베이스 마이그레이션
+ * Schema 변경 시: 로컬에서 prisma migrate dev 등으로 생성된 마이그레이션 파일도 함께 커밋해야 합니다.
+ * Prod DB 적용: Cloudflare Dashboard 또는 Wrangler CLI를 통해 프로덕션 D1 데이터베이스(iluli-db)에 마이그레이션을 적용합니다.
