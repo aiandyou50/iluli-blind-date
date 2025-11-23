@@ -22,8 +22,17 @@ export async function GET(req: NextRequest) {
     const token = await getToken({ req, secret });
 
     if (!token || !token.sub) {
-      console.log("Token not found or invalid", { hasToken: !!token, sub: token?.sub });
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      // Debugging: Check cookies
+      const cookieList = req.cookies.getAll().map(c => c.name);
+      console.log("Token verification failed. Cookies present:", cookieList);
+      
+      return NextResponse.json({ 
+        error: 'Unauthorized', 
+        debug: { 
+          cookies: cookieList,
+          hasSecret: !!secret
+        } 
+      }, { status: 401 });
     }
 
     const userId = token.sub;

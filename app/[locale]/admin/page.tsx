@@ -55,7 +55,7 @@ export default function AdminPage() {
         headers['x-admin-password'] = adminPassword;
       }
 
-      const res = await fetch(endpoint, { headers });
+      const res = await fetch(endpoint, { headers, credentials: 'include' });
       
       if (res.status === 401 || res.status === 403) {
         setIsAuthorized(false);

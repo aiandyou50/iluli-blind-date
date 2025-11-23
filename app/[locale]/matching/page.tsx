@@ -21,7 +21,7 @@ export default function MatchingPage() {
   useEffect(() => {
     if (!currentUserId) return;
 
-    fetch(`/api/matches/candidates?userId=${currentUserId}`)
+    fetch(`/api/matches/candidates?userId=${currentUserId}`, { credentials: 'include' })
       .then(async res => {
         if (res.status === 401) {
           // Session might be invalid on server side even if client side thinks it's valid
