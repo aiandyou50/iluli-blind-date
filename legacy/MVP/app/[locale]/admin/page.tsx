@@ -69,25 +69,6 @@ export default function AdminPage() {
     return null; // Will redirect
   }
 
-  const handleBanUser = async (id: string, currentStatus: string) => {
-    const newStatus = currentStatus === 'BANNED' ? 'ACTIVE' : 'BANNED';
-    if (!confirm(`Change status to ${newStatus}?`)) return;
-    
-    try {
-      const res = await fetch('/api/admin/users', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: id, status: newStatus })
-      });
-      
-      if (!res.ok) throw new Error('Failed to update status');
-      fetchData();
-    } catch (error) {
-      console.error(error);
-      alert('Failed to update status');
-    }
-  };
-
   const handleDeleteUser = async (id: string) => {
     if (!confirm(t('confirmDeleteUser'))) return;
     try {
@@ -137,7 +118,6 @@ export default function AdminPage() {
                   <th className="px-6 py-3">{t('colName')}</th>
                   <th className="px-6 py-3">{t('colEmail')}</th>
                   <th className="px-6 py-3">{t('colRole')}</th>
-                  <th className="px-6 py-3">Status</th>
                   <th className="px-6 py-3">{t('colStats')}</th>
                   <th className="px-6 py-3">{t('colActions')}</th>
                 </tr>
@@ -149,28 +129,13 @@ export default function AdminPage() {
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">{user.role || 'USER'}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded text-xs ${user.status === 'BANNED' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-                        {user.status || 'ACTIVE'}
-                      </span>
+                      {t('photos')}: {user._count?.photos || 0}<br/>
+                      {t('likes')}: {user._count?.likes || 0}
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-xs space-y-1">
-                        <div>Photos: {user._count?.photos || 0}</div>
-                        <div>Likes: {user._count?.sentLikes || 0}</div>
-                        <div className="text-red-600 font-bold">Reports: {user._count?.reportsReceived || 0}</div>
-                        <div>Blocks: {user._count?.blocksReceived || 0}</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 space-x-2">
-                      <button 
-                        onClick={() => handleBanUser(user.id, user.status || 'ACTIVE')}
-                        className={`text-sm font-medium ${user.status === 'BANNED' ? 'text-green-600 hover:text-green-900' : 'text-orange-600 hover:text-orange-900'}`}
-                      >
-                        {user.status === 'BANNED' ? 'Unban' : 'Ban'}
-                      </button>
                       <button 
                         onClick={() => handleDeleteUser(user.id)}
-                        className="text-sm font-medium text-red-600 hover:text-red-900"
+                        className="text-red-600 hover:text-red-900"
                       >
                         {t('delete')}
                       </button>

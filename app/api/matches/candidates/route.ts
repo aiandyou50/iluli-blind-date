@@ -1,25 +1,28 @@
 import { getPrisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getToken } from 'next-auth/jwt';
 
 export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId'); // Current user
-
     const ctx = getRequestContext();
+    // @ts-ignore
+    const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+    const token = await getToken({ req, secret });
+
+    if (!token || !token.sub) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    const userId = token.sub;
     const db = ctx.env.DB;
     if (!db) {
       return new NextResponse('Database binding not found', { status: 500 });
     }
 
     const prisma = getPrisma(db);
-
-    if (!userId) {
-       return new NextResponse('User ID required', { status: 400 });
-    }
 
     // Get current user to know their gender
     const currentUser = await prisma.user.findUnique({
@@ -28,27 +31,59 @@ export async function GET(req: NextRequest) {
     });
 
     if (!currentUser || !currentUser.gender) {
-      // If gender is not set, maybe return random or empty? 
-      // For now, let's return empty to force them to complete profile, 
-      // or just return all if we want to be lenient.
-      // Spec says "Opposite gender", so we need gender.
       return NextResponse.json([]);
     }
 
     const targetGender = currentUser.gender === 'MALE' ? 'FEMALE' : 'MALE';
 
-    // Get users not yet liked/passed by current user
-    // Simplified: Get all users except self AND match target gender
-    // TODO: Exclude already swiped users
+    // 1. Get IDs of users I have liked
+    const liked = await prisma.like.findMany({
+      where: { fromUserId: userId },
+      select: { toUserId: true }
+    });
+    const likedIds = liked.map(l => l.toUserId);
+
+    // 2. Get IDs of users I have blocked
+    const blocked = await prisma.block.findMany({
+      where: { blockerId: userId },
+      select: { blockedId: true }
+    });
+    const blockedIds = blocked.map(b => b.blockedId);
+
+    // 3. Get IDs of users who have blocked me
+    const blockedBy = await prisma.block.findMany({
+      where: { blockedId: userId },
+      select: { blockerId: true }
+    });
+    const blockedByIds = blockedBy.map(b => b.blockerId);
+
+    // 4. Get IDs of users I have reported
+    const reported = await prisma.report.findMany({
+      where: { reporterId: userId },
+      select: { reportedId: true }
+    });
+    const reportedIds = reported.map(r => r.reportedId);
+
+    // Combine all excluded IDs
+    const excludedIds = [
+      userId, // Self
+      ...likedIds,
+      ...blockedIds,
+      ...blockedByIds,
+      ...reportedIds
+    ];
+
+    // Fetch candidates
     const users = await prisma.user.findMany({
       where: {
-        NOT: { id: userId },
-        gender: targetGender
+        id: { notIn: excludedIds },
+        gender: targetGender,
+        status: 'ACTIVE' // Only active users
       },
       include: {
         photos: { 
           take: 1,
-          orderBy: { createdAt: 'desc' } // Changed from order to createdAt as per schema
+          orderBy: { order: 'asc' }
         }
       },
       take: 20
@@ -71,6 +106,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(usersWithPhotos);
   } catch (error: any) {
     console.error("Error fetching candidates:", error);
-    return new NextResponse(JSON.stringify({ error: error.message, stack: error.stack }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    return new NextResponse(JSON.stringify({ error: error.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }

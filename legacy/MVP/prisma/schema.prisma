@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?   // 구글 프로필 사진
+  
+  // 커스텀 필드
+  nickname      String?
+  gender        String?   // 'MALE' | 'FEMALE'
+  instagramId   String?   // 필수 입력
+  introduction  String?   
+  role          String    @default("USER") // 'USER' | 'ADMIN'
+  
+  accounts      Account[]
+  sessions      Session[]
+  photos        Photo[]   
+  likes         Like[]    
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? 
+  access_token       String? 
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  userId    String
+  url       String   // R2 Public URL
+  caption   String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes     Like[]   
+  
+  createdAt DateTime @default(now())
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String   // 좋아요를 누른 사람
+  photoId   String   // 좋아요 받은 사진
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photo     Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  @@unique([userId, photoId]) // 중복 방지
+}

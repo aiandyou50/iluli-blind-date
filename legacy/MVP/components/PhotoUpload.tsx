@@ -19,48 +19,29 @@ export default function PhotoUpload({ userId, onUploadSuccess }: PhotoUploadProp
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // [EN] Client-side validation: Check if file size exceeds 10MB
-    // [KR] 클라이언트 측 검증: 파일 크기가 10MB를 초과하는지 확인
-    if (file.size > 10 * 1024 * 1024) {
-      alert("File size must be less than 10MB");
-      return;
-    }
-
     setIsUploading(true);
 
     try {
-      // 1. Get Presigned URL
-      const presignRes = await fetch('/api/upload', {
+      // 1. Upload to R2
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const uploadRes = await fetch('/api/upload', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          filename: file.name,
-          contentType: file.type
-        }),
-      });
-
-      if (!presignRes.ok) {
-        console.error('Failed to get presigned URL:', await presignRes.text());
-        throw new Error('Failed to get upload URL');
-      }
-
-      const { uploadUrl, fileUrl } = await presignRes.json() as { uploadUrl: string; fileUrl: string };
-
-      // 2. Upload to R2 directly
-      const uploadRes = await fetch(uploadUrl, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': file.type
-        },
-        body: file,
+        body: formData,
       });
 
       if (!uploadRes.ok) {
-        console.error('Direct upload failed:', await uploadRes.text());
+        // [EN] Log upload failure for debugging
+        // [KR] 디버깅을 위한 업로드 실패 로그
+        console.error('Upload failed:', await uploadRes.text());
         throw new Error('Upload failed');
       }
 
-      // 3. Save metadata to DB
+      const data = await uploadRes.json() as { fileUrl: string };
+      const { fileUrl } = data;
+
+      // 2. Save metadata to DB
       const saveRes = await fetch('/api/photos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

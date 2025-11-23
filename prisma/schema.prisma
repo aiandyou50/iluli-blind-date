@@ -7,6 +7,26 @@ datasource db {
   provider = "sqlite"
 }
 
+// --- Enums ---
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING
+  BANNED
+}
+
+// --- Models ---
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -14,38 +34,56 @@ model User {
   emailVerified DateTime?
   image         String?   // 구글 프로필 사진
   
-  // 커스텀 필드
-  nickname      String?
-  gender        String?   // 'MALE' | 'FEMALE'
-  instagramId   String?   // 필수 입력
-  introduction  String?   
-  role          String    @default("USER") // 'USER' | 'ADMIN'
+  // 프로필 정보
+  nickname      String?   @unique
+  gender        Gender?
+  school        String?
+  instagramId   String?
+  introduction  String?
   
+  role          Role       @default(USER)
+  status        UserStatus @default(ACTIVE)
+  
+  // 관계 정의
   accounts      Account[]
   sessions      Session[]
-  photos        Photo[]   
-  likes         Like[]    
+  photos        Photo[]
+  
+  // 매칭 관련 관계
+  sentLikes     Like[]    @relation("UserSentLikes")
+  
+  matchesAsUser1 Match[]  @relation("User1Matches")
+  matchesAsUser2 Match[]  @relation("User2Matches")
+
+  // 신고 및 차단 관계
+  reportsSent     Report[] @relation("Reporter")
+  reportsReceived Report[] @relation("Reported")
+  blocksSent      Block[]  @relation("Blocker")
+  blocksReceived  Block[]  @relation("Blocked")
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  @@index([email])
+  @@index([gender])
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String? 
-  access_token       String? 
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
- 
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
 }
 
@@ -62,20 +100,60 @@ model Photo {
   userId    String
   url       String   // R2 Public URL
   caption   String?
+  order     Int      @default(0)
+  
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  likes     Like[]   
   
   createdAt DateTime @default(now())
 }
 
 model Like {
-  id        String   @id @default(cuid())
-  userId    String   // 좋아요를 누른 사람
-  photoId   String   // 좋아요 받은 사진
+  id         String   @id @default(cuid())
+  fromUserId String
+  toUserId   String
   
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  photo     Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  user       User     @relation("UserSentLikes", fields: [fromUserId], references: [id], onDelete: Cascade)
+  
+  createdAt  DateTime @default(now())
+  
+  @@unique([fromUserId, toUserId])
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  user1Id   String
+  user2Id   String
+  
+  user1     User     @relation("User1Matches", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2     User     @relation("User2Matches", fields: [user2Id], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
-  @@unique([userId, photoId]) // 중복 방지
+  
+  @@unique([user1Id, user2Id])
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  reporterId  String
+  reportedId  String
+  reason      String
+  details     String?
+  
+  reporter    User     @relation("Reporter", fields: [reporterId], references: [id])
+  reported    User     @relation("Reported", fields: [reportedId], references: [id])
+  
+  createdAt   DateTime @default(now())
+}
+
+model Block {
+  id          String   @id @default(cuid())
+  blockerId   String
+  blockedId   String
+  
+  blocker     User     @relation("Blocker", fields: [blockerId], references: [id])
+  blocked     User     @relation("Blocked", fields: [blockedId], references: [id])
+  
+  createdAt   DateTime @default(now())
+
+  @@unique([blockerId, blockedId])
 }

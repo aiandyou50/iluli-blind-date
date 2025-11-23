@@ -28,6 +28,13 @@ export default function LanguageSwitcher() {
       <option value="en">English</option>
       <option value="zh-CN">中文 (简体)</option>
       <option value="zh-TW">中文 (繁體)</option>
+      <option value="ru">Русский</option>
+      <option value="vi">Tiếng Việt</option>
+      <option value="uz">Oʻzbekcha</option>
+      <option value="mn">Монгол</option>
+      <option value="ne">नेपाली</option>
+      <option value="fa">فارسی</option>
+      <option value="es">Español</option>
     </select>
   );
 }

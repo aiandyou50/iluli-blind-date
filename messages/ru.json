@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "Iluli Blind Date",
+    "loading": "Загрузка...",
+    "error": "Произошла ошибка",
+    "retry": "Повторить"
+  },
+  "auth": {
+    "login": "Войти",
+    "loginWithGoogle": "Войти через Google",
+    "logout": "Выйти",
+    "welcome": "Добро пожаловать"
+  },
+  "nav": {
+    "feed": "Лента",
+    "swipe": "Знакомства",
+    "likes": "Лайки",
+    "profile": "Профиль"
+  },
+  "feed": {
+    "title": "Лента",
+    "noPhotos": "Нет фото",
+    "loadMore": "Загрузить еще"
+  },
+  "profile": {
+    "editProfile": "Редактировать профиль",
+    "photos": "Фото",
+    "addPhoto": "Добавить фото",
+    "deletePhoto": "Удалить фото",
+    "introduction": "О себе",
+    "instagram": "Instagram",
+    "connectInstagram": "Подключить Instagram",
+    "visitInstagram": "Открыть Instagram",
+    "instagramLabel": "Instagram ID (Обязательно для матчинга)",
+    "introductionLabel": "О себе (одной строкой)",
+    "nickname": "Никнейм",
+    "gender": "Пол",
+    "genderLabel": "Пол",
+    "male": "Мужской",
+    "female": "Женский",
+    "saveButton": "Сохранить профиль",
+    "savingButton": "Сохранение...",
+    "myPhotos": "Мои фото",
+    "noPhotos": "Нет фото."
+  },
+  "swipe": {
+    "like": "Нравится",
+    "pass": "Пропустить",
+    "noMoreProfiles": "Больше нет профилей",
+    "itsAMatch": "Это совпадение!"
+  },
+  "likes": {
+    "sent": "Отправленные",
+    "received": "Полученные",
+    "matches": "Совпадения",
+    "noLikes": "Пока нет лайков"
+  },
+  "onboarding": {
+    "welcome": "Добро пожаловать в Iluli Blind Date",
+    "step1Title": "Подключить Instagram",
+    "step1Desc": "Привяжите Instagram к профилю",
+    "step2Title": "Загрузить фото",
+    "step2Desc": "Загрузите минимум 1 фото (рекомендуется 4 кадра)",
+    "step3Title": "Начать знакомства",
+    "step3Desc": "Вы готовы к знакомствам",
+    "next": "Далее",
+    "skip": "Пропустить",
+    "finish": "Начать"
+  },
+  "admin": {
+    "dashboardTitle": "Панель администратора",
+    "usersTab": "Пользователи",
+    "photosTab": "Фото",
+    "loading": "Загрузка данных...",
+    "colName": "Имя",
+    "colEmail": "Email",
+    "colRole": "Роль",
+    "colStats": "Статистика",
+    "colActions": "Действия",
+    "photos": "Фото",
+    "likes": "Лайки",
+    "delete": "Удалить",
+    "confirmDeleteUser": "Вы уверены, что хотите удалить этого пользователя?",
+    "confirmDeletePhoto": "Вы уверены, что хотите удалить это фото?"
+  }
+}

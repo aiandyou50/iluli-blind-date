@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "Iluli Blind Date",
+    "loading": "Уншиж байна...",
+    "error": "Алдаа гарлаа",
+    "retry": "Дахин оролдох"
+  },
+  "auth": {
+    "login": "Нэвтрэх",
+    "loginWithGoogle": "Google-ээр нэвтрэх",
+    "logout": "Гарах",
+    "welcome": "Тавтай морил"
+  },
+  "nav": {
+    "feed": "Мэдээлэл",
+    "swipe": "Танилцах",
+    "likes": "Таалагдсан",
+    "profile": "Профайл"
+  },
+  "feed": {
+    "title": "Мэдээлэл",
+    "noPhotos": "Зураг алга",
+    "loadMore": "Илүү ихийг"
+  },
+  "profile": {
+    "editProfile": "Профайл засах",
+    "photos": "Зураг",
+    "addPhoto": "Зураг нэмэх",
+    "deletePhoto": "Зураг устгах",
+    "introduction": "Танилцуулга",
+    "instagram": "Instagram",
+    "connectInstagram": "Instagram холбох",
+    "visitInstagram": "Instagram зочлох",
+    "instagramLabel": "Instagram ID (Танилцахад шаардлагатай)",
+    "introductionLabel": "Танилцуулга (Нэг мөр)",
+    "nickname": "Хоч",
+    "gender": "Хүйс",
+    "genderLabel": "Хүйс",
+    "male": "Эрэгтэй",
+    "female": "Эмэгтэй",
+    "saveButton": "Хадгалах",
+    "savingButton": "Хадгалж байна...",
+    "myPhotos": "Миний зураг",
+    "noPhotos": "Зураг алга."
+  },
+  "swipe": {
+    "like": "Таалагдлаа",
+    "pass": "Алгасах",
+    "noMoreProfiles": "Өөр профайл алга",
+    "itsAMatch": "Таарлаа!"
+  },
+  "likes": {
+    "sent": "Илгээсэн",
+    "received": "Хүлээн авсан",
+    "matches": "Таарсан",
+    "noLikes": "Одоогоор таалагдсан зүйл алга"
+  },
+  "onboarding": {
+    "welcome": "Iluli Blind Date-д тавтай морил",
+    "step1Title": "Instagram холбох",
+    "step1Desc": "Instagram-аа профайлтайгаа холбоно уу",
+    "step2Title": "Зураг оруулах",
+    "step2Desc": "Дор хаяж 1 зураг оруулна уу (4-н талт зураг санал болгож байна)",
+    "step3Title": "Танилцаж эхлэх",
+    "step3Desc": "Та танилцаж эхлэхэд бэлэн байна",
+    "next": "Дараах",
+    "skip": "Алгасах",
+    "finish": "Эхлэх"
+  },
+  "admin": {
+    "dashboardTitle": "Админ самбар",
+    "usersTab": "Хэрэглэгчид",
+    "photosTab": "Зураг",
+    "loading": "Мэдээлэл уншиж байна...",
+    "colName": "Нэр",
+    "colEmail": "Имэйл",
+    "colRole": "Үүрэг",
+    "colStats": "Статистик",
+    "colActions": "Үйлдэл",
+    "photos": "Зураг",
+    "likes": "Таалагдсан",
+    "delete": "Устгах",
+    "confirmDeleteUser": "Та энэ хэрэглэгчийг устгахдаа итгэлтэй байна уу?",
+    "confirmDeletePhoto": "Та энэ зургийг устгахдаа итгэлтэй байна уу?"
+  }
+}

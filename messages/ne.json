@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "Iluli Blind Date",
+    "loading": "लोड हुँदैछ...",
+    "error": "एउटा त्रुटि भयो",
+    "retry": "पुन: प्रयास गर्नुहोस्"
+  },
+  "auth": {
+    "login": "लग इन",
+    "loginWithGoogle": "Google मार्फत लग इन गर्नुहोस्",
+    "logout": "लग आउट",
+    "welcome": "स्वागत छ"
+  },
+  "nav": {
+    "feed": "फिड",
+    "swipe": "जोडी खोज्नुहोस्",
+    "likes": "लाइकहरू",
+    "profile": "प्रोफाइल"
+  },
+  "feed": {
+    "title": "फिड",
+    "noPhotos": "अहिलेसम्म कुनै फोटो छैन",
+    "loadMore": "थप लोड गर्नुहोस्"
+  },
+  "profile": {
+    "editProfile": "प्रोफाइल सम्पादन गर्नुहोस्",
+    "photos": "फोटोहरू",
+    "addPhoto": "फोटो थप्नुहोस्",
+    "deletePhoto": "फोटो हटाउनुहोस्",
+    "introduction": "परिचय",
+    "instagram": "इन्स्टाग्राम",
+    "connectInstagram": "इन्स्टाग्राम जोड्नुहोस्",
+    "visitInstagram": "इन्स्टाग्राम हेर्नुहोस्",
+    "instagramLabel": "इन्स्टाग्राम आईडी (जोडी खोज्न आवश्यक)",
+    "introductionLabel": "परिचय (एक लाइन)",
+    "nickname": "उपनाम",
+    "gender": "लिङ्ग",
+    "genderLabel": "लिङ्ग",
+    "male": "पुरुष",
+    "female": "महिला",
+    "saveButton": "प्रोफाइल सुरक्षित गर्नुहोस्",
+    "savingButton": "सुरक्षित हुँदैछ...",
+    "myPhotos": "मेरा फोटोहरू",
+    "noPhotos": "अहिलेसम्म कुनै फोटो छैन।"
+  },
+  "swipe": {
+    "like": "मन पर्यो",
+    "pass": "छोड्नुहोस्",
+    "noMoreProfiles": "थप प्रोफाइलहरू छैनन्",
+    "itsAMatch": "यो एक जोडी हो!"
+  },
+  "likes": {
+    "sent": "पठाइयो",
+    "received": "प्राप्त भयो",
+    "matches": "जोडीहरू",
+    "noLikes": "अहिलेसम्म कुनै लाइक छैन"
+  },
+  "onboarding": {
+    "welcome": "Iluli Blind Date मा स्वागत छ",
+    "step1Title": "इन्स्टाग्राम जोड्नुहोस्",
+    "step1Desc": "तपाईंको प्रोफाइलमा इन्स्टाग्राम लिंक गर्नुहोस्",
+    "step2Title": "फोटो अपलोड गर्नुहोस्",
+    "step2Desc": "कम्तिमा १ फोटो अपलोड गर्नुहोस् (४-कट सिफारिस गरिएको)",
+    "step3Title": "जोडी खोज्न सुरु गर्नुहोस्",
+    "step3Desc": "तपाईं जोडी खोज्न सुरु गर्न तयार हुनुहुन्छ",
+    "next": "अर्को",
+    "skip": "छोड्नुहोस्",
+    "finish": "सुरु गर्नुहोस्"
+  },
+  "admin": {
+    "dashboardTitle": "एडमिन ड्यासबोर्ड",
+    "usersTab": "प्रयोगकर्ताहरू",
+    "photosTab": "फोटोहरू",
+    "loading": "डाटा लोड हुँदैछ...",
+    "colName": "नाम",
+    "colEmail": "इमेल",
+    "colRole": "भूमिका",
+    "colStats": "तथ्याङ्क",
+    "colActions": "कार्यहरू",
+    "photos": "फोटोहरू",
+    "likes": "लाइकहरू",
+    "delete": "हटाउनुहोस्",
+    "confirmDeleteUser": "के तपाईं यो प्रयोगकर्तालाई हटाउन निश्चित हुनुहुन्छ?",
+    "confirmDeletePhoto": "के तपाईं यो फोटो हटाउन निश्चित हुनुहुन्छ?"
+  }
+}

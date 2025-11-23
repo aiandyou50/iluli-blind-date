@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "Iluli Blind Date",
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik yuz berdi",
+    "retry": "Qayta urinish"
+  },
+  "auth": {
+    "login": "Kirish",
+    "loginWithGoogle": "Google orqali kirish",
+    "logout": "Chiqish",
+    "welcome": "Xush kelibsiz"
+  },
+  "nav": {
+    "feed": "Yangiliklar",
+    "swipe": "Tanishuv",
+    "likes": "Yoqtirishlar",
+    "profile": "Profil"
+  },
+  "feed": {
+    "title": "Yangiliklar",
+    "noPhotos": "Hozircha rasmlar yo'q",
+    "loadMore": "Ko'proq yuklash"
+  },
+  "profile": {
+    "editProfile": "Profilni tahrirlash",
+    "photos": "Rasmlar",
+    "addPhoto": "Rasm qo'shish",
+    "deletePhoto": "Rasmni o'chirish",
+    "introduction": "Kirish",
+    "instagram": "Instagram",
+    "connectInstagram": "Instagramni ulash",
+    "visitInstagram": "Instagramga o'tish",
+    "instagramLabel": "Instagram ID (Tanishuv uchun majburiy)",
+    "introductionLabel": "Kirish (Bir qator)",
+    "nickname": "Taxallus",
+    "gender": "Jins",
+    "genderLabel": "Jins",
+    "male": "Erkak",
+    "female": "Ayol",
+    "saveButton": "Profilni saqlash",
+    "savingButton": "Saqlanmoqda...",
+    "myPhotos": "Mening rasmlarim",
+    "noPhotos": "Hozircha rasmlar yo'q."
+  },
+  "swipe": {
+    "like": "Yoqtirish",
+    "pass": "O'tkazib yuborish",
+    "noMoreProfiles": "Boshqa profillar yo'q",
+    "itsAMatch": "Bu moslik!"
+  },
+  "likes": {
+    "sent": "Yuborilgan",
+    "received": "Qabul qilingan",
+    "matches": "Mosliklar",
+    "noLikes": "Hozircha yoqtirishlar yo'q"
+  },
+  "onboarding": {
+    "welcome": "Iluli Blind Date ga xush kelibsiz",
+    "step1Title": "Instagramni ulash",
+    "step1Desc": "Instagramingizni profilingizga ulang",
+    "step2Title": "Rasm yuklash",
+    "step2Desc": "Kamida 1 ta rasm yuklang (4 talik rasm tavsiya etiladi)",
+    "step3Title": "Tanishuvni boshlash",
+    "step3Desc": "Siz tanishuvni boshlashga tayyorsiz",
+    "next": "Keyingi",
+    "skip": "O'tkazib yuborish",
+    "finish": "Boshlash"
+  },
+  "admin": {
+    "dashboardTitle": "Admin paneli",
+    "usersTab": "Foydalanuvchilar",
+    "photosTab": "Rasmlar",
+    "loading": "Ma'lumotlar yuklanmoqda...",
+    "colName": "Ism",
+    "colEmail": "Email",
+    "colRole": "Rol",
+    "colStats": "Statistika",
+    "colActions": "Amallar",
+    "photos": "Rasmlar",
+    "likes": "Yoqtirishlar",
+    "delete": "O'chirish",
+    "confirmDeleteUser": "Ushbu foydalanuvchini o'chirishga ishonchingiz komilmi?",
+    "confirmDeletePhoto": "Ushbu rasmni o'chirishga ishonchingiz komilmi?"
+  }
+}

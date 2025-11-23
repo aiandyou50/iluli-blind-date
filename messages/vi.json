@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "Iluli Blind Date",
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "retry": "Thử lại"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "loginWithGoogle": "Đăng nhập bằng Google",
+    "logout": "Đăng xuất",
+    "welcome": "Chào mừng"
+  },
+  "nav": {
+    "feed": "Bảng tin",
+    "swipe": "Ghép đôi",
+    "likes": "Lượt thích",
+    "profile": "Hồ sơ"
+  },
+  "feed": {
+    "title": "Bảng tin",
+    "noPhotos": "Chưa có ảnh",
+    "loadMore": "Tải thêm"
+  },
+  "profile": {
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "photos": "Ảnh",
+    "addPhoto": "Thêm ảnh",
+    "deletePhoto": "Xóa ảnh",
+    "introduction": "Giới thiệu",
+    "instagram": "Instagram",
+    "connectInstagram": "Kết nối Instagram",
+    "visitInstagram": "Ghé thăm Instagram",
+    "instagramLabel": "Instagram ID (Bắt buộc để ghép đôi)",
+    "introductionLabel": "Giới thiệu (Một dòng)",
+    "nickname": "Biệt danh",
+    "gender": "Giới tính",
+    "genderLabel": "Giới tính",
+    "male": "Nam",
+    "female": "Nữ",
+    "saveButton": "Lưu hồ sơ",
+    "savingButton": "Đang lưu...",
+    "myPhotos": "Ảnh của tôi",
+    "noPhotos": "Chưa có ảnh."
+  },
+  "swipe": {
+    "like": "Thích",
+    "pass": "Bỏ qua",
+    "noMoreProfiles": "Không còn hồ sơ nào",
+    "itsAMatch": "Tương hợp!"
+  },
+  "likes": {
+    "sent": "Đã gửi",
+    "received": "Đã nhận",
+    "matches": "Tương hợp",
+    "noLikes": "Chưa có lượt thích nào"
+  },
+  "onboarding": {
+    "welcome": "Chào mừng đến với Iluli Blind Date",
+    "step1Title": "Kết nối Instagram",
+    "step1Desc": "Liên kết Instagram với hồ sơ của bạn",
+    "step2Title": "Tải ảnh lên",
+    "step2Desc": "Tải lên ít nhất 1 ảnh (khuyên dùng ảnh 4 cắt)",
+    "step3Title": "Bắt đầu ghép đôi",
+    "step3Desc": "Bạn đã sẵn sàng để bắt đầu ghép đôi",
+    "next": "Tiếp theo",
+    "skip": "Bỏ qua",
+    "finish": "Bắt đầu"
+  },
+  "admin": {
+    "dashboardTitle": "Bảng điều khiển Admin",
+    "usersTab": "Người dùng",
+    "photosTab": "Ảnh",
+    "loading": "Đang tải dữ liệu...",
+    "colName": "Tên",
+    "colEmail": "Email",
+    "colRole": "Vai trò",
+    "colStats": "Thống kê",
+    "colActions": "Hành động",
+    "photos": "Ảnh",
+    "likes": "Lượt thích",
+    "delete": "Xóa",
+    "confirmDeleteUser": "Bạn có chắc chắn muốn xóa người dùng này?",
+    "confirmDeletePhoto": "Bạn có chắc chắn muốn xóa ảnh này?"
+  }
+}

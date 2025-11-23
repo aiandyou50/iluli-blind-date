@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "Iluli Blind Date",
+    "loading": "در حال بارگذاری...",
+    "error": "خطایی رخ داد",
+    "retry": "تلاش مجدد"
+  },
+  "auth": {
+    "login": "ورود",
+    "loginWithGoogle": "ورود با گوگل",
+    "logout": "خروج",
+    "welcome": "خوش آمدید"
+  },
+  "nav": {
+    "feed": "فید",
+    "swipe": "همسریابی",
+    "likes": "لایک‌ها",
+    "profile": "پروفایل"
+  },
+  "feed": {
+    "title": "فید",
+    "noPhotos": "هنوز عکسی نیست",
+    "loadMore": "بارگذاری بیشتر"
+  },
+  "profile": {
+    "editProfile": "ویرایش پروفایل",
+    "photos": "عکس‌ها",
+    "addPhoto": "افزودن عکس",
+    "deletePhoto": "حذف عکس",
+    "introduction": "معرفی",
+    "instagram": "اینستاگرام",
+    "connectInstagram": "اتصال اینستاگرام",
+    "visitInstagram": "مشاهده اینستاگرام",
+    "instagramLabel": "آیدی اینستاگرام (الزامی برای همسریابی)",
+    "introductionLabel": "معرفی (یک خط)",
+    "nickname": "نام مستعار",
+    "gender": "جنسیت",
+    "genderLabel": "جنسیت",
+    "male": "مرد",
+    "female": "زن",
+    "saveButton": "ذخیره پروفایل",
+    "savingButton": "در حال ذخیره...",
+    "myPhotos": "عکس‌های من",
+    "noPhotos": "هنوز عکسی نیست."
+  },
+  "swipe": {
+    "like": "لایک",
+    "pass": "رد کردن",
+    "noMoreProfiles": "پروفایل دیگری وجود ندارد",
+    "itsAMatch": "این یک تطابق است!"
+  },
+  "likes": {
+    "sent": "ارسال شده",
+    "received": "دریافت شده",
+    "matches": "تطابق‌ها",
+    "noLikes": "هنوز لایکی نیست"
+  },
+  "onboarding": {
+    "welcome": "به Iluli Blind Date خوش آمدید",
+    "step1Title": "اتصال اینستاگرام",
+    "step1Desc": "اینستاگرام خود را به پروفایل متصل کنید",
+    "step2Title": "آپلود عکس",
+    "step2Desc": "حداقل ۱ عکس آپلود کنید (۴ تایی توصیه می‌شود)",
+    "step3Title": "شروع همسریابی",
+    "step3Desc": "شما آماده شروع همسریابی هستید",
+    "next": "بعدی",
+    "skip": "رد کردن",
+    "finish": "شروع"
+  },
+  "admin": {
+    "dashboardTitle": "داشبورد مدیریت",
+    "usersTab": "کاربران",
+    "photosTab": "عکس‌ها",
+    "loading": "در حال بارگذاری داده‌ها...",
+    "colName": "نام",
+    "colEmail": "ایمیل",
+    "colRole": "نقش",
+    "colStats": "آمار",
+    "colActions": "عملیات",
+    "photos": "عکس‌ها",
+    "likes": "لایک‌ها",
+    "delete": "حذف",
+    "confirmDeleteUser": "آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟",
+    "confirmDeletePhoto": "آیا مطمئن هستید که می‌خواهید این عکس را حذف کنید؟"
+  }
+}

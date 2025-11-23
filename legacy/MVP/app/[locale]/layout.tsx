@@ -23,7 +23,7 @@ export default async function LocaleLayout({
   const {locale} = await params;
   
   // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale as 'ko' | 'en' | 'zh-TW' | 'zh-CN')) {
     notFound();
   }
  
@@ -31,10 +31,8 @@ export default async function LocaleLayout({
   // [KR] 클라이언트 측에 모든 메시지를 제공하는 것이 시작하기 가장 쉬운 방법입니다
   const messages = await getMessages();
 
-  const dir = locale === 'fa' ? 'rtl' : 'ltr';
-
   return (
-    <html lang={locale} dir={dir} className="h-full">
+    <html lang={locale} className="h-full">
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
       </head>
