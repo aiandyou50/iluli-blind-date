@@ -24,9 +24,9 @@ export default function MatchingPage() {
     fetch(`/api/matches/candidates?userId=${currentUserId}`, { credentials: 'include' })
       .then(async res => {
         if (res.status === 401) {
-          // Session might be invalid on server side even if client side thinks it's valid
-          console.error("Server returned 401 Unauthorized");
-          setError("Authentication failed. Please try logging in again.");
+          const data = await res.json().catch(() => ({}));
+          console.error("Server returned 401 Unauthorized", data);
+          setError(`Authentication failed. Server Debug: ${JSON.stringify(data, null, 2)}`);
           return [];
         }
         if (!res.ok) throw new Error('Failed to fetch');
@@ -46,7 +46,10 @@ export default function MatchingPage() {
   if (error) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
-        <p className="mb-4 text-red-500">{error}</p>
+        <p className="mb-4 text-red-500 font-bold">Error</p>
+        <pre className="mb-4 text-xs text-left bg-gray-100 p-2 rounded overflow-auto max-w-full whitespace-pre-wrap">
+          {error}
+        </pre>
         <button 
           onClick={() => window.location.href = '/'}
           className="rounded-full bg-primary px-6 py-2 text-white"
