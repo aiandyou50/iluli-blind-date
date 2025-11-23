@@ -14,6 +14,7 @@ export default function MatchingPage() {
   const [candidates, setCandidates] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   const currentUserId = session?.user?.id;
 
@@ -23,8 +24,9 @@ export default function MatchingPage() {
     fetch(`/api/matches/candidates?userId=${currentUserId}`)
       .then(async res => {
         if (res.status === 401) {
-          // Session expired or invalid
-          window.location.href = '/'; // Redirect to landing for login
+          // Session might be invalid on server side even if client side thinks it's valid
+          console.error("Server returned 401 Unauthorized");
+          setError("Authentication failed. Please try logging in again.");
           return [];
         }
         if (!res.ok) throw new Error('Failed to fetch');
@@ -36,9 +38,25 @@ export default function MatchingPage() {
       })
       .catch(err => {
         console.error(err);
+        setError("Failed to load candidates.");
         setLoading(false);
       });
-  }, []);
+  }, [currentUserId]);
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
+        <p className="mb-4 text-red-500">{error}</p>
+        <button 
+          onClick={() => window.location.href = '/'}
+          className="rounded-full bg-primary px-6 py-2 text-white"
+        >
+          Go to Login
+        </button>
+        <BottomNav />
+      </div>
+    );
+  }
 
   const handleAction = async (action: 'like' | 'pass') => {
     if (currentIndex >= candidates.length) return;

@@ -12,22 +12,37 @@ export async function GET(req: NextRequest) {
     const db = ctx.env.DB || (process.env as any).DB;
     // @ts-ignore
     const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+    // @ts-ignore
+    const adminPasswordEnv = ctx.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD;
 
     if (!db) return new NextResponse('Database binding not found', { status: 500 });
 
-    // Auth Check
-    const token = await getToken({ req, secret });
-    if (!token || !token.email) return new NextResponse('Unauthorized', { status: 401 });
+    const adminPasswordHeader = req.headers.get('x-admin-password');
+    let isAuthenticated = false;
+
+    // 1. Check Admin Password (Bypass)
+    if (adminPasswordEnv && adminPasswordHeader === adminPasswordEnv) {
+      isAuthenticated = true;
+    } else {
+      // 2. Check NextAuth Session
+      const token = await getToken({ req, secret });
+      if (token && token.email) {
+        const prisma = getPrisma(db);
+        const user = await prisma.user.findUnique({
+          where: { email: token.email },
+          select: { role: true }
+        });
+        if (user && user.role === 'ADMIN') {
+          isAuthenticated = true;
+        }
+      }
+    }
+
+    if (!isAuthenticated) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     const prisma = getPrisma(db);
-
-    // Check Admin Role
-    const user = await prisma.user.findUnique({
-      where: { email: token.email },
-      select: { role: true }
-    });
-
-    if (!user || user.role !== 'ADMIN') return new NextResponse('Forbidden', { status: 403 });
 
     const photos = await prisma.photo.findMany({
       orderBy: { createdAt: 'desc' },
@@ -59,22 +74,37 @@ export async function DELETE(req: NextRequest) {
     const db = ctx.env.DB || (process.env as any).DB;
     // @ts-ignore
     const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+    // @ts-ignore
+    const adminPasswordEnv = ctx.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD;
 
     if (!db) return new NextResponse('Database binding not found', { status: 500 });
 
-    // Auth Check
-    const token = await getToken({ req, secret });
-    if (!token || !token.email) return new NextResponse('Unauthorized', { status: 401 });
+    const adminPasswordHeader = req.headers.get('x-admin-password');
+    let isAuthenticated = false;
+
+    // 1. Check Admin Password (Bypass)
+    if (adminPasswordEnv && adminPasswordHeader === adminPasswordEnv) {
+      isAuthenticated = true;
+    } else {
+      // 2. Check NextAuth Session
+      const token = await getToken({ req, secret });
+      if (token && token.email) {
+        const prisma = getPrisma(db);
+        const user = await prisma.user.findUnique({
+          where: { email: token.email },
+          select: { role: true }
+        });
+        if (user && user.role === 'ADMIN') {
+          isAuthenticated = true;
+        }
+      }
+    }
+
+    if (!isAuthenticated) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     const prisma = getPrisma(db);
-
-    // Check Admin Role
-    const user = await prisma.user.findUnique({
-      where: { email: token.email },
-      select: { role: true }
-    });
-
-    if (!user || user.role !== 'ADMIN') return new NextResponse('Forbidden', { status: 403 });
 
     // Note: In a real app, we should also delete from R2 storage here.
     await prisma.photo.delete({

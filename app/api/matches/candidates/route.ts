@@ -16,6 +16,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Server Configuration Error' }, { status: 500 });
     }
 
+    // Debug: Check if secret is available
+    // console.log("Secret length:", secret.length);
+
     const token = await getToken({ req, secret });
 
     if (!token || !token.sub) {

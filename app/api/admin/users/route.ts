@@ -14,30 +14,41 @@ export async function GET(req: NextRequest) {
     const db = ctx.env.DB || (process.env as any).DB;
     // @ts-ignore
     const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+    // @ts-ignore
+    const adminPasswordEnv = ctx.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD;
     
-    if (!secret) {
-      console.error("AUTH_SECRET is missing in Admin API route");
-      return NextResponse.json({ error: 'Server Configuration Error' }, { status: 500 });
+    const adminPasswordHeader = req.headers.get('x-admin-password');
+    let isAuthenticated = false;
+
+    // 1. Check Admin Password (Bypass)
+    if (adminPasswordEnv && adminPasswordHeader === adminPasswordEnv) {
+      isAuthenticated = true;
+    } else {
+      // 2. Check NextAuth Session
+      if (!secret) {
+        console.error("AUTH_SECRET is missing in Admin API route");
+        return NextResponse.json({ error: 'Server Configuration Error' }, { status: 500 });
+      }
+
+      const token = await getToken({ req, secret });
+      if (token && token.email) {
+        const prisma = getPrisma(db);
+        const user = await prisma.user.findUnique({
+          where: { email: token.email },
+          select: { role: true }
+        });
+        if (user && user.role === 'ADMIN') {
+          isAuthenticated = true;
+        }
+      }
     }
 
-    // Auth Check
-    const token = await getToken({ req, secret });
-    if (!token || !token.email) {
-      console.log("Admin API: Token not found or invalid", { hasToken: !!token });
+    if (!isAuthenticated) {
+      console.log("Admin API: Unauthorized access attempt");
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const prisma = getPrisma(db);
-    
-    // Check Admin Role
-    const user = await prisma.user.findUnique({
-      where: { email: token.email },
-      select: { role: true }
-    });
-
-    if (!user || user.role !== 'ADMIN') {
-      return new NextResponse('Forbidden', { status: 403 });
-    }
 
     const users = await prisma.user.findMany({
       orderBy: { createdAt: 'desc' },

@@ -18,10 +18,25 @@ export default function AdminPage() {
   const [photos, setPhotos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [adminPassword, setAdminPassword] = useState('');
+
+  useEffect(() => {
+    // Check for saved password
+    const savedPassword = localStorage.getItem('adminPassword');
+    if (savedPassword) {
+      setAdminPassword(savedPassword);
+    }
+  }, []);
 
   useEffect(() => {
     if (status === 'loading') return;
     
+    // If we have a password, try to fetch regardless of session
+    if (adminPassword) {
+      fetchData();
+      return;
+    }
+
     if (!session) {
       // Don't redirect, just stop loading so we can show login
       setLoading(false);
@@ -29,13 +44,18 @@ export default function AdminPage() {
     }
 
     fetchData();
-  }, [session, status, activeTab]);
+  }, [session, status, activeTab, adminPassword]);
 
   const fetchData = async () => {
     setLoading(true);
     try {
       const endpoint = activeTab === 'users' ? '/api/admin/users' : '/api/admin/photos';
-      const res = await fetch(endpoint);
+      const headers: HeadersInit = {};
+      if (adminPassword) {
+        headers['x-admin-password'] = adminPassword;
+      }
+
+      const res = await fetch(endpoint, { headers });
       
       if (res.status === 401 || res.status === 403) {
         setIsAuthorized(false);
@@ -52,11 +72,19 @@ export default function AdminPage() {
         setPhotos(Array.isArray(data) ? data : []);
       }
       setIsAuthorized(true);
+      if (adminPassword) {
+        localStorage.setItem('adminPassword', adminPassword);
+      }
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePasswordLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetchData();
   };
 
   if (status === 'loading' || (session && loading && !isAuthorized)) {
@@ -76,6 +104,35 @@ export default function AdminPage() {
           <p className="mb-8 text-gray-600">
             {t('accessRequiredDesc')}
           </p>
+          
+          {/* Admin Password Login */}
+          <form onSubmit={handlePasswordLogin} className="mb-6">
+            <div className="flex gap-2">
+              <input
+                type="password"
+                placeholder="Admin Password"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+                className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none dark:bg-gray-800 dark:border-gray-600"
+              />
+              <button
+                type="submit"
+                className="rounded-lg bg-gray-800 px-4 py-2 text-white hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600"
+              >
+                Login
+              </button>
+            </div>
+          </form>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-2 text-gray-500">Or</span>
+            </div>
+          </div>
+
           <button
             onClick={() => signIn('google')}
             className="flex w-full items-center justify-center gap-3 rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors hover:bg-blue-700"
