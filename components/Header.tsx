@@ -4,11 +4,14 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Header({ title, rightAction }: { title?: string, rightAction?: React.ReactNode }) {
   const t = useTranslations('common');
   const tNav = useTranslations('nav');
+  const tAuth = useTranslations('auth');
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const isActive = (path: string) => pathname.includes(path);
   
@@ -50,6 +53,15 @@ export default function Header({ title, rightAction }: { title?: string, rightAc
 
       <div className="flex items-center gap-2">
         <LanguageSwitcher />
+        {session && (
+          <button 
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+            title={tAuth('logout')}
+          >
+            <span className="material-symbols-outlined">logout</span>
+          </button>
+        )}
         {rightAction && (
           <div className="relative">
             {rightAction}
