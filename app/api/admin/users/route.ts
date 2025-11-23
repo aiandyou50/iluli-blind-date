@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: 'desc' },
       include: {
         _count: {
-          select: { photos: true, likes: true, matchesAsUser1: true, matchesAsUser2: true }
+          select: { photos: true, likes: true }
         }
       }
     });
