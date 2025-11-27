@@ -17,6 +17,7 @@ bucket_name = "iluli-photos"
 [vars]
 NEXT_PUBLIC_API_URL = "https://aiboop.org"
 R2_PUBLIC_URL = "https://photos.aiboop.org"
+R2_BUCKET_NAME = "iluli-photos"
 
 [env.production]
 name = "iluli-blind-date-production"
@@ -32,3 +33,5 @@ bucket_name = "iluli-photos"
 
 [env.production.vars]
 NEXT_PUBLIC_API_URL = "https://aiboop.org"
+R2_BUCKET_NAME = "iluli-photos"
+NEXTAUTH_URL = "https://aiboop.org"

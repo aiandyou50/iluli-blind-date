@@ -10,5 +10,7 @@ declare global {
     NEXT_PUBLIC_API_URL: string;
     R2_PUBLIC_URL: string;
     ADMIN_EMAILS?: string;
+    R2_BUCKET_NAME?: string;
+    NEXTAUTH_URL?: string;
   }
 }
