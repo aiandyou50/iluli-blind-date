@@ -93,7 +93,7 @@ export default function PhotoUpload({ userId, onUploadSuccess }: PhotoUploadProp
     <div className="mt-4">
       <input
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/gif,image/webp,image/heic,image/heif,image/avif,image/jxl"
         className="hidden"
         ref={fileInputRef}
         onChange={handleFileChange}
