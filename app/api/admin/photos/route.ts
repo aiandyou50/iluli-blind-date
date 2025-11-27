@@ -2,6 +2,7 @@ import { getPrisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 import { getRequestContext } from '@cloudflare/next-on-pages';
 import { getToken } from 'next-auth/jwt';
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 export const runtime = 'edge';
 
@@ -66,13 +67,6 @@ export async function GET(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-
-    if (!id) {
-      return NextResponse.json({ error: 'Photo ID required' }, { status: 400 });
-    }
-
     const ctx = getRequestContext();
     // @ts-ignore
     const db = ctx.env.DB || (process.env as any).DB;
@@ -96,15 +90,8 @@ export async function DELETE(req: NextRequest) {
         token = await getToken({ req, secret, cookieName: '__Secure-authjs.session-token' });
       }
 
-      if (token && token.email) {
-        const prisma = getPrisma(db);
-        const user = await prisma.user.findUnique({
-          where: { email: token.email },
-          select: { role: true }
-        });
-        if (user && user.role === 'ADMIN') {
-          isAuthenticated = true;
-        }
+      if (token && token.role === 'ADMIN') {
+        isAuthenticated = true;
       }
     }
 
@@ -112,16 +99,56 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const prisma = getPrisma(db);
+    const { photoId } = await req.json();
+    if (!photoId) {
+      return NextResponse.json({ error: 'Photo ID required' }, { status: 400 });
+    }
 
-    // Note: In a real app, we should also delete from R2 storage here.
-    await prisma.photo.delete({
-      where: { id }
-    });
+    const prisma = getPrisma(db);
+    const photo = await prisma.photo.findUnique({ where: { id: photoId } });
+
+    if (!photo) {
+      return NextResponse.json({ error: 'Photo not found' }, { status: 404 });
+    }
+
+    // Delete from R2
+    // @ts-ignore
+    const R2_ACCOUNT_ID = ctx.env.R2_ACCOUNT_ID || process.env.R2_ACCOUNT_ID;
+    // @ts-ignore
+    const R2_ACCESS_KEY_ID = ctx.env.R2_ACCESS_KEY_ID || process.env.R2_ACCESS_KEY_ID;
+    // @ts-ignore
+    const R2_SECRET_ACCESS_KEY = ctx.env.R2_SECRET_ACCESS_KEY || process.env.R2_SECRET_ACCESS_KEY;
+    // @ts-ignore
+    const R2_BUCKET_NAME = ctx.env.R2_BUCKET_NAME || process.env.R2_BUCKET_NAME || "iluli-photos";
+
+    if (R2_ACCOUNT_ID && R2_ACCESS_KEY_ID && R2_SECRET_ACCESS_KEY) {
+      const S3 = new S3Client({
+        region: "auto",
+        endpoint: `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+        credentials: {
+          accessKeyId: R2_ACCESS_KEY_ID,
+          secretAccessKey: R2_SECRET_ACCESS_KEY,
+        },
+      });
+
+      try {
+        await S3.send(new DeleteObjectCommand({
+          Bucket: R2_BUCKET_NAME,
+          Key: photo.url
+        }));
+      } catch (e) {
+        console.error("Failed to delete from R2:", e);
+        // Proceed to delete from DB even if R2 fails
+      }
+    }
+
+    // Delete from DB
+    await prisma.photo.delete({ where: { id: photoId } });
 
     return NextResponse.json({ success: true });
+
   } catch (error) {
-    console.error('Error deleting photo:', error);
-    return NextResponse.json({ error: 'Failed to delete photo' }, { status: 500 });
+    console.error("Error deleting photo:", error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

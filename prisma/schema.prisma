@@ -38,6 +38,7 @@ model User {
   nickname      String?   @unique
   gender        Gender?
   school        String?
+  isGraduated   Boolean    @default(false)
   instagramId   String?
   introduction  String?
   
@@ -126,6 +127,7 @@ model Like {
   id         String   @id @default(cuid())
   fromUserId String
   toUserId   String
+  isSuper    Boolean  @default(false)
   
   user       User     @relation("UserSentLikes", fields: [fromUserId], references: [id], onDelete: Cascade)
   
@@ -171,4 +173,14 @@ model Block {
   createdAt   DateTime @default(now())
 
   @@unique([blockerId, blockedId])
+}
+
+model Pass {
+  id         String   @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  
+  createdAt  DateTime @default(now())
+  
+  @@unique([fromUserId, toUserId])
 }

@@ -53,7 +53,17 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === 'pass') {
-        // We don't store passes currently
+        try {
+            await prisma.pass.create({
+                data: {
+                    fromUserId: userId,
+                    toUserId: targetUserId
+                }
+            });
+        } catch (e: any) {
+            if (e.code !== 'P2002') throw e;
+            // Already passed
+        }
         return NextResponse.json({ success: true, match: false });
     }
 

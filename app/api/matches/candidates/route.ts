@@ -68,6 +68,13 @@ export async function GET(req: NextRequest) {
     });
     const likedIds = liked.map(l => l.toUserId);
 
+    // 1.1 Get IDs of users I have passed
+    const passed = await prisma.pass.findMany({
+      where: { fromUserId: userId },
+      select: { toUserId: true }
+    });
+    const passedIds = passed.map(p => p.toUserId);
+
     // 2. Get IDs of users I have blocked
     const blocked = await prisma.block.findMany({
       where: { blockerId: userId },
@@ -93,6 +100,7 @@ export async function GET(req: NextRequest) {
     const excludedIds = [
       userId, // Self
       ...likedIds,
+      ...passedIds,
       ...blockedIds,
       ...blockedByIds,
       ...reportedIds
