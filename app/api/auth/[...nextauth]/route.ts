@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getPrisma } from "@/lib/db";
 import { authConfig } from "@/lib/auth";
@@ -14,12 +15,28 @@ async function handler(req: NextRequest) {
   const db = ctx.env.DB;
   const prisma = getPrisma(db);
 
+  // [Environment Variables]
+  // In Cloudflare Pages, secrets are in ctx.env, not process.env
+  // @ts-ignore
+  const GOOGLE_ID = ctx.env.AUTH_GOOGLE_ID || process.env.AUTH_GOOGLE_ID;
+  // @ts-ignore
+  const GOOGLE_SECRET = ctx.env.AUTH_GOOGLE_SECRET || process.env.AUTH_GOOGLE_SECRET;
+  // @ts-ignore
+  const SECRET = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+
   // [Adapter Injection] Merge core config with Prisma Adapter
-  // This ensures users are saved to D1 while keeping config stateless for middleware
+  // We MUST re-initialize providers here because process.env is empty in Edge Runtime for secrets
   const config = {
     ...authConfig,
+    providers: [
+      Google({
+        clientId: GOOGLE_ID,
+        clientSecret: GOOGLE_SECRET,
+      }),
+    ],
     adapter: PrismaAdapter(prisma),
-    secret: ctx.env.AUTH_SECRET || process.env.AUTH_SECRET,
+    secret: SECRET,
+    trustHost: true, // Trust the Host header (fixes missing NEXTAUTH_URL)
   };
 
   // @ts-ignore - NextAuth types mismatch with Edge Request sometimes, but it works
