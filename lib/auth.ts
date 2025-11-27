@@ -55,6 +55,7 @@ export const authConfig: NextAuthConfig = {
   },
   pages: {
     signIn: "/", // Redirect to home for login
+    error: "/auth/error", // Custom error page
   },
 };
 
