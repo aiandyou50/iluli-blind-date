@@ -8,6 +8,7 @@ CREATE TABLE "User" (
     "nickname" TEXT,
     "gender" TEXT,
     "school" TEXT,
+    "isGraduated" BOOLEAN NOT NULL DEFAULT 0,
     "instagramId" TEXT,
     "introduction" TEXT,
     "role" TEXT NOT NULL DEFAULT 'USER',
