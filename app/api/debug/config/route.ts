@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   };
 
   // @ts-ignore
-  const env = ctx.env || process.env;
+  const env = (ctx.env || process.env) as any;
 
   const report = {
     timestamp: new Date().toISOString(),
