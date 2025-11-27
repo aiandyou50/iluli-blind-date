@@ -99,7 +99,8 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { photoId } = await req.json();
+    const json = await req.json() as { photoId?: string };
+    const { photoId } = json;
     if (!photoId) {
       return NextResponse.json({ error: 'Photo ID required' }, { status: 400 });
     }
