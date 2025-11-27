@@ -82,5 +82,30 @@
     "delete": "O'chirish",
     "confirmDeleteUser": "Ushbu foydalanuvchini o'chirishga ishonchingiz komilmi?",
     "confirmDeletePhoto": "Ushbu rasmni o'chirishga ishonchingiz komilmi?"
+  },
+  "landing": {
+    "simpleMatchingTitle": "Oddiy moslashuv",
+    "simpleMatchingDesc": "Boshqa universitet talabalari bilan oson bog'laning.",
+    "verifiedUsersTitle": "Tasdiqlangan foydalanuvchilar",
+    "verifiedUsersDesc": "Tasdiqlangan talaba profillari bilan xavfsiz muhit.",
+    "heroSubtitle": "Faqat tasdiqlangan foydalanuvchilar. Telefon raqamisiz DM orqali boshlang.",
+    "whyIluli": "Nega Iluli?",
+    "specialFeatures": "Maxsus xususiyatlar",
+    "feature1Title": "Tasdiqlangan foydalanuvchilar",
+    "feature1Desc": "Barcha foydalanuvchilar admin tomonidan Instagram DM orqali qo'lda tekshiriladi.",
+    "feature2Title": "Instagram sinxronizatsiyasi",
+    "feature2Desc": "Soxta rasmlar yo'q. Haqiqiy Instagram faoliyatiga asoslangan moslashuv.",
+    "feature3Title": "Xavfsiz boshlash",
+    "feature3Desc": "Telefon raqamlari yo'q. Instagram ID faqat o'zaro yoqtirishdan keyin ochiladi.",
+    "process": "Jarayon",
+    "howItWorks": "Bu qanday ishlaydi",
+    "step1Title": "Oson ro'yxatdan o'tish",
+    "step1Desc": "Google Login bilan 3 soniyada boshlang va asosiy profilingizni sozlang.",
+    "step2Title": "Admin tasdiqlashi",
+    "step2Desc": "Xavfsiz muhitni ta'minlash uchun adminlar har bir profilni ko'rib chiqadilar.",
+    "step3Title": "Hayajonli moslik",
+    "step3Desc": "Qiziqish bildiring va moslikdan keyin DM orqali suhbatni boshlang.",
+    "safeLogin": "Xavfsiz va ishonchli kirish",
+    "footerRights": "© 2025 Iluli Dating. Barcha huquqlar himoyalangan."
   }
 }

@@ -89,6 +89,25 @@
     "simpleMatchingTitle": "简单匹配",
     "simpleMatchingDesc": "轻松与其他大学的学生建立联系。",
     "verifiedUsersTitle": "已验证用户",
-    "verifiedUsersDesc": "通过验证的学生档案提供安全环境。"
+    "verifiedUsersDesc": "通过验证的学生档案提供安全环境。",
+    "heroSubtitle": "仅限已验证用户。通过私信开始，无需电话号码。",
+    "whyIluli": "为什么选择 Iluli？",
+    "specialFeatures": "特色功能",
+    "feature1Title": "已验证用户",
+    "feature1Desc": "所有用户均由管理员通过 Instagram 私信手动验证。",
+    "feature2Title": "Instagram 同步",
+    "feature2Desc": "无虚假照片。基于真实的 Instagram 活动进行匹配。",
+    "feature3Title": "安全开始",
+    "feature3Desc": "无需电话号码。Instagram ID 仅在互相喜欢后才会显示。",
+    "process": "流程",
+    "howItWorks": "如何运作",
+    "step1Title": "轻松注册",
+    "step1Desc": "使用 Google 登录在 3 秒内开始，并设置您的基本资料。",
+    "step2Title": "管理员批准",
+    "step2Desc": "管理员会审核每个个人资料以确保安全环境。",
+    "step3Title": "令人兴奋的匹配",
+    "step3Desc": "表达兴趣并在匹配后通过私信开始聊天。",
+    "safeLogin": "安全可靠的登录",
+    "footerRights": "© 2025 Iluli Dating. 保留所有权利。"
   }
 }

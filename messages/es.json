@@ -82,5 +82,30 @@
     "delete": "Eliminar",
     "confirmDeleteUser": "¿Estás seguro de que quieres eliminar este usuario?",
     "confirmDeletePhoto": "¿Estás seguro de que quieres eliminar esta foto?"
+  },
+  "landing": {
+    "simpleMatchingTitle": "Emparejamiento Sencillo",
+    "simpleMatchingDesc": "Conecta fácilmente con estudiantes de otras universidades.",
+    "verifiedUsersTitle": "Usuarios Verificados",
+    "verifiedUsersDesc": "Entorno seguro con perfiles de estudiantes verificados.",
+    "heroSubtitle": "Solo usuarios verificados. Empieza con DM, sin número de teléfono.",
+    "whyIluli": "¿Por qué Iluli?",
+    "specialFeatures": "Características Especiales",
+    "feature1Title": "Usuarios Verificados",
+    "feature1Desc": "Todos los usuarios son verificados manualmente por el administrador vía Instagram DM.",
+    "feature2Title": "Sincronización con Instagram",
+    "feature2Desc": "Sin fotos falsas. Emparejamiento basado en actividad real de Instagram.",
+    "feature3Title": "Inicio Seguro",
+    "feature3Desc": "Sin números de teléfono. El ID de Instagram solo se revela tras un 'Me gusta' mutuo.",
+    "process": "Proceso",
+    "howItWorks": "Cómo funciona",
+    "step1Title": "Registro Fácil",
+    "step1Desc": "Empieza en 3 segundos con Google Login y configura tu perfil básico.",
+    "step2Title": "Aprobación del Administrador",
+    "step2Desc": "Los administradores revisan cada perfil para asegurar un entorno seguro.",
+    "step3Title": "Match Emocionante",
+    "step3Desc": "Expresa interés y empieza a chatear por DM al hacer match.",
+    "safeLogin": "Inicio de sesión seguro y protegido",
+    "footerRights": "© 2025 Iluli Dating. Todos los derechos reservados."
   }
 }

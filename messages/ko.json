@@ -89,6 +89,25 @@
     "simpleMatchingTitle": "간편한 매칭",
     "simpleMatchingDesc": "다른 대학교 학생들과 쉽게 연결되세요.",
     "verifiedUsersTitle": "검증된 사용자",
-    "verifiedUsersDesc": "검증된 학생 프로필로 안전한 환경을 제공합니다."
+    "verifiedUsersDesc": "검증된 학생 프로필로 안전한 환경을 제공합니다.",
+    "heroSubtitle": "검증된 사용자만. 전화번호 없이 DM으로 시작하세요.",
+    "whyIluli": "왜 이루리인가요?",
+    "specialFeatures": "특별한 기능",
+    "feature1Title": "검증된 사용자",
+    "feature1Desc": "모든 사용자는 관리자가 인스타그램 DM을 통해 수동으로 검증합니다.",
+    "feature2Title": "인스타그램 연동",
+    "feature2Desc": "가짜 사진 없음. 실제 인스타그램 활동을 기반으로 매칭.",
+    "feature3Title": "안전한 시작",
+    "feature3Desc": "전화번호 없음. 인스타그램 ID는 서로 좋아요를 누른 후에만 공개됩니다.",
+    "process": "진행 과정",
+    "howItWorks": "어떻게 작동하나요?",
+    "step1Title": "쉬운 가입",
+    "step1Desc": "구글 로그인으로 3초 만에 시작하고 기본 프로필을 설정하세요.",
+    "step2Title": "관리자 승인",
+    "step2Desc": "관리자가 모든 프로필을 검토하여 안전한 환경을 보장합니다.",
+    "step3Title": "설레는 매칭",
+    "step3Desc": "매칭 시 관심을 표현하고 DM으로 대화를 시작하세요.",
+    "safeLogin": "안전하고 보안된 로그인",
+    "footerRights": "© 2025 이루리 데이팅. All rights reserved."
   }
 }

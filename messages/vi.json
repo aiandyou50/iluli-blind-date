@@ -82,5 +82,30 @@
     "delete": "Xóa",
     "confirmDeleteUser": "Bạn có chắc chắn muốn xóa người dùng này?",
     "confirmDeletePhoto": "Bạn có chắc chắn muốn xóa ảnh này?"
+  },
+  "landing": {
+    "simpleMatchingTitle": "Ghép đôi đơn giản",
+    "simpleMatchingDesc": "Kết nối dễ dàng với sinh viên từ các trường đại học khác.",
+    "verifiedUsersTitle": "Người dùng đã xác minh",
+    "verifiedUsersDesc": "Môi trường an toàn với hồ sơ sinh viên đã được xác minh.",
+    "heroSubtitle": "Chỉ người dùng đã xác minh. Bắt đầu bằng DM, không cần số điện thoại.",
+    "whyIluli": "Tại sao chọn Iluli?",
+    "specialFeatures": "Tính năng đặc biệt",
+    "feature1Title": "Người dùng đã xác minh",
+    "feature1Desc": "Tất cả người dùng đều được quản trị viên xác minh thủ công qua Instagram DM.",
+    "feature2Title": "Đồng bộ Instagram",
+    "feature2Desc": "Không có ảnh giả. Ghép đôi dựa trên hoạt động Instagram thực tế.",
+    "feature3Title": "Khởi đầu an toàn",
+    "feature3Desc": "Không cần số điện thoại. ID Instagram chỉ được tiết lộ sau khi thích nhau.",
+    "process": "Quy trình",
+    "howItWorks": "Cách hoạt động",
+    "step1Title": "Đăng ký dễ dàng",
+    "step1Desc": "Bắt đầu trong 3 giây với Đăng nhập Google và thiết lập hồ sơ cơ bản.",
+    "step2Title": "Phê duyệt của Admin",
+    "step2Desc": "Quản trị viên xem xét mọi hồ sơ để đảm bảo môi trường an toàn.",
+    "step3Title": "Ghép đôi thú vị",
+    "step3Desc": "Bày tỏ sự quan tâm và bắt đầu trò chuyện qua DM khi ghép đôi thành công.",
+    "safeLogin": "Đăng nhập an toàn & bảo mật",
+    "footerRights": "© 2025 Iluli Dating. Đã đăng ký bản quyền."
   }
 }

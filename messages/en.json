@@ -89,6 +89,25 @@
     "simpleMatchingTitle": "Simple Matching",
     "simpleMatchingDesc": "Connect with students from other universities easily.",
     "verifiedUsersTitle": "Verified Users",
-    "verifiedUsersDesc": "Safe environment with verified student profiles."
+    "verifiedUsersDesc": "Safe environment with verified student profiles.",
+    "heroSubtitle": "Verified Users Only. Start with DM, No Phone Number Required.",
+    "whyIluli": "Why Iluli?",
+    "specialFeatures": "Special Features",
+    "feature1Title": "Verified Users",
+    "feature1Desc": "All users are manually verified by admin via Instagram DM.",
+    "feature2Title": "Instagram Sync",
+    "feature2Desc": "No fake photos. Matching based on real Instagram activity.",
+    "feature3Title": "Safe Start",
+    "feature3Desc": "No phone numbers. Instagram ID is revealed only after mutual like.",
+    "process": "Process",
+    "howItWorks": "How it works",
+    "step1Title": "Easy Sign Up",
+    "step1Desc": "Start in 3 seconds with Google Login and set up your basic profile.",
+    "step2Title": "Admin Approval",
+    "step2Desc": "Admins review every profile to ensure a safe environment.",
+    "step3Title": "Exciting Match",
+    "step3Desc": "Express interest and start chatting via DM upon matching.",
+    "safeLogin": "Safe & Secure Login",
+    "footerRights": "© 2025 Iluli Dating. All rights reserved."
   }
 }
