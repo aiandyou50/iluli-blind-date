@@ -32,11 +32,19 @@ async function handler(req: NextRequest) {
       Google({
         clientId: GOOGLE_ID,
         clientSecret: GOOGLE_SECRET,
+        authorization: {
+          params: {
+            prompt: "consent",
+            access_type: "offline",
+            response_type: "code"
+          }
+        }
       }),
     ],
     adapter: PrismaAdapter(prisma),
     secret: SECRET,
     trustHost: true, // Trust the Host header (fixes missing NEXTAUTH_URL)
+    debug: true, // Enable debugging logs
   };
 
   // @ts-ignore - NextAuth types mismatch with Edge Request sometimes, but it works
