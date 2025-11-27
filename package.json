@@ -2,6 +2,7 @@
   "name": "iluli-blind-date",
   "version": "1.0.0",
   "private": true,
+  "license": "UNLICENSED",
   "description": "Iluli Blind Date - 20대 대학생 대상 소셜 매칭 서비스",
   "scripts": {
     "dev": "next dev",
