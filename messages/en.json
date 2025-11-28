@@ -44,7 +44,19 @@
     "saveButton": "Save Profile",
     "savingButton": "Saving...",
     "myPhotos": "My Photos",
-    "noPhotos": "No photos yet."
+    "noPhotos": "No photos yet.",
+    "editProfileDesc": "Complete your profile to start matching",
+    "school": "School",
+    "schoolPlaceholder": "University name",
+    "nicknamePlaceholder": "Enter your nickname",
+    "introductionPlaceholder": "Tell us about yourself (max 300 chars)",
+    "selectGender": "Select gender",
+    "photoDesc": "You can upload up to 9 photos",
+    "completeProfileFirst": "Complete your profile to upload photos",
+    "saveSuccess": "Profile saved successfully!",
+    "saveError": "Failed to save profile",
+    "liked": "Liked",
+    "sendLike": "Send Like"
   },
   "swipe": {
     "like": "Like",
