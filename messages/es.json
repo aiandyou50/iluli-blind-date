@@ -15,12 +15,15 @@
     "feed": "Feed",
     "swipe": "Match",
     "likes": "Me gusta",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "chat": "Chat"
   },
   "feed": {
     "title": "Feed",
     "noPhotos": "Aún no hay fotos",
-    "loadMore": "Cargar más"
+    "loadMore": "Cargar más",
+    "filterLatest": "Recientes",
+    "filterPopular": "Populares"
   },
   "profile": {
     "editProfile": "Editar perfil",
@@ -47,7 +50,22 @@
     "like": "Me gusta",
     "pass": "Pasar",
     "noMoreProfiles": "No hay más perfiles",
-    "itsAMatch": "¡Es un Match!"
+    "noMoreProfilesDesc": "Has visto todos los perfiles. Vuelve más tarde o reinicia.",
+    "itsAMatch": "¡Es un match!",
+    "matchedWithUser": "¡Coincidiste con {name}!",
+    "sendDM": "Enviar DM",
+    "keepSwiping": "Seguir buscando",
+    "resetAndFindMore": "Reiniciar y buscar más",
+    "verificationRequired": "Verificación requerida",
+    "verificationRequiredDesc": "Necesitas verificar tu perfil antes de empezar a buscar.",
+    "requestVerification": "Solicitar verificación",
+    "verificationInProgress": "Verificación en progreso",
+    "sendCodeToAdmin": "Envía el código de abajo al admin por Instagram",
+    "yourCode": "Tu código",
+    "sendInstagramDM": "Enviar DM de Instagram",
+    "authError": "Error de autenticación",
+    "loadError": "Error al cargar",
+    "goToLogin": "Ir a iniciar sesión"
   },
   "likes": {
     "sent": "Enviados",
@@ -107,5 +125,16 @@
     "step3Desc": "Expresa interés y empieza a chatear por DM al hacer match.",
     "safeLogin": "Inicio de sesión seguro y protegido",
     "footerRights": "© 2025 Iluli Dating. Todos los derechos reservados."
+  },
+  "chat": {
+    "noMatches": "Aún no hay coincidencias",
+    "noMatchesDesc": "¡Envía likes y coincide cuando también les gustes!",
+    "startMatching": "Comenzar a buscar",
+    "newMatches": "Nuevas coincidencias",
+    "sendDM": "Enviar DM",
+    "matchedWith": "¡Coincidiste con {name}!",
+    "startConversation": "Inicia una conversación por Instagram",
+    "sendInstagramDM": "Enviar DM de Instagram",
+    "selectConversation": "Selecciona una conversación"
   }
 }

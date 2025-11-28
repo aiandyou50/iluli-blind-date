@@ -22,8 +22,8 @@ export default async function LocaleLayout({
 }>) {
   const {locale} = await params;
   
-  // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale as any)) {
+  // [EN] Ensure that the incoming locale is valid / [KR] 입력된 로케일이 유효한지 확인
+  if (!routing.locales.includes(locale as never)) {
     notFound();
   }
  
@@ -38,15 +38,12 @@ export default async function LocaleLayout({
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
       </head>
-      <body className="antialiased font-display bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 h-full">
+      <body className="antialiased font-display bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-gray-100 min-h-screen">
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            <div className="flex min-h-screen w-full justify-center bg-gray-50 dark:bg-zinc-900">
-              {/* [EN] Responsive layout container */}
-              {/* [KR] 반응형 레이아웃 컨테이너 */}
-              <div className="relative flex w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl flex-col bg-white dark:bg-black min-h-screen shadow-2xl transition-all duration-300">
-                {children}
-              </div>
+            {/* [EN] Full width responsive layout - no fixed max-width / [KR] 전체 너비 반응형 레이아웃 - 고정 max-width 없음 */}
+            <div className="min-h-screen w-full">
+              {children}
             </div>
           </Providers>
         </NextIntlClientProvider>
