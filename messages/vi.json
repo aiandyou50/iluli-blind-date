@@ -15,12 +15,15 @@
     "feed": "Bảng tin",
     "swipe": "Ghép đôi",
     "likes": "Lượt thích",
-    "profile": "Hồ sơ"
+    "profile": "Hồ sơ",
+    "chat": "Trò chuyện"
   },
   "feed": {
     "title": "Bảng tin",
     "noPhotos": "Chưa có ảnh",
-    "loadMore": "Tải thêm"
+    "loadMore": "Tải thêm",
+    "filterLatest": "Mới nhất",
+    "filterPopular": "Phổ biến"
   },
   "profile": {
     "editProfile": "Chỉnh sửa hồ sơ",
@@ -47,7 +50,22 @@
     "like": "Thích",
     "pass": "Bỏ qua",
     "noMoreProfiles": "Không còn hồ sơ nào",
-    "itsAMatch": "Tương hợp!"
+    "noMoreProfilesDesc": "Bạn đã xem hết tất cả hồ sơ. Quay lại sau hoặc đặt lại.",
+    "itsAMatch": "Kết nối thành công!",
+    "matchedWithUser": "Bạn đã kết nối với {name}!",
+    "sendDM": "Gửi tin nhắn",
+    "keepSwiping": "Tiếp tục xem",
+    "resetAndFindMore": "Đặt lại và tìm thêm",
+    "verificationRequired": "Cần xác minh",
+    "verificationRequiredDesc": "Bạn cần xác minh hồ sơ trước khi bắt đầu kết nối.",
+    "requestVerification": "Yêu cầu xác minh",
+    "verificationInProgress": "Đang xác minh",
+    "sendCodeToAdmin": "Gửi mã bên dưới cho quản trị viên qua Instagram",
+    "yourCode": "Mã của bạn",
+    "sendInstagramDM": "Gửi tin nhắn Instagram",
+    "authError": "Lỗi xác thực",
+    "loadError": "Tải thất bại",
+    "goToLogin": "Đăng nhập"
   },
   "likes": {
     "sent": "Đã gửi",
@@ -107,5 +125,16 @@
     "step3Desc": "Bày tỏ sự quan tâm và bắt đầu trò chuyện qua DM khi ghép đôi thành công.",
     "safeLogin": "Đăng nhập an toàn & bảo mật",
     "footerRights": "© 2025 Iluli Dating. Đã đăng ký bản quyền."
+  },
+  "chat": {
+    "noMatches": "Chưa có kết nối nào",
+    "noMatchesDesc": "Gửi thích và được kết nối khi họ thích bạn lại!",
+    "startMatching": "Bắt đầu kết nối",
+    "newMatches": "Kết nối mới",
+    "sendDM": "Gửi tin nhắn",
+    "matchedWith": "Bạn đã kết nối với {name}!",
+    "startConversation": "Bắt đầu trò chuyện qua Instagram",
+    "sendInstagramDM": "Gửi tin nhắn Instagram",
+    "selectConversation": "Chọn cuộc trò chuyện"
   }
 }

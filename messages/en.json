@@ -15,12 +15,15 @@
     "feed": "Feed",
     "swipe": "Match",
     "likes": "Likes",
-    "profile": "Profile"
+    "profile": "Profile",
+    "chat": "Chat"
   },
   "feed": {
     "title": "Feed",
     "noPhotos": "No photos yet",
-    "loadMore": "Load more"
+    "loadMore": "Load more",
+    "filterLatest": "Latest",
+    "filterPopular": "Popular"
   },
   "profile": {
     "editProfile": "Edit Profile",
@@ -41,13 +44,40 @@
     "saveButton": "Save Profile",
     "savingButton": "Saving...",
     "myPhotos": "My Photos",
-    "noPhotos": "No photos yet."
+    "noPhotos": "No photos yet.",
+    "editProfileDesc": "Complete your profile to start matching",
+    "school": "School",
+    "schoolPlaceholder": "University name",
+    "nicknamePlaceholder": "Enter your nickname",
+    "introductionPlaceholder": "Tell us about yourself (max 300 chars)",
+    "selectGender": "Select gender",
+    "photoDesc": "You can upload up to 9 photos",
+    "completeProfileFirst": "Complete your profile to upload photos",
+    "saveSuccess": "Profile saved successfully!",
+    "saveError": "Failed to save profile",
+    "liked": "Liked",
+    "sendLike": "Send Like"
   },
   "swipe": {
     "like": "Like",
     "pass": "Pass",
     "noMoreProfiles": "No more profiles",
-    "itsAMatch": "It's a Match!"
+    "noMoreProfilesDesc": "You've seen all profiles. Check back later or reset.",
+    "itsAMatch": "It's a Match!",
+    "matchedWithUser": "You matched with {name}!",
+    "sendDM": "Send DM",
+    "keepSwiping": "Keep Swiping",
+    "resetAndFindMore": "Reset and Find More",
+    "verificationRequired": "Verification Required",
+    "verificationRequiredDesc": "You need to verify your profile before you can start matching.",
+    "requestVerification": "Request Verification",
+    "verificationInProgress": "Verification in Progress",
+    "sendCodeToAdmin": "Send the code below to our admin via Instagram DM",
+    "yourCode": "Your Code",
+    "sendInstagramDM": "Send Instagram DM",
+    "authError": "Authentication Error",
+    "loadError": "Failed to load candidates",
+    "goToLogin": "Go to Login"
   },
   "likes": {
     "sent": "Sent",
@@ -109,5 +139,16 @@
     "step3Desc": "Express interest and start chatting via DM upon matching.",
     "safeLogin": "Safe & Secure Login",
     "footerRights": "© 2025 Iluli Dating. All rights reserved."
+  },
+  "chat": {
+    "noMatches": "No matches yet",
+    "noMatchesDesc": "Send likes and get matched when they like you back!",
+    "startMatching": "Start Matching",
+    "newMatches": "New Matches",
+    "sendDM": "Send DM",
+    "matchedWith": "You matched with {name}!",
+    "startConversation": "Start a conversation via Instagram DM",
+    "sendInstagramDM": "Send Instagram DM",
+    "selectConversation": "Select a conversation"
   }
 }

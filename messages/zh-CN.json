@@ -15,12 +15,15 @@
     "feed": "动态",
     "swipe": "配对",
     "likes": "喜欢",
-    "profile": "个人资料"
+    "profile": "个人资料",
+    "chat": "聊天"
   },
   "feed": {
     "title": "动态",
     "noPhotos": "还没有照片",
-    "loadMore": "加载更多"
+    "loadMore": "加载更多",
+    "filterLatest": "最新",
+    "filterPopular": "热门"
   },
   "profile": {
     "editProfile": "编辑个人资料",
@@ -47,7 +50,22 @@
     "like": "喜欢",
     "pass": "跳过",
     "noMoreProfiles": "没有更多资料",
-    "itsAMatch": "配对成功!"
+    "noMoreProfilesDesc": "您已查看所有资料。稍后再试或重置。",
+    "itsAMatch": "配对成功!",
+    "matchedWithUser": "您与{name}配对了！",
+    "sendDM": "发送私信",
+    "keepSwiping": "继续浏览",
+    "resetAndFindMore": "重置并查找更多",
+    "verificationRequired": "需要验证",
+    "verificationRequiredDesc": "您需要先验证个人资料才能开始配对。",
+    "requestVerification": "请求验证",
+    "verificationInProgress": "验证中",
+    "sendCodeToAdmin": "通过Instagram私信将下面的代码发送给管理员",
+    "yourCode": "您的代码",
+    "sendInstagramDM": "发送Instagram私信",
+    "authError": "认证错误",
+    "loadError": "加载失败",
+    "goToLogin": "前往登录"
   },
   "likes": {
     "sent": "已发送",
@@ -109,5 +127,16 @@
     "step3Desc": "表达兴趣并在匹配后通过私信开始聊天。",
     "safeLogin": "安全可靠的登录",
     "footerRights": "© 2025 Iluli Dating. 保留所有权利。"
+  },
+  "chat": {
+    "noMatches": "还没有匹配",
+    "noMatchesDesc": "发送喜欢，当对方也喜欢你时就会匹配！",
+    "startMatching": "开始匹配",
+    "newMatches": "新匹配",
+    "sendDM": "发送私信",
+    "matchedWith": "你与{name}匹配了！",
+    "startConversation": "通过Instagram私信开始对话",
+    "sendInstagramDM": "发送Instagram私信",
+    "selectConversation": "选择一个对话"
   }
 }

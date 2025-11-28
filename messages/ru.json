@@ -15,12 +15,15 @@
     "feed": "Лента",
     "swipe": "Знакомства",
     "likes": "Лайки",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "chat": "Чат"
   },
   "feed": {
     "title": "Лента",
     "noPhotos": "Нет фото",
-    "loadMore": "Загрузить еще"
+    "loadMore": "Загрузить еще",
+    "filterLatest": "Новые",
+    "filterPopular": "Популярные"
   },
   "profile": {
     "editProfile": "Редактировать профиль",
@@ -47,7 +50,22 @@
     "like": "Нравится",
     "pass": "Пропустить",
     "noMoreProfiles": "Больше нет профилей",
-    "itsAMatch": "Это совпадение!"
+    "noMoreProfilesDesc": "Вы просмотрели все профили. Вернитесь позже или сбросьте.",
+    "itsAMatch": "Совпадение!",
+    "matchedWithUser": "Вы совпали с {name}!",
+    "sendDM": "Отправить сообщение",
+    "keepSwiping": "Продолжить просмотр",
+    "resetAndFindMore": "Сбросить и найти ещё",
+    "verificationRequired": "Требуется верификация",
+    "verificationRequiredDesc": "Вам нужно подтвердить профиль, чтобы начать искать пару.",
+    "requestVerification": "Запросить верификацию",
+    "verificationInProgress": "Верификация в процессе",
+    "sendCodeToAdmin": "Отправьте код ниже администратору через Instagram",
+    "yourCode": "Ваш код",
+    "sendInstagramDM": "Написать в Instagram",
+    "authError": "Ошибка авторизации",
+    "loadError": "Ошибка загрузки",
+    "goToLogin": "Войти"
   },
   "likes": {
     "sent": "Отправленные",
@@ -107,5 +125,16 @@
     "step3Desc": "Выразите интерес и начните общение в DM после совпадения.",
     "safeLogin": "Безопасный вход",
     "footerRights": "© 2025 Iluli Dating. Все права защищены."
+  },
+  "chat": {
+    "noMatches": "Пока нет совпадений",
+    "noMatchesDesc": "Отправляйте лайки и получайте совпадения!",
+    "startMatching": "Начать поиск",
+    "newMatches": "Новые совпадения",
+    "sendDM": "Отправить сообщение",
+    "matchedWith": "Вы совпали с {name}!",
+    "startConversation": "Начните разговор через Instagram",
+    "sendInstagramDM": "Написать в Instagram",
+    "selectConversation": "Выберите разговор"
   }
 }

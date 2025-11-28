@@ -15,12 +15,15 @@
     "feed": "फिड",
     "swipe": "जोडी खोज्नुहोस्",
     "likes": "लाइकहरू",
-    "profile": "प्रोफाइल"
+    "profile": "प्रोफाइल",
+    "chat": "च्याट"
   },
   "feed": {
     "title": "फिड",
     "noPhotos": "अहिलेसम्म कुनै फोटो छैन",
-    "loadMore": "थप लोड गर्नुहोस्"
+    "loadMore": "थप लोड गर्नुहोस्",
+    "filterLatest": "नयाँ",
+    "filterPopular": "लोकप्रिय"
   },
   "profile": {
     "editProfile": "प्रोफाइल सम्पादन गर्नुहोस्",
@@ -46,8 +49,23 @@
   "swipe": {
     "like": "मन पर्यो",
     "pass": "छोड्नुहोस्",
-    "noMoreProfiles": "थप प्रोफाइलहरू छैनन्",
-    "itsAMatch": "यो एक जोडी हो!"
+    "noMoreProfiles": "अरू प्रोफाइल छैन",
+    "noMoreProfilesDesc": "तपाईंले सबै प्रोफाइल हेर्नुभयो। पछि फर्कनुहोस्।",
+    "itsAMatch": "मिलान भयो!",
+    "matchedWithUser": "तपाईं {name} सँग मिले!",
+    "sendDM": "सन्देश पठाउनुहोस्",
+    "keepSwiping": "जारी राख्नुहोस्",
+    "resetAndFindMore": "रिसेट गर्नुहोस्",
+    "verificationRequired": "प्रमाणीकरण आवश्यक",
+    "verificationRequiredDesc": "मिलान सुरु गर्नु अघि तपाईंले प्रोफाइल प्रमाणित गर्नुपर्छ।",
+    "requestVerification": "प्रमाणीकरण अनुरोध गर्नुहोस्",
+    "verificationInProgress": "प्रमाणीकरण भइरहेको छ",
+    "sendCodeToAdmin": "तलको कोड Instagram मार्फत एडमिनलाई पठाउनुहोस्",
+    "yourCode": "तपाईंको कोड",
+    "sendInstagramDM": "Instagram DM पठाउनुहोस्",
+    "authError": "प्रमाणीकरण त्रुटि",
+    "loadError": "लोड गर्न असफल",
+    "goToLogin": "लगइन"
   },
   "likes": {
     "sent": "पठाइयो",
@@ -107,5 +125,16 @@
     "step3Desc": "रुचि व्यक्त गर्नुहोस् र जोडी भएपछि DM मार्फत कुराकानी सुरु गर्नुहोस्।",
     "safeLogin": "सुरक्षित र भरपर्दो लगइन",
     "footerRights": "© 2025 Iluli Dating. सर्वाधिकार सुरक्षित।"
+  },
+  "chat": {
+    "noMatches": "अहिलेसम्म कुनै मिलान छैन",
+    "noMatchesDesc": "मन पराउनुहोस् र तिनीहरूले पनि तपाईंलाई मन पराए मिलान हुन्छ!",
+    "startMatching": "मिलान सुरु गर्नुहोस्",
+    "newMatches": "नयाँ मिलान",
+    "sendDM": "सन्देश पठाउनुहोस्",
+    "matchedWith": "तपाईं {name} सँग मिले!",
+    "startConversation": "Instagram मार्फत कुराकानी सुरु गर्नुहोस्",
+    "sendInstagramDM": "Instagram DM पठाउनुहोस्",
+    "selectConversation": "कुराकानी चयन गर्नुहोस्"
   }
 }

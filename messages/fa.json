@@ -15,12 +15,15 @@
     "feed": "فید",
     "swipe": "همسریابی",
     "likes": "لایک‌ها",
-    "profile": "پروفایل"
+    "profile": "پروفایل",
+    "chat": "چت"
   },
   "feed": {
     "title": "فید",
     "noPhotos": "هنوز عکسی نیست",
-    "loadMore": "بارگذاری بیشتر"
+    "loadMore": "بارگذاری بیشتر",
+    "filterLatest": "جدیدترین",
+    "filterPopular": "محبوب"
   },
   "profile": {
     "editProfile": "ویرایش پروفایل",
@@ -44,10 +47,25 @@
     "noPhotos": "هنوز عکسی نیست."
   },
   "swipe": {
-    "like": "لایک",
+    "like": "پسندیدن",
     "pass": "رد کردن",
-    "noMoreProfiles": "پروفایل دیگری وجود ندارد",
-    "itsAMatch": "این یک تطابق است!"
+    "noMoreProfiles": "پروفایل دیگری نیست",
+    "noMoreProfilesDesc": "شما همه پروفایل‌ها را دیده‌اید. بعداً برگردید.",
+    "itsAMatch": "تطابق!",
+    "matchedWithUser": "شما با {name} تطابق پیدا کردید!",
+    "sendDM": "ارسال پیام",
+    "keepSwiping": "ادامه دادن",
+    "resetAndFindMore": "بازنشانی و یافتن بیشتر",
+    "verificationRequired": "تأیید لازم است",
+    "verificationRequiredDesc": "برای شروع تطابق باید پروفایل خود را تأیید کنید.",
+    "requestVerification": "درخواست تأیید",
+    "verificationInProgress": "در حال تأیید",
+    "sendCodeToAdmin": "کد زیر را از طریق اینستاگرام به ادمین بفرستید",
+    "yourCode": "کد شما",
+    "sendInstagramDM": "ارسال پیام اینستاگرام",
+    "authError": "خطای احراز هویت",
+    "loadError": "خطا در بارگذاری",
+    "goToLogin": "ورود"
   },
   "likes": {
     "sent": "ارسال شده",
@@ -107,5 +125,16 @@
     "step3Desc": "علاقه خود را ابراز کنید و پس از تطابق، چت در دایرکت را شروع کنید.",
     "safeLogin": "ورود امن و مطمئن",
     "footerRights": "© 2025 Iluli Dating. تمامی حقوق محفوظ است."
+  },
+  "chat": {
+    "noMatches": "هنوز هیچ تطابقی وجود ندارد",
+    "noMatchesDesc": "لایک بفرستید و وقتی آنها هم شما را لایک کردند تطابق پیدا کنید!",
+    "startMatching": "شروع تطابق",
+    "newMatches": "تطابق‌های جدید",
+    "sendDM": "ارسال پیام",
+    "matchedWith": "شما با {name} تطابق پیدا کردید!",
+    "startConversation": "مکالمه را از طریق اینستاگرام شروع کنید",
+    "sendInstagramDM": "ارسال پیام اینستاگرام",
+    "selectConversation": "یک مکالمه انتخاب کنید"
   }
 }

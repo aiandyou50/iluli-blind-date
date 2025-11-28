@@ -15,12 +15,15 @@
     "feed": "Мэдээлэл",
     "swipe": "Танилцах",
     "likes": "Таалагдсан",
-    "profile": "Профайл"
+    "profile": "Профайл",
+    "chat": "Чат"
   },
   "feed": {
     "title": "Мэдээлэл",
     "noPhotos": "Зураг алга",
-    "loadMore": "Илүү ихийг"
+    "loadMore": "Илүү ихийг",
+    "filterLatest": "Сүүлийн",
+    "filterPopular": "Алдартай"
   },
   "profile": {
     "editProfile": "Профайл засах",
@@ -46,8 +49,23 @@
   "swipe": {
     "like": "Таалагдлаа",
     "pass": "Алгасах",
-    "noMoreProfiles": "Өөр профайл алга",
-    "itsAMatch": "Таарлаа!"
+    "noMoreProfiles": "Өөр профайл байхгүй",
+    "noMoreProfilesDesc": "Та бүх профайлыг үзсэн байна. Дараа эргэж ирнэ үү.",
+    "itsAMatch": "Тааралт!",
+    "matchedWithUser": "Та {name}-тэй тааралт боллоо!",
+    "sendDM": "Мессеж илгээх",
+    "keepSwiping": "Үргэлжлүүлэх",
+    "resetAndFindMore": "Шинэчлээд дахин хайх",
+    "verificationRequired": "Баталгаажуулалт шаардлагатай",
+    "verificationRequiredDesc": "Тааралт эхлүүлэхийн өмнө профайлаа баталгаажуулах шаардлагатай.",
+    "requestVerification": "Баталгаажуулалт хүсэх",
+    "verificationInProgress": "Баталгаажуулж байна",
+    "sendCodeToAdmin": "Доорх кодыг Instagram-аар админд илгээнэ үү",
+    "yourCode": "Таны код",
+    "sendInstagramDM": "Instagram DM илгээх",
+    "authError": "Баталгаажуулалтын алдаа",
+    "loadError": "Ачаалах алдаа",
+    "goToLogin": "Нэвтрэх"
   },
   "likes": {
     "sent": "Илгээсэн",
@@ -107,5 +125,16 @@
     "step3Desc": "Сонирхлоо илэрхийлж, таарсаны дараа DM-ээр чатлаж эхлээрэй.",
     "safeLogin": "Аюулгүй, найдвартай нэвтрэлт",
     "footerRights": "© 2025 Iluli Dating. Бүх эрх хуулиар хамгаалагдсан."
+  },
+  "chat": {
+    "noMatches": "Одоогоор тааралт байхгүй",
+    "noMatchesDesc": "Дуртай гэж илгээгээрэй, тэд таныг буцааж дуртай гэвэл тааралт болно!",
+    "startMatching": "Тааралт эхлүүлэх",
+    "newMatches": "Шинэ тааралт",
+    "sendDM": "Мессеж илгээх",
+    "matchedWith": "Та {name}-тай тааралт боллоо!",
+    "startConversation": "Instagram-аар яриа эхлүүлнэ үү",
+    "sendInstagramDM": "Instagram DM илгээх",
+    "selectConversation": "Яриа сонгоно уу"
   }
 }

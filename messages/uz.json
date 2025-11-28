@@ -15,12 +15,15 @@
     "feed": "Yangiliklar",
     "swipe": "Tanishuv",
     "likes": "Yoqtirishlar",
-    "profile": "Profil"
+    "profile": "Profil",
+    "chat": "Chat"
   },
   "feed": {
     "title": "Yangiliklar",
     "noPhotos": "Hozircha rasmlar yo'q",
-    "loadMore": "Ko'proq yuklash"
+    "loadMore": "Ko'proq yuklash",
+    "filterLatest": "Eng yangi",
+    "filterPopular": "Mashhur"
   },
   "profile": {
     "editProfile": "Profilni tahrirlash",
@@ -44,10 +47,25 @@
     "noPhotos": "Hozircha rasmlar yo'q."
   },
   "swipe": {
-    "like": "Yoqtirish",
+    "like": "Yoqdi",
     "pass": "O'tkazib yuborish",
-    "noMoreProfiles": "Boshqa profillar yo'q",
-    "itsAMatch": "Bu moslik!"
+    "noMoreProfiles": "Boshqa profil yo'q",
+    "noMoreProfilesDesc": "Siz barcha profillarni ko'rdingiz. Keyinroq qaytib keling.",
+    "itsAMatch": "Moslashish!",
+    "matchedWithUser": "Siz {name} bilan moslikka erishdingiz!",
+    "sendDM": "Xabar yuborish",
+    "keepSwiping": "Davom etish",
+    "resetAndFindMore": "Qayta boshlash",
+    "verificationRequired": "Tasdiqlash kerak",
+    "verificationRequiredDesc": "Moslashni boshlash uchun profilingizni tasdiqlashingiz kerak.",
+    "requestVerification": "Tasdiqlash so'rash",
+    "verificationInProgress": "Tasdiqlanmoqda",
+    "sendCodeToAdmin": "Quyidagi kodni admin Instagram orqali yuboring",
+    "yourCode": "Sizning kodingiz",
+    "sendInstagramDM": "Instagram DM yuborish",
+    "authError": "Autentifikatsiya xatosi",
+    "loadError": "Yuklash xatosi",
+    "goToLogin": "Kirish"
   },
   "likes": {
     "sent": "Yuborilgan",
@@ -107,5 +125,16 @@
     "step3Desc": "Qiziqish bildiring va moslikdan keyin DM orqali suhbatni boshlang.",
     "safeLogin": "Xavfsiz va ishonchli kirish",
     "footerRights": "© 2025 Iluli Dating. Barcha huquqlar himoyalangan."
+  },
+  "chat": {
+    "noMatches": "Hali moslik yo'q",
+    "noMatchesDesc": "Like yuboring va ular ham sizni yoqtirsa moslik hosil bo'ladi!",
+    "startMatching": "Moslashni boshlash",
+    "newMatches": "Yangi mosliklar",
+    "sendDM": "Xabar yuborish",
+    "matchedWith": "Siz {name} bilan moslashdingiz!",
+    "startConversation": "Instagram orqali suhbatni boshlang",
+    "sendInstagramDM": "Instagram DM yuborish",
+    "selectConversation": "Suhbatni tanlang"
   }
 }
