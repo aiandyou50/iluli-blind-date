@@ -16,7 +16,8 @@
     "swipe": "जोडी खोज्नुहोस्",
     "likes": "लाइकहरू",
     "profile": "प्रोफाइल",
-    "chat": "च्याट"
+    "chat": "च्याट",
+    "connect": "जडान"
   },
   "feed": {
     "title": "फिड",
@@ -136,5 +137,24 @@
     "startConversation": "Instagram मार्फत कुराकानी सुरु गर्नुहोस्",
     "sendInstagramDM": "Instagram DM पठाउनुहोस्",
     "selectConversation": "कुराकानी चयन गर्नुहोस्"
+  },
+  "connect": {
+    "matchHistory": "मिलान इतिहास",
+    "totalConnected": "{count} जडित",
+    "noMatches": "अहिलेसम्म कुनै मिलान छैन",
+    "noMatchesDesc": "मन पराउनुहोस् र तिनीहरूले पनि तपाईंलाई मन पराए मिलान हुन्छ!",
+    "startMatching": "मिलान सुरु गर्नुहोस्",
+    "matchedSection": "मिलान (सम्पर्क खुला)",
+    "sentLikesSection": "पठाइएको मन परे (पर्खँदै)",
+    "mutualLikeConfirmed": "तपाईंहरू दुवैले एक अर्कालाई मन पराउनुहुन्छ!",
+    "instagramId": "Instagram ID",
+    "sendDM": "सन्देश",
+    "idCopied": "ID कपी भयो!",
+    "openingInstagram": "Instagram खोल्दै...",
+    "waitingForResponse": "तिनीहरूको जवाफको पर्खाइमा।",
+    "justNow": "अहिले",
+    "minutesAgo": "{count} मिनेट अघि",
+    "hoursAgo": "{count} घण्टा अघि",
+    "daysAgo": "{count} दिन अघि"
   }
 }

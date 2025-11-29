@@ -16,7 +16,8 @@
     "swipe": "配对",
     "likes": "喜欢",
     "profile": "个人资料",
-    "chat": "聊天"
+    "chat": "聊天",
+    "connect": "记录"
   },
   "feed": {
     "title": "动态",
@@ -138,5 +139,24 @@
     "startConversation": "通过Instagram私信开始对话",
     "sendInstagramDM": "发送Instagram私信",
     "selectConversation": "选择一个对话"
+  },
+  "connect": {
+    "matchHistory": "匹配记录",
+    "totalConnected": "共 {count} 人已连接",
+    "noMatches": "还没有匹配",
+    "noMatchesDesc": "发送喜欢，当对方也喜欢你时就会匹配！",
+    "startMatching": "开始匹配",
+    "matchedSection": "匹配成功 (联系方式已公开)",
+    "sentLikesSection": "已发送喜欢 (等待中)",
+    "mutualLikeConfirmed": "你们互相喜欢！",
+    "instagramId": "Instagram ID",
+    "sendDM": "发送私信",
+    "idCopied": "ID已复制！",
+    "openingInstagram": "正在打开Instagram...",
+    "waitingForResponse": "等待对方回应。",
+    "justNow": "刚刚",
+    "minutesAgo": "{count}分钟前",
+    "hoursAgo": "{count}小时前",
+    "daysAgo": "{count}天前"
   }
 }

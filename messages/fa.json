@@ -16,7 +16,8 @@
     "swipe": "همسریابی",
     "likes": "لایک‌ها",
     "profile": "پروفایل",
-    "chat": "چت"
+    "chat": "چت",
+    "connect": "اتصال"
   },
   "feed": {
     "title": "فید",
@@ -136,5 +137,24 @@
     "startConversation": "مکالمه را از طریق اینستاگرام شروع کنید",
     "sendInstagramDM": "ارسال پیام اینستاگرام",
     "selectConversation": "یک مکالمه انتخاب کنید"
+  },
+  "connect": {
+    "matchHistory": "تاریخچه تطابق",
+    "totalConnected": "{count} متصل شده",
+    "noMatches": "هنوز هیچ تطابقی وجود ندارد",
+    "noMatchesDesc": "لایک بفرستید و وقتی آنها هم شما را لایک کردند تطابق پیدا کنید!",
+    "startMatching": "شروع تطابق",
+    "matchedSection": "تطابق شده (اطلاعات تماس آشکار شده)",
+    "sentLikesSection": "لایک‌های ارسال شده (در انتظار)",
+    "mutualLikeConfirmed": "شما هر دو همدیگر را دوست دارید!",
+    "instagramId": "آیدی اینستاگرام",
+    "sendDM": "ارسال پیام",
+    "idCopied": "آیدی کپی شد!",
+    "openingInstagram": "در حال باز کردن اینستاگرام...",
+    "waitingForResponse": "در انتظار پاسخ.",
+    "justNow": "همین الان",
+    "minutesAgo": "{count} دقیقه پیش",
+    "hoursAgo": "{count} ساعت پیش",
+    "daysAgo": "{count} روز پیش"
   }
 }

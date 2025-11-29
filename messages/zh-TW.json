@@ -16,7 +16,8 @@
     "swipe": "配對",
     "likes": "喜歡",
     "profile": "個人資料",
-    "chat": "聊天"
+    "chat": "聊天",
+    "connect": "紀錄"
   },
   "feed": {
     "title": "動態",
@@ -138,5 +139,24 @@
     "startConversation": "透過Instagram私訊開始對話",
     "sendInstagramDM": "發送Instagram私訊",
     "selectConversation": "選擇一個對話"
+  },
+  "connect": {
+    "matchHistory": "配對紀錄",
+    "totalConnected": "共 {count} 人已連接",
+    "noMatches": "還沒有配對",
+    "noMatchesDesc": "發送喜歡，當對方也喜歡你時就會配對！",
+    "startMatching": "開始配對",
+    "matchedSection": "配對成功 (聯絡方式已公開)",
+    "sentLikesSection": "已發送喜歡 (等待中)",
+    "mutualLikeConfirmed": "你們互相喜歡！",
+    "instagramId": "Instagram ID",
+    "sendDM": "發送私訊",
+    "idCopied": "ID已複製！",
+    "openingInstagram": "正在開啟Instagram...",
+    "waitingForResponse": "等待對方回應。",
+    "justNow": "剛剛",
+    "minutesAgo": "{count}分鐘前",
+    "hoursAgo": "{count}小時前",
+    "daysAgo": "{count}天前"
   }
 }

@@ -56,25 +56,25 @@ export default function BottomNav() {
           <p className="text-xs font-bold">{t('swipe')}</p>
         </Link>
 
-        {/* [EN] Chat Tab / [KR] 채팅 탭 */}
+        {/* [EN] Connect Tab (Match History) / [KR] 연결 탭 (매칭 내역) */}
         <Link
-          href="/chat"
+          href="/connect"
           className={`flex flex-1 flex-col items-center justify-center gap-1 relative ${
-            isActive('/chat') 
+            isActive('/connect') 
               ? 'text-pink-500' 
               : 'text-gray-400 dark:text-gray-500'
           }`}
         >
-          {isActive('/chat') && (
+          {isActive('/connect') && (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-pink-500 rounded-full" />
           )}
           <span 
             className="material-symbols-outlined text-2xl" 
-            style={{ fontVariationSettings: isActive('/chat') ? "'FILL' 1" : "'FILL' 0" }}
+            style={{ fontVariationSettings: isActive('/connect') ? "'FILL' 1" : "'FILL' 0" }}
           >
-            chat_bubble
+            heart_handshake
           </span>
-          <p className="text-xs font-bold">{t('chat')}</p>
+          <p className="text-xs font-bold">{t('connect')}</p>
         </Link>
 
         {/* [EN] Profile Tab / [KR] 프로필 탭 */}

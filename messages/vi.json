@@ -16,7 +16,8 @@
     "swipe": "Ghép đôi",
     "likes": "Lượt thích",
     "profile": "Hồ sơ",
-    "chat": "Trò chuyện"
+    "chat": "Trò chuyện",
+    "connect": "Kết nối"
   },
   "feed": {
     "title": "Bảng tin",
@@ -136,5 +137,24 @@
     "startConversation": "Bắt đầu trò chuyện qua Instagram",
     "sendInstagramDM": "Gửi tin nhắn Instagram",
     "selectConversation": "Chọn cuộc trò chuyện"
+  },
+  "connect": {
+    "matchHistory": "Lịch sử kết nối",
+    "totalConnected": "{count} đã kết nối",
+    "noMatches": "Chưa có kết nối nào",
+    "noMatchesDesc": "Gửi thích và được kết nối khi họ thích bạn lại!",
+    "startMatching": "Bắt đầu kết nối",
+    "matchedSection": "Đã kết nối (Đã tiết lộ liên hệ)",
+    "sentLikesSection": "Đã gửi thích (Đang chờ)",
+    "mutualLikeConfirmed": "Cả hai đều thích nhau!",
+    "instagramId": "Instagram ID",
+    "sendDM": "Gửi tin",
+    "idCopied": "Đã sao chép ID!",
+    "openingInstagram": "Đang mở Instagram...",
+    "waitingForResponse": "Đang chờ phản hồi.",
+    "justNow": "vừa xong",
+    "minutesAgo": "{count} phút trước",
+    "hoursAgo": "{count} giờ trước",
+    "daysAgo": "{count} ngày trước"
   }
 }

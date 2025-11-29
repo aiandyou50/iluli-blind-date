@@ -16,7 +16,8 @@
     "swipe": "Tanishuv",
     "likes": "Yoqtirishlar",
     "profile": "Profil",
-    "chat": "Chat"
+    "chat": "Chat",
+    "connect": "Bog'lanish"
   },
   "feed": {
     "title": "Yangiliklar",
@@ -136,5 +137,24 @@
     "startConversation": "Instagram orqali suhbatni boshlang",
     "sendInstagramDM": "Instagram DM yuborish",
     "selectConversation": "Suhbatni tanlang"
+  },
+  "connect": {
+    "matchHistory": "Moslik tarixi",
+    "totalConnected": "{count} bog'langan",
+    "noMatches": "Hali moslik yo'q",
+    "noMatchesDesc": "Like yuboring va ular ham sizni yoqtirsa moslik hosil bo'ladi!",
+    "startMatching": "Moslashni boshlash",
+    "matchedSection": "Moslashgan (Kontakt ochilgan)",
+    "sentLikesSection": "Yuborilgan like'lar (Kutilmoqda)",
+    "mutualLikeConfirmed": "Ikkalangiz ham bir-biringizni yoqtirasiz!",
+    "instagramId": "Instagram ID",
+    "sendDM": "Xabar",
+    "idCopied": "ID nusxalandi!",
+    "openingInstagram": "Instagram ochilmoqda...",
+    "waitingForResponse": "Javob kutilmoqda.",
+    "justNow": "hozir",
+    "minutesAgo": "{count} daqiqa oldin",
+    "hoursAgo": "{count} soat oldin",
+    "daysAgo": "{count} kun oldin"
   }
 }
