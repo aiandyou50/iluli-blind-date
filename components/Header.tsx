@@ -53,14 +53,14 @@ export default function Header({ title, rightAction }: { title?: string, rightAc
           {tNav('swipe')}
         </Link>
         <Link 
-          href="/chat" 
+          href="/connect" 
           className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-            isActive('/chat') 
+            isActive('/connect') 
               ? 'bg-pink-50 text-pink-500 dark:bg-pink-900/20' 
               : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-zinc-800'
           }`}
         >
-          {tNav('chat')}
+          {tNav('connect')}
         </Link>
         <Link 
           href="/profile" 

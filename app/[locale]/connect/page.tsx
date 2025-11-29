@@ -65,21 +65,32 @@ export default function ConnectPage() {
   }, [session?.user?.id, sessionStatus, fetchMatchHistory]);
 
   // [EN] Handle Instagram connection: Copy ID to clipboard and open Instagram / [KR] 인스타그램 연결 처리: 아이디 복사 후 인스타그램 열기
-  const handleConnectInstagram = (username: string) => {
-    // [EN] Copy to clipboard / [KR] 클립보드에 복사
-    navigator.clipboard.writeText(username).then(() => {
+  const handleConnectInstagram = async (username: string) => {
+    try {
+      // [EN] Copy to clipboard / [KR] 클립보드에 복사
+      await navigator.clipboard.writeText(username);
       showToast();
       
       // [EN] Open Instagram after delay / [KR] 딜레이 후 인스타그램 열기
       setTimeout(() => {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        // [EN] Check for mobile using touch capability as fallback / [KR] 터치 기능을 폴백으로 사용하여 모바일 확인
+        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (isMobile) {
+          // [EN] Try Instagram deep link, falls back to web URL if app not installed / [KR] 인스타그램 딥 링크 시도, 앱이 설치되지 않은 경우 웹 URL로 폴백
           window.location.href = `instagram://user?username=${username}`;
+          // [EN] Fallback to web after a short delay if deep link doesn't work / [KR] 딥 링크가 작동하지 않으면 짧은 딜레이 후 웹으로 폴백
+          setTimeout(() => {
+            window.open(`https://www.instagram.com/${username}`, '_blank');
+          }, 500);
         } else {
           window.open(`https://www.instagram.com/${username}`, '_blank');
         }
       }, 1500);
-    });
+    } catch (error) {
+      // [EN] Clipboard API failed, open Instagram directly / [KR] 클립보드 API 실패, 인스타그램 직접 열기
+      console.error('Failed to copy to clipboard:', error);
+      window.open(`https://www.instagram.com/${username}`, '_blank');
+    }
   };
 
   // [EN] Show toast notification / [KR] 토스트 알림 표시
