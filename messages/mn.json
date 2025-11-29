@@ -16,7 +16,8 @@
     "swipe": "Танилцах",
     "likes": "Таалагдсан",
     "profile": "Профайл",
-    "chat": "Чат"
+    "chat": "Чат",
+    "connect": "Холбогдох"
   },
   "feed": {
     "title": "Мэдээлэл",
@@ -136,5 +137,24 @@
     "startConversation": "Instagram-аар яриа эхлүүлнэ үү",
     "sendInstagramDM": "Instagram DM илгээх",
     "selectConversation": "Яриа сонгоно уу"
+  },
+  "connect": {
+    "matchHistory": "Тааралтын түүх",
+    "totalConnected": "{count} холбогдсон",
+    "noMatches": "Одоогоор тааралт байхгүй",
+    "noMatchesDesc": "Дуртай гэж илгээгээрэй, тэд таныг буцааж дуртай гэвэл тааралт болно!",
+    "startMatching": "Тааралт эхлүүлэх",
+    "matchedSection": "Тааралт (Холбоо барих нээлттэй)",
+    "sentLikesSection": "Илгээсэн таалагдсан (Хүлээж байна)",
+    "mutualLikeConfirmed": "Та хоёр бие биедээ дуртай!",
+    "instagramId": "Instagram ID",
+    "sendDM": "Мессеж",
+    "idCopied": "ID хуулагдсан!",
+    "openingInstagram": "Instagram нээгдэж байна...",
+    "waitingForResponse": "Хариуг хүлээж байна.",
+    "justNow": "дөнгөж сая",
+    "minutesAgo": "{count} минутын өмнө",
+    "hoursAgo": "{count} цагийн өмнө",
+    "daysAgo": "{count} өдрийн өмнө"
   }
 }

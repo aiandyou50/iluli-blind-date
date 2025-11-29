@@ -16,7 +16,8 @@
     "swipe": "Знакомства",
     "likes": "Лайки",
     "profile": "Профиль",
-    "chat": "Чат"
+    "chat": "Чат",
+    "connect": "Связи"
   },
   "feed": {
     "title": "Лента",
@@ -136,5 +137,24 @@
     "startConversation": "Начните разговор через Instagram",
     "sendInstagramDM": "Написать в Instagram",
     "selectConversation": "Выберите разговор"
+  },
+  "connect": {
+    "matchHistory": "История совпадений",
+    "totalConnected": "{count} подключено",
+    "noMatches": "Пока нет совпадений",
+    "noMatchesDesc": "Отправляйте лайки и получайте совпадения!",
+    "startMatching": "Начать поиск",
+    "matchedSection": "Совпадения (контакты открыты)",
+    "sentLikesSection": "Отправленные лайки (ожидание)",
+    "mutualLikeConfirmed": "Вы оба нравитесь друг другу!",
+    "instagramId": "Instagram ID",
+    "sendDM": "Написать",
+    "idCopied": "ID скопирован!",
+    "openingInstagram": "Открываем Instagram...",
+    "waitingForResponse": "Ожидаем ответа.",
+    "justNow": "только что",
+    "minutesAgo": "{count} мин. назад",
+    "hoursAgo": "{count} ч. назад",
+    "daysAgo": "{count} д. назад"
   }
 }

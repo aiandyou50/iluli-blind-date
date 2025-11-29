@@ -16,7 +16,8 @@
     "swipe": "Match",
     "likes": "Me gusta",
     "profile": "Perfil",
-    "chat": "Chat"
+    "chat": "Chat",
+    "connect": "Conexiones"
   },
   "feed": {
     "title": "Feed",
@@ -136,5 +137,24 @@
     "startConversation": "Inicia una conversación por Instagram",
     "sendInstagramDM": "Enviar DM de Instagram",
     "selectConversation": "Selecciona una conversación"
+  },
+  "connect": {
+    "matchHistory": "Historial de Coincidencias",
+    "totalConnected": "{count} conectados",
+    "noMatches": "Aún no hay coincidencias",
+    "noMatchesDesc": "¡Envía likes y coincide cuando también les gustes!",
+    "startMatching": "Comenzar a buscar",
+    "matchedSection": "Coincidencias (Contacto revelado)",
+    "sentLikesSection": "Likes enviados (Esperando)",
+    "mutualLikeConfirmed": "¡Ambos se gustan!",
+    "instagramId": "ID de Instagram",
+    "sendDM": "Enviar DM",
+    "idCopied": "¡ID copiado!",
+    "openingInstagram": "Abriendo Instagram...",
+    "waitingForResponse": "Esperando su respuesta.",
+    "justNow": "ahora",
+    "minutesAgo": "hace {count}m",
+    "hoursAgo": "hace {count}h",
+    "daysAgo": "hace {count}d"
   }
 }

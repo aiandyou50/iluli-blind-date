@@ -16,7 +16,8 @@
     "swipe": "Match",
     "likes": "Likes",
     "profile": "Profile",
-    "chat": "Chat"
+    "chat": "Chat",
+    "connect": "Connect"
   },
   "feed": {
     "title": "Feed",
@@ -150,5 +151,24 @@
     "startConversation": "Start a conversation via Instagram DM",
     "sendInstagramDM": "Send Instagram DM",
     "selectConversation": "Select a conversation"
+  },
+  "connect": {
+    "matchHistory": "Match History",
+    "totalConnected": "{count} connected",
+    "noMatches": "No matches yet",
+    "noMatchesDesc": "Send likes and get matched when they like you back!",
+    "startMatching": "Start Matching",
+    "matchedSection": "Matched (Contact Revealed)",
+    "sentLikesSection": "Sent Likes (Waiting)",
+    "mutualLikeConfirmed": "You both like each other!",
+    "instagramId": "Instagram ID",
+    "sendDM": "Send DM",
+    "idCopied": "ID Copied!",
+    "openingInstagram": "Opening Instagram...",
+    "waitingForResponse": "Waiting for their response.",
+    "justNow": "just now",
+    "minutesAgo": "{count}m ago",
+    "hoursAgo": "{count}h ago",
+    "daysAgo": "{count}d ago"
   }
 }
