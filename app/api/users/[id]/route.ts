@@ -25,7 +25,7 @@ export async function GET(
         id: true,
         name: true,
         nickname: true,
-        introduction: true,
+        bio: true,
         instagramId: true,
         image: true,
         gender: true,

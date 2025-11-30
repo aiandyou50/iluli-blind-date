@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     await prisma.report.create({
       data: {
         reporterId: token.sub,
-        reportedId: targetUserId,
+        targetId: targetUserId,
         reason,
         details
       }

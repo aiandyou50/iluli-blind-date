@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
         nickname: true,
         school: true,
         instagramId: true,
-        introduction: true,
+        bio: true,
         gender: true,
         isGraduated: true,
         status: true,

@@ -70,6 +70,7 @@ model User {
   blocksSent    Block[]   @relation("Blocker")
   blocksReceived Block[]  @relation("Blocked")
   passes        Pass[]    @relation("UserPasses")
+  photoLikes    PhotoLike[]
 
   @@index([lastActiveAt])
   @@index([status])
@@ -128,6 +129,7 @@ model Report {
   target      User     @relation("Target", fields: [targetId], references: [id])
   targetId    String
   reason      String   // 신고 사유 (i18n 키 참조)
+  details     String?  // 상세 내용
   status      ReportStatus @default(PENDING)
   handledAt   DateTime?
   action      String?  // "WARN" | "BAN" | "DISMISS"
@@ -156,6 +158,7 @@ model Photo {
   order     Int      @default(0)
   
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes     PhotoLike[]
   
   createdAt DateTime @default(now())
 }
@@ -183,4 +186,16 @@ model Pass {
   createdAt  DateTime @default(now())
   
   @@unique([fromUserId, toUserId])
+}
+
+model PhotoLike {
+  id        String   @id @default(cuid())
+  userId    String
+  photoId   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photo     Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, photoId])
 }

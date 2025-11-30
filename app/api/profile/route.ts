@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       where: { email },
       data: {
         instagramId,
-        introduction,
+        bio: introduction,
         nickname,
         gender: gender as Gender,
       },
