@@ -42,7 +42,7 @@ async function handler(req: NextRequest) {
         }
       }),
     ],
-    adapter: PrismaAdapter(prisma),
+    // adapter: PrismaAdapter(prisma),
     secret: SECRET,
     session: {
       strategy: "jwt" as const,
