@@ -29,7 +29,6 @@ async function handler(req: NextRequest) {
   // [Adapter Injection] Merge core config with Prisma Adapter
   // We MUST re-initialize providers here because process.env is empty in Edge Runtime for secrets
   const config = {
-    ...authConfig,
     providers: [
       Google({
         clientId: GOOGLE_ID,
@@ -45,10 +44,12 @@ async function handler(req: NextRequest) {
     ],
     adapter: PrismaAdapter(prisma),
     secret: SECRET,
+    session: {
+      strategy: "jwt" as const,
+    },
     trustHost: true, // Trust the Host header (fixes missing NEXTAUTH_URL)
     debug: true, // Enable debugging logs
     callbacks: {
-      ...authConfig.callbacks,
       // [Edge Compatible Callback] Inject ADMIN_EMAILS from ctx.env
       async jwt({ token, user }: { token: any, user: any }) {
         if (user && user.email) {
@@ -60,6 +61,12 @@ async function handler(req: NextRequest) {
           }
         }
         return token;
+      },
+      async session({ session, token }: { session: any, token: any }) {
+        if (session.user && token.role) {
+          session.user.role = token.role;
+        }
+        return session;
       }
     }
   };
