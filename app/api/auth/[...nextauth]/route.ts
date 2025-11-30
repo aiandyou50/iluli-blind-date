@@ -4,7 +4,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getPrisma } from "@/lib/db";
 import { authConfig } from "@/lib/auth";
 import { getRequestContext } from "@cloudflare/next-on-pages";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = 'edge';
 
@@ -67,10 +67,19 @@ async function handler(req: NextRequest) {
   // @ts-ignore
   const { handlers } = NextAuth(config);
   
-  if (req.method === 'POST') {
-    return handlers.POST(req);
+  try {
+    if (req.method === 'POST') {
+      return await handlers.POST(req);
+    }
+    return await handlers.GET(req);
+  } catch (error: any) {
+    console.error("NextAuth Handler Error:", error);
+    return NextResponse.json({ 
+      error: "Authentication Error", 
+      message: error.message,
+      stack: error.stack 
+    }, { status: 500 });
   }
-  return handlers.GET(req);
 }
 
 export const GET = handler;
