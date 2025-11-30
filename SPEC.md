@@ -1,199 +1,225 @@
-📘 [Master Spec] 이루리 소개팅 (Iluli Dating) 통합 개발 명세서  
-**문서 버전: 5.4.1 (Toast Notification Finalization)**  
-**최종 수정일: 2025-11-30**  
-**상태: ✅ 개발 확정 (Production Ready)**  
-**업데이트 내역:**  
-✅ **Figma 참조 문구 삭제** (존재하지 않는 라이브러리 제거)  
-✅ **이메일 라벨링 수정** - "기술 지원" → "문의 이메일"로 정정  
-✅ **전역 토스트 알림 시스템** (`react-hot-toast`) 완성도 향상  
+# 📘 [Master Spec] 이루리 소개팅 (Iluli Dating) 통합 개발 명세서
+**문서 버전:** 6.0.0 (Reverse Engineered & Refactored)
+**최종 수정일:** 2025-11-30
+**상태:** ✅ 개발 완료 및 유지보수 (Production Ready)
 
 ---
 
-### 🚨 AI Coding Instructions (Critical Updates)  
-#### 1. **토스트 알림 시스템 구현 규칙**  
-- **라이브러리:** `react-hot-toast` (v2.4.1+)  
-  ```bash
-  npm install react-hot-toast
-  ```  
-- **필수 구성 요소:**  
-  ```tsx
-  // app/providers.tsx
-  'use client';
-  import { Toaster } from 'react-hot-toast';
+## 1. 프로젝트 개요 (Project Overview)
+**이루리(Iluli)**는 글로벌 사용자를 대상으로 하는 웹 기반 소셜 데이팅 플랫폼입니다.
+Next.js 15와 Cloudflare Edge Runtime을 기반으로 구축되어, 전 세계 어디서나 빠르고 안전한 매칭 경험을 제공합니다.
+사용자는 자신의 프로필을 등록하고, 매칭 알고리즘을 통해 이성을 추천받으며, 인스타그램 연동을 통해 실제 연결로 이어질 수 있습니다.
+
+### 🎯 핵심 목표
+*   **Global First:** 11개국 언어 지원 및 RTL(페르시아어) 완벽 대응.
+*   **Edge Native:** Node.js 의존성을 제거하고 Cloudflare Workers/Pages 환경에서 100% 동작.
+*   **Security:** 철저한 인증/인가 및 관리자 승인 시스템 도입.
+*   **Simplicity:** 복잡한 채팅 기능 대신 인스타그램 딥링크를 통한 직관적인 연결 유도.
+
+---
+
+## 2. 기술 스택 및 아키텍처 (Tech Stack & Architecture)
+
+### 2.1 Frontend
+*   **Framework:** Next.js 15.5.2 (App Router)
+*   **Language:** TypeScript 5.x
+*   **Styling:** Tailwind CSS 4.0 (PostCSS)
+*   **State Management:** React Hooks (`useState`, `useEffect`, `useContext`)
+*   **Internationalization:** `next-intl` (11 Languages)
+*   **Icons:** Material Symbols (via Google Fonts) / Heroicons (via `react-hot-toast` custom components)
+*   **Notifications:** `react-hot-toast`
+
+### 2.2 Backend (Serverless Edge)
+*   **Runtime:** Cloudflare Edge Runtime (V8 Isolate)
+*   **API:** Next.js Route Handlers (`app/api/...`)
+*   **ORM:** Prisma ORM v6+ (with `@prisma/adapter-d1`)
+*   **Validation:** Zod
+
+### 2.3 Infrastructure & Database
+*   **Database:** Cloudflare D1 (SQLite distributed)
+*   **Storage:** Cloudflare R2 (Object Storage for Images)
+*   **Authentication:** NextAuth.js v5 (Auth.js)
+    *   Provider: Google OAuth
+    *   Strategy: JWT (Stateless)
+*   **Deployment:** Cloudflare Pages (Git Integration)
+
+---
+
+## 3. 데이터베이스 스키마 (Database Schema)
+
+### 3.1 ERD 요약
+*   **User:** 핵심 사용자 정보 (프로필, 상태, 인증 정보).
+*   **Account/Session:** NextAuth 인증 관리.
+*   **Photo:** 사용자 프로필 사진 (R2 URL, 순서).
+*   **PhotoLike:** 사진에 대한 좋아요 반응.
+*   **Match:** 사용자 간의 매칭 기록 (중복 매칭 방지).
+*   **Like:** 사용자 간의 호감 표시 (Super Like 포함).
+*   **Pass:** 매칭 패스 기록 (재노출 방지).
+*   **Block:** 차단 관계.
+*   **Report:** 신고 내역 및 처리 상태.
+
+### 3.2 주요 모델 명세 (Prisma)
+```prisma
+model User {
+  id               String     @id @default(cuid())
+  email            String     @unique
+  nickname         String?    @unique
+  school           String?
+  instagramId      String?
+  bio              String?    // 자기소개
+  gender           Gender?
+  isGraduated      Boolean    @default(false)
+  status           UserStatus @default(PENDING) // PENDING, ACTIVE, BANNED
+  role             Role       @default(USER)    // USER, ADMIN
+  verificationCode String?
+  lastActiveAt     DateTime   @default(now())
   
-  export function ToastProvider() {
-    return (
-      <Toaster 
-        position="top-center"
-        reverseOrder={false}
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#fff',
-            color: '#1f2937',
-            borderRadius: '12px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            padding: '16px',
-            fontSize: '14px',
-            maxWidth: '90vw',
-          },
-          success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
-          error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
-          loading: { iconTheme: { primary: '#3b82f6', secondary: '#fff' } },
-        }}
-      />
-    );
-  }
-  
-  // app/layout.tsx
-  export default function RootLayout({ children }) {
-    return (
-      <html lang={lang}>
-        <body>
-          <SessionProvider>
-            {children}
-            <ToastProvider /> {/* 반드시 최상위에 위치 */}
-          </SessionProvider>
-        </body>
-      </html>
-    );
-  }
-  ```  
+  // Relations: photos, likes, matches, reports, blocks...
+}
 
-#### 2. **RTL(fa) 언어 지원 전략**  
-- **자동 방향 전환:** `dir` 속성 감지 → 토스트 위치/애니메이션 조정  
-  ```tsx
-  // hooks/useToastDirection.ts
-  export const useToastDirection = () => {
-    const { i18n } = useTranslation();
-    return i18n.language === 'fa' ? 'rtl' : 'ltr';
-  };
-  
-  // components/CustomToast.tsx
-  const CustomToast = ({ t }) => {
-    const dir = useToastDirection();
-    return (
-      <div dir={dir} className={`flex items-start gap-3 p-3 rounded-lg border ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
-        {/* 아이콘/메시지 */}
-      </div>
-    );
-  };
-  ```  
+model Photo {
+  id        String   @id @default(cuid())
+  userId    String
+  url       String   // R2 Public URL
+  order     Int      @default(0)
+  likes     PhotoLike[]
+}
 
----
-
-### 3. 상세 기능 명세 (업데이트 사항)  
-#### ✅ **적용 위치별 구현 가이드**  
-| 시나리오                     | 구현 코드 예시                                                                 | UX 요구사항                                                                 |  
-|------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------|  
-| **1. 로그인 실패**           | ```toast.error(t('auth.login_failed'), { duration: 4000 })```               | - 아이콘: ❌ 빨간색<br>- 진동 효과 추가 (모바일에서만)                      |  
-| **2. 인증 코드 복사 완료**   | ```toast.success(`${t('common.copied')}: ${code}`, { icon: '📋' })```       | - 초록 체크 아이콘<br>- 2초 후 자동 사라짐                                 |  
-| **3. 프로필 저장 완료**      | ```toast(t('profile.save_success', { duration: 2000, icon: '✅' }))```      | - 부드러운 페이드 인/아웃<br>- PC에서는 최대 너비 400px                   |  
-| **4. 인스타 딥링크 시도**    | ```const toastId = toast.loading(t('connect.instagram_loading'));<br>setTimeout(() => toast.dismiss(toastId), 2000);``` | - 로딩 스피너 표시<br>- 실패 시 자동으로 에러 토스트 전환 |  
-
-#### 💡 **핵심 UX 디테일**  
-- **자동 사라짐:** 기본 3초 (긴 메시지: 5초)  
-- **수동 닫기:** 모든 토스트 우측 상단에 ✕ 버튼 추가  
-- **스택 관리:**  
-  - 동시에 3개 이상 뜰 경우 **자동 그룹화** (동일 유형 토스트만 병합)  
-  - 긴급 알림(에러)은 항상 최상위 노출  
-- **접근성:**  
-  - ARIA `role="status"` 적용  
-  - Screen Reader용 `aria-live="polite"`  
-  - 포커스 강탈 방지 (토스트 노출 중 탭 이동 차단 없음)  
-
----
-
-### 4. UI/UX 디자인 시스템 (업데이트)  
-#### 🎨 **토스트 디자인 토큰**  
-| 상태     | 배경색          | 아이콘 색   | 경계선           | 애니메이션       |  
-|----------|---------------|------------|------------------|------------------|  
-| **기본** | `bg-white`    | `#6b7280`  | `border-gray-200`| fadeInDown       |  
-| **성공** | `bg-green-50` | `#10b981`  | `border-green-200`| zoomIn           |  
-| **에러** | `bg-red-50`   | `#ef4444`  | `border-red-200`  | shake (모바일)   |  
-| **로딩** | `bg-blue-50`  | `#3b82f6`  | `border-blue-200` | pulse (아이콘)   |  
-
-#### 📱 **반응형 동작**  
-| 디바이스   | 위치          | 최대 너비 | 애니메이션 강도 |  
-|------------|--------------|-----------|----------------|  
-| **모바일** | 하단 20px    | 90vw      | 진동 강도 80%  |  
-| **PC**     | 상단 중앙    | 400px     | 부드러운 페이드 |  
-
----
-
-### 5. 기술 구현 가이드  
-#### 🧩 **커스텀 토스트 컴포넌트**  
-```tsx
-// components/CustomToast.tsx
-'use client';
-import { useToastDirection } from '@/hooks/useToastDirection';
-import { ExclamationCircleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
-
-export const CustomToast = ({ type, message }: { type: 'success' | 'error' | 'loading'; message: string }) => {
-  const dir = useToastDirection();
-  const icons = {
-    success: <CheckCircleIcon className="w-6 h-6 text-green-500" />,
-    error: <ExclamationCircleIcon className="w-6 h-6 text-red-500" />,
-    loading: <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-  };
-
-  return (
-    <div 
-      dir={dir}
-      className={`flex items-start gap-3 p-3 rounded-lg border ${
-        type === 'success' ? 'bg-green-50 border-green-200' :
-        type === 'error' ? 'bg-red-50 border-red-200' :
-        'bg-blue-50 border-blue-200'
-      }`}
-    >
-      {icons[type]}
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-900 break-words">{message}</p>
-      </div>
-      <button 
-        onClick={() => toast.dismiss()}
-        className="text-gray-400 hover:text-gray-600 transition"
-        aria-label={t('common.close_toast')}
-      >
-        ✕
-      </button>
-    </div>
-  );
-};
+model Report {
+  id          String   @id @default(cuid())
+  reporterId  String
+  targetId    String   // 신고 대상
+  reason      String
+  details     String?
+  status      ReportStatus @default(PENDING)
+}
 ```
 
-#### 🔁 **기존 alert() 대체 매핑**  
-| 기존 코드                          | 새 코드                                                                 |  
-|-----------------------------------|------------------------------------------------------------------------|  
-| `alert('로그인 실패')`            | `toast.error(t('auth.login_failed'))`                                 |  
-| `alert('코드 복사 완료')`         | `toast.success(t('verify.code_copied'), { icon: '📋' })`              |  
-| `alert('프로필 저장됨')`          | `toast(t('profile.saved'), { duration: 1500, icon: '✅' })`           |  
-| `alert('인스타 연결 시도 중...')` | ```const id = toast.loading(t('connect.loading'));<br>setTimeout(() => toast.success(t('connect.success'), { id }), 2000);``` |  
+---
+
+## 4. API 명세 (API Specification)
+
+모든 API는 `edge` 런타임에서 동작하며, `/api` 프리픽스를 가집니다.
+
+### 4.1 인증 및 사용자 (Auth & User)
+*   `GET /api/auth/[...nextauth]`: NextAuth 인증 핸들러.
+*   `GET /api/users/me`: 내 프로필 정보 조회.
+*   `GET /api/users/[id]`: 특정 사용자 공개 프로필 조회.
+*   `POST /api/profile`: 내 프로필 정보 수정 (닉네임, 소개, 인스타ID 등).
+
+### 4.2 사진 및 업로드 (Photos)
+*   `POST /api/upload`: R2 업로드를 위한 Presigned URL 발급.
+*   `POST /api/photos`: 업로드 완료 후 DB에 사진 정보 저장.
+*   `DELETE /api/photos/[id]`: 사진 삭제.
+*   `POST /api/photos/[id]/like`: 특정 사진 좋아요 토글.
+
+### 4.3 매칭 및 상호작용 (Matching)
+*   `GET /api/matches/candidates`: 매칭 후보 추천 (필터링: 성별, 차단, 이미 본 유저).
+*   `POST /api/matches/action`: 좋아요(Like) 또는 패스(Pass) 액션 처리.
+*   `POST /api/matches/reset`: (디버그용) 매칭 기록 초기화.
+
+### 4.4 관리자 (Admin) - *Role: ADMIN Only*
+*   `GET /api/admin/users`: 전체 사용자 목록 및 상태 조회.
+*   `POST /api/admin/verify`: 사용자 인증 코드 확인 및 승인 (PENDING -> ACTIVE).
+*   `POST /api/admin/reports`: 신고 내역 조회 및 처리.
+*   `GET /api/admin/photos`: (관리자용) 전체 사진 조회.
+
+### 4.5 기타
+*   `POST /api/reports`: 사용자 신고 접수.
+*   `POST /api/blocks`: 사용자 차단.
 
 ---
 
-### 6. 테스트 케이스 (확장)  
-#### ✅ **필수 검증 항목**  
-| 분류          | 테스트 시나리오                                      | 기대 결과                                  |  
-|---------------|-----------------------------------------------------|------------------------------------------|  
-| **RTL(fa)**   | 페르시아어 설정 후 토스트 노출                       | 텍스트/버튼이 오른쪽에서 왼쪽으로 정렬됨   |  
-| **접근성**    | Screen Reader로 토스트 메시지 읽기                  | "알림: [메시지 내용]" 음성 안내            |  
-| **로딩 상태** | 인스타 딥링크 시도 → 2초 후 성공                    | 로딩 토스트 → 성공 토스트 자동 전환        |  
-| **에러 스택** | 3회 연속 로그인 실패 시도                           | 3개의 에러 토스트가 수직 스택으로 노출      |  
+## 5. 핵심 기능 및 로직 (Core Features)
 
-#### ⚙️ **성능 검증**  
-- **렌더링 지연:** 토스트 노출 시 메인 UI 프레임 드랍 없음 (60fps 유지)  
-- **메모리 누수:** 100회 연속 노출 후 메모리 사용량 5% 이내 증가  
+### 5.1 회원가입 및 승인 프로세스
+1.  **Google 로그인:** NextAuth를 통해 계정 생성.
+2.  **프로필 설정:** 닉네임, 학교, 성별, 인스타그램 ID 입력.
+3.  **사진 업로드:** 최소 1장 이상의 사진 등록 필수.
+4.  **관리자 승인 대기 (PENDING):**
+    *   사용자는 인증 코드를 발급받음.
+    *   관리자는 대시보드에서 해당 유저의 인스타그램 ID와 사진을 확인.
+    *   인증 코드가 일치하면 승인(ACTIVE) 처리.
+
+### 5.2 매칭 알고리즘
+1.  **기본 필터:**
+    *   자신의 성별과 반대되는 유저 (또는 설정에 따름).
+    *   상태가 `ACTIVE`인 유저.
+2.  **제외 조건:**
+    *   이미 `Like` 또는 `Pass`한 유저.
+    *   내가 차단(`Block`)했거나 나를 차단한 유저.
+    *   신고(`Report`) 관계에 있는 유저.
+3.  **정렬:** `lastActiveAt` 기준 내림차순 또는 랜덤 셔플 (구현에 따라 다름).
+
+### 5.3 인스타그램 연동 (Deep Link)
+*   채팅 기능 대신 **인스타그램 DM**으로 직접 연결.
+*   프로필의 "인스타그램으로 이동" 버튼 클릭 시:
+    *   모바일: 인스타그램 앱 실행 (`instagram://user?username=...`).
+    *   PC: 인스타그램 웹 프로필 새 탭 열기.
+
+### 5.4 관리자 대시보드
+*   **Verification Queue:** 승인 대기 중인 신규 가입자 목록.
+*   **User Management:** 전체 유저 검색, 상태 변경(BAN), 상세 정보 확인.
+*   **Report Management:** 접수된 신고 내역 확인 및 처벌.
 
 ---
 
-### 7. 보안 및 규정 준수  
-- **XSS 방지:** 모든 토스트 메시지에 `DOMPurify` 적용 (동적 값 삽입 시)  
-  ```tsx
-  import DOMPurify from 'dompurify';
-  toast.success(DOMPurify.sanitize(userInput));
-  ```  
-- **GDPR 준수:** 쿠키 기반 알림 동의 팝업과 통합 (토스트 사용 전 사용자 동의 수집)  
+## 6. 디렉토리 구조 (Directory Structure)
 
----  
+```
+/
+├── app/
+│   ├── [locale]/           # i18n Routing Root
+│   │   ├── admin/          # 관리자 페이지
+│   │   ├── auth/           # 로그인/에러 페이지
+│   │   ├── chat/           # (Placeholder) 채팅/매칭 목록
+│   │   ├── connect/        # 인스타 연결 페이지
+│   │   ├── feed/           # (Legacy) 피드형 보기
+│   │   ├── matching/       # 메인 매칭 화면 (스와이프/카드)
+│   │   ├── profile/        # 내 프로필 수정
+│   │   └── users/[id]/     # 상대방 프로필 상세
+│   └── api/                # Backend API Routes
+├── components/
+│   ├── ui/                 # 공통 UI 컴포넌트 (Button, Input...)
+│   └── ...                 # Feature 컴포넌트 (PhotoUpload, Header...)
+├── lib/
+│   ├── auth.ts             # NextAuth 설정
+│   ├── db.ts               # Prisma Client (Edge 호환)
+│   └── validations.ts      # Zod 스키마
+├── messages/               # i18n JSON 파일 (ko, en, fa, etc.)
+├── prisma/                 # DB 스키마 및 마이그레이션
+└── public/                 # 정적 자산
+```
+
+---
+
+## 7. 국제화 (Internationalization)
+
+*   **라이브러리:** `next-intl`
+*   **지원 언어 (11개):**
+    *   한국어 (`ko`), 영어 (`en`)
+    *   중국어 간체/번체 (`zh-CN`, `zh-TW`)
+    *   러시아어 (`ru`), 베트남어 (`vi`), 우즈벡어 (`uz`)
+    *   몽골어 (`mn`), 네팔어 (`ne`), 스페인어 (`es`)
+    *   **페르시아어 (`fa`)**: RTL(Right-to-Left) 레이아웃 적용 필수.
+*   **구현:** URL 경로 기반 라우팅 (`/ko/matching`, `/en/matching`). 미들웨어에서 언어 감지 및 리다이렉트.
+
+---
+
+## 8. 보안 및 제약 사항 (Security & Constraints)
+
+*   **Edge Runtime:** Node.js Native 모듈(`fs`, `crypto` 등) 사용 금지.
+*   **이미지 보안:**
+    *   업로드는 Presigned URL을 통해서만 가능.
+    *   파일 크기 제한 (Client & Server).
+    *   허용된 확장자 검사 (Zod).
+*   **데이터 접근 제어:**
+    *   API 레벨에서 `session.user.role` 확인.
+    *   자신의 데이터만 수정 가능하도록 ID 검증.
+*   **환경 변수:**
+    *   `wrangler.toml` 및 Cloudflare Dashboard에서 관리.
+    *   `NEXT_PUBLIC_` 접두사 주의.
+
+---
+
 **문의:** @aiandyou50 (인스타그램) | **문의 이메일:** me@aiboop.org

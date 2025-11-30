@@ -64,8 +64,13 @@ async function handler(req: NextRequest) {
     }
   };
 
-  // @ts-ignore - NextAuth types mismatch with Edge Request sometimes, but it works
-  return NextAuth(config).handlers.GET(req);
+  // @ts-ignore
+  const { handlers } = NextAuth(config);
+  
+  if (req.method === 'POST') {
+    return handlers.POST(req);
+  }
+  return handlers.GET(req);
 }
 
 export const GET = handler;
