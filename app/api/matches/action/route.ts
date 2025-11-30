@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Validation Error", details: validation.error.format() }, { status: 400 });
     }
 
-    let { targetUserId, photoId, action } = validation.data;
+    const { targetUserId: initialTargetUserId, photoId, action } = validation.data;
+    let targetUserId = initialTargetUserId;
 
     const db = ctx.env.DB;
     if (!db) {

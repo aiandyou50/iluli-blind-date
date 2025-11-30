@@ -43,7 +43,7 @@ model User {
   introduction  String?
   
   role          Role       @default(USER)
-  status        UserStatus @default(ACTIVE)
+  status        UserStatus @default(PENDING)
   
   // 관계 정의
   accounts      Account[]
