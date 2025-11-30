@@ -10,8 +10,7 @@ export const runtime = 'edge';
 export async function GET(req: NextRequest) {
   try {
     const ctx = getRequestContext();
-    // @ts-ignore
-    const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+    const secret = (ctx.env as unknown as Record<string, string>).AUTH_SECRET || process.env.AUTH_SECRET;
     
     let token = await getToken({ req, secret });
     if (!token) {
@@ -29,7 +28,7 @@ export async function GET(req: NextRequest) {
     }
 
     const prisma = getPrisma(db);
-    const publicUrl = ctx.env.R2_PUBLIC_URL || "https://photos.aiboop.org";
+    const publicUrl = (ctx.env as unknown as Record<string, string>).R2_PUBLIC_URL || "https://photos.aiboop.org";
 
     // [EN] First get all matches to exclude them
     // [KR] 제외할 모든 매치 먼저 조회
@@ -58,9 +57,6 @@ export async function GET(req: NextRequest) {
       where: {
         fromUserId: userId,
         toUserId: { notIn: matchedUserIds }
-      },
-      include: {
-        user: false
       },
       orderBy: { createdAt: 'desc' }
     });

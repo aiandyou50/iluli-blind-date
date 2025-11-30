@@ -10,8 +10,7 @@ export const runtime = 'edge';
 export async function GET(req: NextRequest) {
   try {
     const ctx = getRequestContext();
-    // @ts-ignore
-    const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
+    const secret = (ctx.env as unknown as Record<string, string>).AUTH_SECRET || process.env.AUTH_SECRET;
     
     let token = await getToken({ req, secret });
     if (!token) {
@@ -29,7 +28,7 @@ export async function GET(req: NextRequest) {
     }
 
     const prisma = getPrisma(db);
-    const publicUrl = ctx.env.R2_PUBLIC_URL || "https://photos.aiboop.org";
+    const publicUrl = (ctx.env as unknown as Record<string, string>).R2_PUBLIC_URL || "https://photos.aiboop.org";
 
     // [EN] Find all matches where the current user is either user1 or user2
     // [KR] 현재 사용자가 user1 또는 user2인 모든 매치 찾기
