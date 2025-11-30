@@ -91,9 +91,11 @@ export default function PhotoUpload({ userId, onUploadSuccess }: PhotoUploadProp
 
   return (
     <div className="mt-4">
+      {/* [EN] Supported image formats: jpeg (jpg), png, webp, avif, heic, heif, jxl */}
+      {/* [KR] 지원되는 이미지 형식: jpeg (jpg), png, webp, avif, heic, heif, jxl */}
       <input
         type="file"
-        accept="image/jpeg,image/png,image/gif,image/webp,image/heic,image/heif,image/avif,image/jxl"
+        accept="image/jpeg,image/png,image/webp,image/heic,image/heif,image/avif,image/jxl,.jpg,.jpeg,.png,.webp,.heic,.heif,.avif,.jxl"
         className="hidden"
         ref={fileInputRef}
         onChange={handleFileChange}

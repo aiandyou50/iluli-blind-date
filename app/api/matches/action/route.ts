@@ -106,10 +106,22 @@ export async function POST(req: NextRequest) {
                 if (e.code !== 'P2002') throw e;
             }
 
-            return NextResponse.json({ success: true, match: true });
+            // [EN] Fetch the matched user's Instagram ID to share / [KR] 공유할 매칭된 사용자의 인스타그램 ID 조회
+            const matchedUser = await prisma.user.findUnique({
+                where: { id: targetUserId },
+                select: { instagramId: true, nickname: true, name: true }
+            });
+
+            return NextResponse.json({ 
+                success: true, 
+                match: true,
+                isMatch: true,
+                instagramId: matchedUser?.instagramId,
+                matchedUserName: matchedUser?.nickname || matchedUser?.name
+            });
         }
 
-        return NextResponse.json({ success: true, match: false });
+        return NextResponse.json({ success: true, match: false, isMatch: false });
     }
     
     return NextResponse.json({ success: false, error: "Invalid action" }, { status: 400 });

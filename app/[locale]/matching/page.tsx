@@ -97,16 +97,23 @@ export default function MatchingPage() {
     setCurrentIndex(prev => prev + 1);
 
     try {
-      if (!targetUser.photos?.[0]?.id) return;
+      // [EN] Build request body - prefer targetUserId, fallback to photoId
+      // [KR] 요청 본문 구성 - targetUserId 우선, photoId로 폴백
+      const body: { targetUserId?: string; photoId?: string; action: string } = { action };
+      
+      if (targetUser.id) {
+        body.targetUserId = targetUser.id;
+      } else if (targetUser.photos?.[0]?.id) {
+        body.photoId = targetUser.photos[0].id;
+      } else {
+        console.error("Cannot perform action: no targetUserId or photoId available");
+        return;
+      }
 
       const res = await fetch('/api/matches/action', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: currentUserId,
-          photoId: targetUser.photos[0].id,
-          action
-        })
+        body: JSON.stringify(body)
       });
       
       const data = await res.json() as { isMatch?: boolean; instagramId?: string };

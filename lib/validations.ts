@@ -18,9 +18,11 @@ export const matchActionSchema = z.object({
   message: "Either targetUserId or photoId is required"
 });
 
+// [EN] Supported image formats: jpeg (jpg), png, webp, avif, heic, heif, jxl
+// [KR] 지원되는 이미지 형식: jpeg (jpg), png, webp, avif, heic, heif, jxl
 export const uploadPresignSchema = z.object({
   filename: z.string().min(1),
-  contentType: z.string().regex(/^image\/(jpeg|png|gif|webp|heic|heif|avif|jxl)$/, "Invalid image type")
+  contentType: z.string().regex(/^image\/(jpeg|png|webp|heic|heif|avif|jxl)$/, "Invalid image type")
 });
 
 export const adminUserUpdateSchema = z.object({

@@ -7,8 +7,16 @@ export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as { email: string; instagramId?: string; introduction?: string; nickname?: string; gender?: string };
-    const { email, instagramId, introduction, nickname, gender } = body;
+    // [EN] Parse request body with all profile fields / [KR] 모든 프로필 필드로 요청 본문 파싱
+    const body = await req.json() as { 
+      email: string; 
+      instagramId?: string; 
+      introduction?: string; 
+      nickname?: string; 
+      gender?: string;
+      school?: string;
+    };
+    const { email, instagramId, introduction, nickname, gender, school } = body;
 
     if (!email) {
       return new NextResponse("Email is required", { status: 400 });
@@ -22,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     const prisma = getPrisma(db);
 
-    // Update user profile
+    // [EN] Update user profile with all fields / [KR] 모든 필드로 사용자 프로필 업데이트
     const updatedUser = await prisma.user.update({
       where: { email },
       data: {
@@ -30,6 +38,7 @@ export async function POST(req: NextRequest) {
         introduction,
         nickname,
         gender: gender as Gender,
+        school,
       },
     });
 
