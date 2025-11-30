@@ -112,16 +112,17 @@ export async function POST(req: NextRequest) {
                 select: { instagramId: true, nickname: true, name: true }
             });
 
+            // [EN] Return isMatch for frontend compatibility (match is kept for legacy support)
+            // [KR] 프론트엔드 호환성을 위해 isMatch 반환 (match는 레거시 지원을 위해 유지)
             return NextResponse.json({ 
                 success: true, 
-                match: true,
                 isMatch: true,
                 instagramId: matchedUser?.instagramId,
                 matchedUserName: matchedUser?.nickname || matchedUser?.name
             });
         }
 
-        return NextResponse.json({ success: true, match: false, isMatch: false });
+        return NextResponse.json({ success: true, isMatch: false });
     }
     
     return NextResponse.json({ success: false, error: "Invalid action" }, { status: 400 });
