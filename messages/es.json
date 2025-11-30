@@ -45,7 +45,19 @@
     "saveButton": "Guardar perfil",
     "savingButton": "Guardando...",
     "myPhotos": "Mis fotos",
-    "noPhotos": "Aún no hay fotos."
+    "noPhotos": "Aún no hay fotos.",
+    "editProfileDesc": "Completa tu perfil para empezar a hacer match",
+    "school": "Universidad",
+    "schoolPlaceholder": "Nombre de la universidad",
+    "nicknamePlaceholder": "Ingresa tu apodo",
+    "introductionPlaceholder": "Cuéntanos sobre ti (máx. 300 caracteres)",
+    "selectGender": "Selecciona género",
+    "photoDesc": "Puedes subir hasta 9 fotos",
+    "completeProfileFirst": "Completa tu perfil para subir fotos",
+    "saveSuccess": "¡Perfil guardado exitosamente!",
+    "saveError": "Error al guardar perfil",
+    "liked": "Me gusta enviado",
+    "sendLike": "Enviar like"
   },
   "swipe": {
     "like": "Me gusta",
@@ -100,7 +112,9 @@
     "likes": "Me gusta",
     "delete": "Eliminar",
     "confirmDeleteUser": "¿Estás seguro de que quieres eliminar este usuario?",
-    "confirmDeletePhoto": "¿Estás seguro de que quieres eliminar esta foto?"
+    "confirmDeletePhoto": "¿Estás seguro de que quieres eliminar esta foto?",
+    "accessRequired": "Acceso de administrador requerido",
+    "accessRequiredDesc": "Inicia sesión con una cuenta de Google autorizada para acceder al panel de administrador."
   },
   "landing": {
     "simpleMatchingTitle": "Emparejamiento Sencillo",

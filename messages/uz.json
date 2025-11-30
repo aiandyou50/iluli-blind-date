@@ -45,7 +45,19 @@
     "saveButton": "Profilni saqlash",
     "savingButton": "Saqlanmoqda...",
     "myPhotos": "Mening rasmlarim",
-    "noPhotos": "Hozircha rasmlar yo'q."
+    "noPhotos": "Hozircha rasmlar yo'q.",
+    "editProfileDesc": "Tanishuv boshlash uchun profilingizni to'ldiring",
+    "school": "Universitet",
+    "schoolPlaceholder": "Universitet nomi",
+    "nicknamePlaceholder": "Taxallusingizni kiriting",
+    "introductionPlaceholder": "O'zingiz haqingizda aytib bering (maks. 300 belgi)",
+    "selectGender": "Jinsni tanlang",
+    "photoDesc": "9 tagacha rasm yuklashingiz mumkin",
+    "completeProfileFirst": "Rasm yuklash uchun avval profilingizni to'ldiring",
+    "saveSuccess": "Profil muvaffaqiyatli saqlandi!",
+    "saveError": "Profilni saqlashda xatolik",
+    "liked": "Yoqtirildi",
+    "sendLike": "Yoqtirishni yuborish"
   },
   "swipe": {
     "like": "Yoqdi",
@@ -100,7 +112,9 @@
     "likes": "Yoqtirishlar",
     "delete": "O'chirish",
     "confirmDeleteUser": "Ushbu foydalanuvchini o'chirishga ishonchingiz komilmi?",
-    "confirmDeletePhoto": "Ushbu rasmni o'chirishga ishonchingiz komilmi?"
+    "confirmDeletePhoto": "Ushbu rasmni o'chirishga ishonchingiz komilmi?",
+    "accessRequired": "Admin kirishni talab qiladi",
+    "accessRequiredDesc": "Admin paneliga kirish uchun vakolatli Google hisobi bilan tizimga kiring."
   },
   "landing": {
     "simpleMatchingTitle": "Oddiy moslashuv",

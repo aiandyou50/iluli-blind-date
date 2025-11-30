@@ -45,7 +45,19 @@
     "saveButton": "Сохранить профиль",
     "savingButton": "Сохранение...",
     "myPhotos": "Мои фото",
-    "noPhotos": "Нет фото."
+    "noPhotos": "Нет фото.",
+    "editProfileDesc": "Заполните профиль, чтобы начать подбор",
+    "school": "Университет",
+    "schoolPlaceholder": "Название университета",
+    "nicknamePlaceholder": "Введите псевдоним",
+    "introductionPlaceholder": "Расскажите о себе (макс. 300 символов)",
+    "selectGender": "Выберите пол",
+    "photoDesc": "Можно загрузить до 9 фотографий",
+    "completeProfileFirst": "Для загрузки фото сначала заполните профиль",
+    "saveSuccess": "Профиль успешно сохранён!",
+    "saveError": "Ошибка сохранения профиля",
+    "liked": "Лайк отправлен",
+    "sendLike": "Отправить лайк"
   },
   "swipe": {
     "like": "Нравится",
@@ -100,7 +112,9 @@
     "likes": "Лайки",
     "delete": "Удалить",
     "confirmDeleteUser": "Вы уверены, что хотите удалить этого пользователя?",
-    "confirmDeletePhoto": "Вы уверены, что хотите удалить это фото?"
+    "confirmDeletePhoto": "Вы уверены, что хотите удалить это фото?",
+    "accessRequired": "Требуется доступ администратора",
+    "accessRequiredDesc": "Войдите с авторизованной учётной записи Google для доступа к панели администратора."
   },
   "landing": {
     "simpleMatchingTitle": "Простой подбор",

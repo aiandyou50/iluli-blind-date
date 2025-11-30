@@ -45,7 +45,19 @@
     "saveButton": "儲存資料",
     "savingButton": "儲存中...",
     "myPhotos": "我的照片",
-    "noPhotos": "還沒有照片。"
+    "noPhotos": "還沒有照片。",
+    "editProfileDesc": "完善您的個人資料以開始配對",
+    "school": "學校",
+    "schoolPlaceholder": "大學名稱",
+    "nicknamePlaceholder": "輸入您的暱稱",
+    "introductionPlaceholder": "介紹一下自己（最多300字）",
+    "selectGender": "選擇性別",
+    "photoDesc": "您最多可以上傳9張照片",
+    "completeProfileFirst": "請先完善個人資料才能上傳照片",
+    "saveSuccess": "個人資料已成功儲存！",
+    "saveError": "儲存個人資料失敗",
+    "liked": "已點讚",
+    "sendLike": "發送點讚"
   },
   "swipe": {
     "like": "喜歡",

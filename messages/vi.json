@@ -45,7 +45,19 @@
     "saveButton": "Lưu hồ sơ",
     "savingButton": "Đang lưu...",
     "myPhotos": "Ảnh của tôi",
-    "noPhotos": "Chưa có ảnh."
+    "noPhotos": "Chưa có ảnh.",
+    "editProfileDesc": "Hoàn thành hồ sơ để bắt đầu ghép đôi",
+    "school": "Trường",
+    "schoolPlaceholder": "Tên trường đại học",
+    "nicknamePlaceholder": "Nhập biệt danh của bạn",
+    "introductionPlaceholder": "Hãy cho chúng tôi biết về bạn (tối đa 300 ký tự)",
+    "selectGender": "Chọn giới tính",
+    "photoDesc": "Bạn có thể tải lên tối đa 9 ảnh",
+    "completeProfileFirst": "Hoàn thành hồ sơ để tải ảnh lên",
+    "saveSuccess": "Đã lưu hồ sơ thành công!",
+    "saveError": "Không thể lưu hồ sơ",
+    "liked": "Đã thích",
+    "sendLike": "Gửi thích"
   },
   "swipe": {
     "like": "Thích",
@@ -100,7 +112,9 @@
     "likes": "Lượt thích",
     "delete": "Xóa",
     "confirmDeleteUser": "Bạn có chắc chắn muốn xóa người dùng này?",
-    "confirmDeletePhoto": "Bạn có chắc chắn muốn xóa ảnh này?"
+    "confirmDeletePhoto": "Bạn có chắc chắn muốn xóa ảnh này?",
+    "accessRequired": "Yêu cầu quyền quản trị",
+    "accessRequiredDesc": "Vui lòng đăng nhập bằng tài khoản Google được ủy quyền để truy cập bảng điều khiển quản trị."
   },
   "landing": {
     "simpleMatchingTitle": "Ghép đôi đơn giản",

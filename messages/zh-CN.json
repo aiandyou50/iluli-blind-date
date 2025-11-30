@@ -45,7 +45,19 @@
     "saveButton": "保存资料",
     "savingButton": "保存中...",
     "myPhotos": "我的照片",
-    "noPhotos": "还没有照片。"
+    "noPhotos": "还没有照片。",
+    "editProfileDesc": "完善您的个人资料以开始配对",
+    "school": "学校",
+    "schoolPlaceholder": "大学名称",
+    "nicknamePlaceholder": "输入您的昵称",
+    "introductionPlaceholder": "介绍一下自己（最多300字）",
+    "selectGender": "选择性别",
+    "photoDesc": "您最多可以上传9张照片",
+    "completeProfileFirst": "请先完善个人资料才能上传照片",
+    "saveSuccess": "个人资料已成功保存！",
+    "saveError": "保存个人资料失败",
+    "liked": "已点赞",
+    "sendLike": "发送点赞"
   },
   "swipe": {
     "like": "喜欢",

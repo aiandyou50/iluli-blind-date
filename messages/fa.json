@@ -45,7 +45,19 @@
     "saveButton": "ذخیره پروفایل",
     "savingButton": "در حال ذخیره...",
     "myPhotos": "عکس‌های من",
-    "noPhotos": "هنوز عکسی نیست."
+    "noPhotos": "هنوز عکسی نیست.",
+    "editProfileDesc": "پروفایل خود را کامل کنید تا جفت‌یابی را شروع کنید",
+    "school": "دانشگاه",
+    "schoolPlaceholder": "نام دانشگاه",
+    "nicknamePlaceholder": "نام مستعار خود را وارد کنید",
+    "introductionPlaceholder": "درباره خودتان بگویید (حداکثر ۳۰۰ حرف)",
+    "selectGender": "جنسیت را انتخاب کنید",
+    "photoDesc": "می‌توانید تا ۹ عکس آپلود کنید",
+    "completeProfileFirst": "برای آپلود عکس ابتدا پروفایل خود را کامل کنید",
+    "saveSuccess": "پروفایل با موفقیت ذخیره شد!",
+    "saveError": "خطا در ذخیره پروفایل",
+    "liked": "لایک شده",
+    "sendLike": "ارسال لایک"
   },
   "swipe": {
     "like": "پسندیدن",
@@ -100,7 +112,9 @@
     "likes": "لایک‌ها",
     "delete": "حذف",
     "confirmDeleteUser": "آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟",
-    "confirmDeletePhoto": "آیا مطمئن هستید که می‌خواهید این عکس را حذف کنید؟"
+    "confirmDeletePhoto": "آیا مطمئن هستید که می‌خواهید این عکس را حذف کنید؟",
+    "accessRequired": "نیاز به دسترسی مدیر",
+    "accessRequiredDesc": "لطفاً با حساب گوگل مجاز وارد شوید تا به داشبورد مدیر دسترسی پیدا کنید."
   },
   "landing": {
     "simpleMatchingTitle": "همسریابی ساده",
