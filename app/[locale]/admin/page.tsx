@@ -35,7 +35,7 @@ export default function AdminPage() {
       const res = await fetch('/api/admin/users');
       if (res.ok) {
         const data = await res.json();
-        setUsers(data);
+        setUsers(data as any[]);
       }
     } catch (e) {
       console.error(e);
@@ -60,7 +60,7 @@ export default function AdminPage() {
         setVerificationCode('');
         fetchUsers();
       } else {
-        const err = await res.json();
+        const err = await res.json() as { error?: string };
         alert(err.error || 'Verification failed');
       }
     } catch (e) {
