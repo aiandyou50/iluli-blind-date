@@ -25,6 +25,11 @@ enum Gender {
   OTHER
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 // --- Models ---
 
 model User {
@@ -37,6 +42,7 @@ model User {
   gender           Gender?    // Required for matching
   isGraduated      Boolean    @default(false)
   status           UserStatus @default(PENDING)
+  role             Role       @default(USER)
   verificationCode String?    // 6자리 난수 (24시간 유효)
   lastActiveAt     DateTime   @default(now())
   
