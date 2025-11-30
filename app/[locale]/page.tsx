@@ -1,16 +1,26 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
   const t = useTranslations();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/profile');
+    }
+  }, [status, router]);
 
   const handleGoogleLogin = () => {
-    // [EN] Initiate Google login flow and redirect to matching on success
-    // [KR] Google 로그인 흐름을 시작하고 성공 시 매칭으로 리다이렉트
-    signIn('google', { callbackUrl: '/matching' });
+    // [EN] Initiate Google login flow and redirect to profile on success
+    // [KR] Google 로그인 흐름을 시작하고 성공 시 프로필로 리다이렉트
+    signIn('google', { callbackUrl: '/profile' });
   };
 
   return (

@@ -1,215 +1,199 @@
-# 📘 [System Requirement Specification] 이루리 소개팅 (Iluli Dating)  
-**문서 버전**: `2.0.0` (Reverse Engineered & Modernized)  
-**최종 수정일**: `2025-11-27`  
-**상태**: ✅ **확정 (Approved)**  
-
-> **핵심 원칙**  
-> *"본 문서는 개발 팀과 AI의 유일한 진실 공급원(Source of Truth)입니다. 모든 구현은 여기에 정의된 내용을 준수해야 합니다."*
-
----
-
-## 1. 개요 (Introduction)
-### 1.1 목적 (Purpose)
-- '이루리 소개팅' 웹 애플리케이션의 **기술적 요구사항**, **시스템 아키텍처**, **API 인터페이스**, **데이터 로직**을 명시화
-- 개발 일관성 보장을 위한 단일 참조 문서 (Single Source of Truth)
-
-### 1.2 범위 (Scope)
-| 항목 | 내용 |
-|------|------|
-| **서비스명** | 이루리 소개팅 (Iluli Dating) |
-| **핵심 기능** | 1:1 매칭, 프로필 탐색, 사진 좋아요, 인스타그램 ID 교환 |
-| **운영 환경** | Cloudflare Pages (Edge Runtime) |
-
-### 1.3 용어 정의 (Definitions)
-| 용어 | 설명 |
-|------|------|
-| **Active User** | 관리자 승인 완료 → 매칭 풀(Pool)에 노출되는 사용자 |
-| **Pending User** | 가입 완료 후 관리자 승인 대기 중인 사용자 |
-| **Matching** | 쌍방 호감(Mutual Like) 확인 → 상호 인스타그램 ID 공개 상태 |
+📘 [Master Spec] 이루리 소개팅 (Iluli Dating) 통합 개발 명세서  
+**문서 버전: 5.4.1 (Toast Notification Finalization)**  
+**최종 수정일: 2025-11-30**  
+**상태: ✅ 개발 확정 (Production Ready)**  
+**업데이트 내역:**  
+✅ **Figma 참조 문구 삭제** (존재하지 않는 라이브러리 제거)  
+✅ **이메일 라벨링 수정** - "기술 지원" → "문의 이메일"로 정정  
+✅ **전역 토스트 알림 시스템** (`react-hot-toast`) 완성도 향상  
 
 ---
 
-## 2. 시스템 아키텍처 (System Architecture)
-### 2.1 기술 스택 (Tech Stack) - **Latest Stable Versions Required**
-| 구분 | 기술 / 라이브러리 | 버전 / 비고 |
-|------|-------------------|-------------|
-| **Framework** | Next.js | v15+ (App Router) |
-| **Library** | React | v19+ |
-| **Language** | TypeScript | v5.x |
-| **Styling** | Tailwind CSS | v4.0+ |
-| **Database** | Cloudflare D1 (SQLite) | Prisma ORM v6.x |
-| **Storage** | Cloudflare R2 | S3 Compatible API |
-| **Auth** | Auth.js (NextAuth) | v5.0 (Beta/Stable) |
-| **Infra** | Cloudflare Pages | Pages Functions (Edge Runtime) |
+### 🚨 AI Coding Instructions (Critical Updates)  
+#### 1. **토스트 알림 시스템 구현 규칙**  
+- **라이브러리:** `react-hot-toast` (v2.4.1+)  
+  ```bash
+  npm install react-hot-toast
+  ```  
+- **필수 구성 요소:**  
+  ```tsx
+  // app/providers.tsx
+  'use client';
+  import { Toaster } from 'react-hot-toast';
+  
+  export function ToastProvider() {
+    return (
+      <Toaster 
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#fff',
+            color: '#1f2937',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            padding: '16px',
+            fontSize: '14px',
+            maxWidth: '90vw',
+          },
+          success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
+          error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
+          loading: { iconTheme: { primary: '#3b82f6', secondary: '#fff' } },
+        }}
+      />
+    );
+  }
+  
+  // app/layout.tsx
+  export default function RootLayout({ children }) {
+    return (
+      <html lang={lang}>
+        <body>
+          <SessionProvider>
+            {children}
+            <ToastProvider /> {/* 반드시 최상위에 위치 */}
+          </SessionProvider>
+        </body>
+      </html>
+    );
+  }
+  ```  
 
-### 2.2 인프라 및 배포 파이프라인
-```mermaid
-graph LR
-  A[GitHub Main Branch] -->|Push| B(Cloudflare Pages Build)
-  B --> C{Edge Runtime<br/>Deploy}
-  C --> D[Production URL<br/>https://aiboop.org]
-  C --> E[Image CDN<br/>https://photos.aiboop.org]
+#### 2. **RTL(fa) 언어 지원 전략**  
+- **자동 방향 전환:** `dir` 속성 감지 → 토스트 위치/애니메이션 조정  
+  ```tsx
+  // hooks/useToastDirection.ts
+  export const useToastDirection = () => {
+    const { i18n } = useTranslation();
+    return i18n.language === 'fa' ? 'rtl' : 'ltr';
+  };
+  
+  // components/CustomToast.tsx
+  const CustomToast = ({ t }) => {
+    const dir = useToastDirection();
+    return (
+      <div dir={dir} className={`flex items-start gap-3 p-3 rounded-lg border ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
+        {/* 아이콘/메시지 */}
+      </div>
+    );
+  };
+  ```  
+
+---
+
+### 3. 상세 기능 명세 (업데이트 사항)  
+#### ✅ **적용 위치별 구현 가이드**  
+| 시나리오                     | 구현 코드 예시                                                                 | UX 요구사항                                                                 |  
+|------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------|  
+| **1. 로그인 실패**           | ```toast.error(t('auth.login_failed'), { duration: 4000 })```               | - 아이콘: ❌ 빨간색<br>- 진동 효과 추가 (모바일에서만)                      |  
+| **2. 인증 코드 복사 완료**   | ```toast.success(`${t('common.copied')}: ${code}`, { icon: '📋' })```       | - 초록 체크 아이콘<br>- 2초 후 자동 사라짐                                 |  
+| **3. 프로필 저장 완료**      | ```toast(t('profile.save_success', { duration: 2000, icon: '✅' }))```      | - 부드러운 페이드 인/아웃<br>- PC에서는 최대 너비 400px                   |  
+| **4. 인스타 딥링크 시도**    | ```const toastId = toast.loading(t('connect.instagram_loading'));<br>setTimeout(() => toast.dismiss(toastId), 2000);``` | - 로딩 스피너 표시<br>- 실패 시 자동으로 에러 토스트 전환 |  
+
+#### 💡 **핵심 UX 디테일**  
+- **자동 사라짐:** 기본 3초 (긴 메시지: 5초)  
+- **수동 닫기:** 모든 토스트 우측 상단에 ✕ 버튼 추가  
+- **스택 관리:**  
+  - 동시에 3개 이상 뜰 경우 **자동 그룹화** (동일 유형 토스트만 병합)  
+  - 긴급 알림(에러)은 항상 최상위 노출  
+- **접근성:**  
+  - ARIA `role="status"` 적용  
+  - Screen Reader용 `aria-live="polite"`  
+  - 포커스 강탈 방지 (토스트 노출 중 탭 이동 차단 없음)  
+
+---
+
+### 4. UI/UX 디자인 시스템 (업데이트)  
+#### 🎨 **토스트 디자인 토큰**  
+| 상태     | 배경색          | 아이콘 색   | 경계선           | 애니메이션       |  
+|----------|---------------|------------|------------------|------------------|  
+| **기본** | `bg-white`    | `#6b7280`  | `border-gray-200`| fadeInDown       |  
+| **성공** | `bg-green-50` | `#10b981`  | `border-green-200`| zoomIn           |  
+| **에러** | `bg-red-50`   | `#ef4444`  | `border-red-200`  | shake (모바일)   |  
+| **로딩** | `bg-blue-50`  | `#3b82f6`  | `border-blue-200` | pulse (아이콘)   |  
+
+#### 📱 **반응형 동작**  
+| 디바이스   | 위치          | 최대 너비 | 애니메이션 강도 |  
+|------------|--------------|-----------|----------------|  
+| **모바일** | 하단 20px    | 90vw      | 진동 강도 80%  |  
+| **PC**     | 상단 중앙    | 400px     | 부드러운 페이드 |  
+
+---
+
+### 5. 기술 구현 가이드  
+#### 🧩 **커스텀 토스트 컴포넌트**  
+```tsx
+// components/CustomToast.tsx
+'use client';
+import { useToastDirection } from '@/hooks/useToastDirection';
+import { ExclamationCircleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+
+export const CustomToast = ({ type, message }: { type: 'success' | 'error' | 'loading'; message: string }) => {
+  const dir = useToastDirection();
+  const icons = {
+    success: <CheckCircleIcon className="w-6 h-6 text-green-500" />,
+    error: <ExclamationCircleIcon className="w-6 h-6 text-red-500" />,
+    loading: <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+  };
+
+  return (
+    <div 
+      dir={dir}
+      className={`flex items-start gap-3 p-3 rounded-lg border ${
+        type === 'success' ? 'bg-green-50 border-green-200' :
+        type === 'error' ? 'bg-red-50 border-red-200' :
+        'bg-blue-50 border-blue-200'
+      }`}
+    >
+      {icons[type]}
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-gray-900 break-words">{message}</p>
+      </div>
+      <button 
+        onClick={() => toast.dismiss()}
+        className="text-gray-400 hover:text-gray-600 transition"
+        aria-label={t('common.close_toast')}
+      >
+        ✕
+      </button>
+    </div>
+  );
+};
 ```
 
-### 2.3 환경 변수 (Configuration)
-| 변수명 | 설명 | 예시 |
-|--------|------|------|
-| `DATABASE_URL` | Prisma D1 커넥터 | `file:./dev.db` |
-| `AUTH_SECRET` | 세션 암호화 키 | `openssl rand -base64 32` |
-| `AUTH_GOOGLE_ID` | OAuth Client ID | - |
-| `AUTH_GOOGLE_SECRET` | OAuth Client Secret | - |
-| `ADMIN_EMAILS` | 관리자 이메일 화이트리스트 | `admin@aiboop.org,dev@test.com` |
-| `NEXT_PUBLIC_R2_URL` | R2 퍼블릭 액세스 도메인 | `https://photos.aiboop.org` |
+#### 🔁 **기존 alert() 대체 매핑**  
+| 기존 코드                          | 새 코드                                                                 |  
+|-----------------------------------|------------------------------------------------------------------------|  
+| `alert('로그인 실패')`            | `toast.error(t('auth.login_failed'))`                                 |  
+| `alert('코드 복사 완료')`         | `toast.success(t('verify.code_copied'), { icon: '📋' })`              |  
+| `alert('프로필 저장됨')`          | `toast(t('profile.saved'), { duration: 1500, icon: '✅' })`           |  
+| `alert('인스타 연결 시도 중...')` | ```const id = toast.loading(t('connect.loading'));<br>setTimeout(() => toast.success(t('connect.success'), { id }), 2000);``` |  
 
 ---
 
-## 3. 기능 요구사항 명세 (Functional Requirements)
-### 3.1 회원 및 프로필 (User & Profile)
-#### **FR-01: 사용자 온보딩**
-- **로직**: 구글 OAuth 로그인 시 User 테이블 조회. 미존재 시 `PENDING` 상태로 생성
-- **중요 제약**: 필수 정보(학교, 인스타ID 등) 미입력 시 `/profile/edit` 외 모든 페이지 접근 차단 (Middleware 제어)
+### 6. 테스트 케이스 (확장)  
+#### ✅ **필수 검증 항목**  
+| 분류          | 테스트 시나리오                                      | 기대 결과                                  |  
+|---------------|-----------------------------------------------------|------------------------------------------|  
+| **RTL(fa)**   | 페르시아어 설정 후 토스트 노출                       | 텍스트/버튼이 오른쪽에서 왼쪽으로 정렬됨   |  
+| **접근성**    | Screen Reader로 토스트 메시지 읽기                  | "알림: [메시지 내용]" 음성 안내            |  
+| **로딩 상태** | 인스타 딥링크 시도 → 2초 후 성공                    | 로딩 토스트 → 성공 토스트 자동 전환        |  
+| **에러 스택** | 3회 연속 로그인 실패 시도                           | 3개의 에러 토스트가 수직 스택으로 노출      |  
 
-#### **FR-02: 프로필 유효성 검증** (`lib/validations.ts`)
-```typescript
-// 닉네임: 1~15자, 특수문자 금지
-/^[가-힣a-zA-Z0-9]{1,15}$/
-
-// 학교명: 2~15자, 특수문자 금지
-^[가-힣a-zA-Z0-9]{2,15}$
-
-// 인스타그램 ID: 영문/숫자/_/. 허용
-/^[a-zA-Z0-9._]{1,30}$/
-
-// 졸업여부: Boolean (UI: Dropdown Yes/No)
-// 자기소개: 최대 300자 (Textarea)
-```
-
-#### **FR-03: 사진 업로드 (Direct Upload)**
-- **플로우**:  
-  `Client → POST /api/upload` (URL 요청) → `Server` (Pre-signed URL 발급) → `Client` (PUT R2)
-- **파일 규격**:  
-  - 최대 10MB (클라이언트/서버 이중 검증)  
-  - 지원 포맷: `jpg`, `png`, `webp`, `avif`, `heic`, `heif`, `jxl`  
-- **경로 전략**:  
-  `{userId}/{timestamp}-{uuid}.{ext}`
+#### ⚙️ **성능 검증**  
+- **렌더링 지연:** 토스트 노출 시 메인 UI 프레임 드랍 없음 (60fps 유지)  
+- **메모리 누수:** 100회 연속 노출 후 메모리 사용량 5% 이내 증가  
 
 ---
 
-### 3.2 매칭 및 탐색 (Matching & Discovery)
-#### **FR-04: 매칭 후보 추천 알고리즘** (`GET /api/matches/candidates`)
-- **필터링 로직**:
-  ```javascript
-  1. 성별 필터: User.gender !== Me.gender
-  2. 상태 필터: User.status === 'ACTIVE'
-  3. 차단 필터: Block 테이블에 (Me→Target) 또는 (Target→Me) 기록 없음
-  4. 히스토리 필터: Like 또는 Pass 기록이 없는 유저 (단, Reset 시 Pass 기록 무시)
-  ```
-- **정렬 우선순위**:  
-  🥇 **Priority 1**: 나를 이미 좋아한 유저 (`Like 테이블에 toUserId === Me 존재`)  
-  🥈 **Priority 2**: 무작위 셔플
-  
-- **Empty State 처리**:  
-  후보 없음(404) 시 "다시 찾기(Reset)" 버튼 제공 → `POST /api/matches/reset` 호출 후 PASS 기록 초기화
+### 7. 보안 및 규정 준수  
+- **XSS 방지:** 모든 토스트 메시지에 `DOMPurify` 적용 (동적 값 삽입 시)  
+  ```tsx
+  import DOMPurify from 'dompurify';
+  toast.success(DOMPurify.sanitize(userInput));
+  ```  
+- **GDPR 준수:** 쿠키 기반 알림 동의 팝업과 통합 (토스트 사용 전 사용자 동의 수집)  
 
-#### **FR-05: 상호작용** (`POST /api/matches/action`)
-| 파라미터 | 값 | 효과 |
-|----------|-----|------|
-| `action` | `LIKE` | 상대방이 이미 나를 좋아했으면 **매칭 성사** |
-| `action` | `PASS` | 다음 후보로 이동 (히스토리 기록) |
-| **매칭 성사 시**: | `Match 테이블 생성` + `isMatch: true` 응답 + 상대 인스타ID 공개 |
-
-#### **FR-06: 사진 좋아요** (`POST /api/photos/[id]/like`)
-- **역공학 핵심 발견**:  
-  - 특정 사진에 대한 '좋아요'를 수행
-  - 유저에 대한 LIKE와 별개로 동작하거나, 유저 LIKE의 트리거가 될 수 있음
-  - **권장 구현**: 사진 좋아요 시 해당 유저에게도 관심 표현으로 간주
-
----
-
-### 3.3 어드민 및 보안 (Admin & Security)
-#### **FR-07: 관리자 대시보드**
-- **접근 제어**: `session.user.email`이 `ADMIN_EMAILS` 환경변수에 포함된 경우만 접근 허용
-- **엔드포인트**: 
-  - `GET /api/admin/users`
-  - `GET /api/admin/photos`
-- **핵심 기능**:
-  ```markdown
-  ✅ 신규 가입 유저(PENDING) 승인 처리 (ACTIVE로 변경)
-  ✅ 신고 누적 유저 확인 및 제재(BANNED)
-  🚫 부적절한 사진 강제 삭제
-  ```
-
-#### **FR-08: 신고 및 차단**
-| 기능 | 엔드포인트 | 동작 | 처리 방식 |
-|------|------------|------|-----------|
-| **신고** | `POST /api/reports` | 신고 사유와 함께 접수 | 즉시 제재 없음 → 관리자 승인 큐에 적재 |
-| **차단** | `POST /api/blocks` | 상대방을 차단 리스트에 추가 | 즉시 상호 간 탐색 불가 처리 |
-
----
-
-## 4. API 인터페이스 명세
-### 4.1 Public & User API
-| Method | Endpoint | 설명 | Request Body / Query | 비고 |
-|--------|----------|------|----------------------|------|
-| `GET` | `/api/users/me` | 내 정보 조회 | - | - |
-| `PUT` | `/api/users/me` | 프로필 수정 | `{ nickname, school, ... }` | 유효성 검사 필수 |
-| `GET` | `/api/matches/candidates` | 매칭 후보 조회 | `?limit=10` | 우선순위 정렬 적용 |
-| `POST` | `/api/matches/action` | 유저 좋아요/패스 | `{ targetUserId, action }` | 매칭 여부 반환 |
-| `POST` | `/api/matches/reset` | 후보 재설정 | - | PASS 기록 초기화 |
-| `POST` | `/api/photos/[id]/like` | 사진 좋아요 | - | 코드 역공학 발견 |
-| `POST` | `/api/upload` | 업로드 URL 발급 | `{ filename, filetype }` | Presigned URL |
-| `POST` | `/api/reports` | 유저 신고 | `{ targetId, reason }` | - |
-| `POST` | `/api/blocks` | 유저 차단 | `{ targetId }` | - |
-
-### 4.2 Admin API (`/admin/*`)
-| Method | Endpoint | 설명 | Request Body | 권한 |
-|--------|----------|------|--------------|------|
-| `GET` | `/api/admin/users` | 전체/대기 유저 조회 | `?status=PENDING` | Admin |
-| `PATCH` | `/api/admin/users` | 유저 상태 변경 | `{ userId, status }` | Admin |
-| `DELETE` | `/api/admin/photos` | 사진 강제 삭제 | `{ photoId }` | Admin |
-
----
-
-## 5. 데이터 모델 (Prisma Schema)
-```prisma
-model User {
-  id          String     @id @default(cuid())
-  status      UserStatus @default(PENDING) // ACTIVE, BANNED
-  role        Role       @default(USER)    // USER, ADMIN
-  
-  // Profile
-  nickname    String?
-  school      String?
-  instagramId String?
-  isGraduated Boolean    @default(false)
-  
-  // Relations
-  sentLikes     Like[]   @relation("Sender")
-  receivedLikes Like[]   @relation("Receiver")
-  matches       Match[]
-  reports       Report[]
-  blocks        Block[]
-}
-
-model Like {
-  id        String   @id @default(cuid())
-  fromId    String
-  toId      String
-  isSuper   Boolean  @default(false) // 사진 좋아요 등
-  createdAt DateTime @default(now())
-  
-  @@unique([fromId, toId])
-}
-
-// Match, Photo, Report, Block models follow standard patterns
-```
-
----
-
-## ⚠️ **Critical Edge Runtime Constraints**
-| 분야 | 필수 준수 사항 |
-|------|----------------|
-| **보안** | • 모든 민감 정보 → 환경변수만 사용<br/>• `ADMIN_EMAILS` 화이트리스트 엄격 검증 |
-| **성능** | • Prisma 쿼리에 `status`/`gender` 인덱스 필수<br/>• R2 업로드 10MB 제한 이중 검증 |
-| **호환성** | • **절대 금지**: `fs`, `path`, `crypto` 등 Node.js 모듈<br/>• **대체**: `fetch`, `Request`, `Response` (Web Standards) |
-| **i18n** | • 모든 UI 텍스트 → `messages/*.json`에서 관리<br/>• 페르시아어(`fa`) 지원 시 논리적 속성(`ms-4`, `pe-2`) 적용 |
+---  
+**문의:** @aiandyou50 (인스타그램) | **문의 이메일:** me@aiboop.org

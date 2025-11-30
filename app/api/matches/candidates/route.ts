@@ -1,50 +1,22 @@
-import { getPrisma } from '@/lib/db';
-import { NextRequest, NextResponse } from 'next/server';
+import { getPrisma } from "@/lib/db";
+import { NextRequest, NextResponse } from "next/server";
 import { getRequestContext } from "@cloudflare/next-on-pages";
-import { getToken } from 'next-auth/jwt';
+import { auth } from "@/lib/auth";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function GET(req: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const userId = session.user.id;
     const ctx = getRequestContext();
-    // @ts-ignore
-    const secret = ctx.env.AUTH_SECRET || process.env.AUTH_SECRET;
-    
-    if (!secret) {
-      console.error("AUTH_SECRET is missing in API route");
-      return NextResponse.json({ error: 'Server Configuration Error' }, { status: 500 });
-    }
-
-    // Debug: Check if secret is available
-    // console.log("Secret length:", secret.length);
-
-    let token = await getToken({ req, secret });
-
-    if (!token) {
-      // Try with NextAuth v5 default cookie name
-      token = await getToken({ req, secret, cookieName: '__Secure-authjs.session-token' });
-    }
-
-    if (!token || !token.sub) {
-      // Debugging: Check cookies
-      const cookieList = req.cookies.getAll().map(c => c.name);
-      console.log("Token verification failed. Cookies present:", cookieList);
-      
-      return NextResponse.json({ 
-        error: 'Unauthorized', 
-        debug: { 
-          cookies: cookieList,
-          hasSecret: !!secret,
-          triedCookieName: '__Secure-authjs.session-token'
-        } 
-      }, { status: 401 });
-    }
-
-    const userId = token.sub;
     const db = ctx.env.DB;
     if (!db) {
-      return new NextResponse('Database binding not found', { status: 500 });
+      return new NextResponse("Database binding not found", { status: 500 });
     }
 
     const prisma = getPrisma(db);
@@ -59,7 +31,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json([]);
     }
 
-    const targetGender = currentUser.gender === 'MALE' ? 'FEMALE' : 'MALE';
+    const targetGender = currentUser.gender === "MALE" ? "FEMALE" : "MALE";
 
     // 1. Get IDs of users I have liked
     const liked = await prisma.like.findMany({
@@ -92,9 +64,9 @@ export async function GET(req: NextRequest) {
     // 4. Get IDs of users I have reported
     const reported = await prisma.report.findMany({
       where: { reporterId: userId },
-      select: { reportedId: true }
+      select: { targetId: true } // Updated to targetId
     });
-    const reportedIds = reported.map(r => r.reportedId);
+    const reportedIds = reported.map(r => r.targetId);
 
     // Combine all excluded IDs
     const excludedIds = [
@@ -106,28 +78,36 @@ export async function GET(req: NextRequest) {
       ...reportedIds
     ];
 
+    // Ghost User Filter: lastActiveAt > 7 days ago
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
     // Fetch candidates
     const users = await prisma.user.findMany({
       where: {
         id: { notIn: excludedIds },
         gender: targetGender,
-        status: 'ACTIVE' // Only active users
+        status: "ACTIVE",
+        lastActiveAt: {
+            gte: sevenDaysAgo
+        }
       },
       include: {
         photos: { 
           take: 1,
-          orderBy: { order: 'asc' }
+          orderBy: { order: "asc" }
         }
       },
       take: 20
     });
 
     // Patch photo URLs if missing domain
+    // @ts-ignore
     const publicUrl = ctx.env.R2_PUBLIC_URL || "https://photos.aiboop.org";
     const usersWithPhotos = users.map((user: any) => {
       if (user.photos) {
         user.photos = user.photos.map((photo: any) => {
-          if (photo.url && !photo.url.startsWith('http')) {
+          if (photo.url && !photo.url.startsWith("http")) {
             return { ...photo, url: `${publicUrl}/${photo.url}` };
           }
           return photo;
@@ -139,6 +119,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(usersWithPhotos);
   } catch (error: any) {
     console.error("Error fetching candidates:", error);
-    return new NextResponse(JSON.stringify({ error: error.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    return new NextResponse(JSON.stringify({ error: error.message }), { status: 500, headers: { "Content-Type": "application/json" } });
   }
 }

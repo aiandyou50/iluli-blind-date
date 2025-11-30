@@ -3,13 +3,16 @@
     "appName": "이루리 소개팅",
     "loading": "로딩 중...",
     "error": "오류가 발생했습니다",
-    "retry": "다시 시도"
+    "retry": "다시 시도",
+    "confirm": "확인"
   },
   "auth": {
     "login": "로그인",
     "loginWithGoogle": "Google로 로그인",
     "logout": "로그아웃",
-    "welcome": "환영합니다"
+    "welcome": "환영합니다",
+    "invalid_account": "올바른 Google 계정 정보를 입력해주세요.",
+    "network_error": "네트워크 연결을 확인한 후 다시 시도해주세요."
   },
   "nav": {
     "feed": "피드",

@@ -3,10 +3,16 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 import { uploadPresignSchema } from "@/lib/validations";
+import { auth } from "@/lib/auth";
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const json = await req.json();
     const validation = uploadPresignSchema.safeParse(json);
@@ -19,7 +25,6 @@ export async function POST(req: NextRequest) {
 
     const ctx = getRequestContext();
     
-    // We need these env vars to be set
     // @ts-ignore
     const R2_ACCOUNT_ID = ctx.env.R2_ACCOUNT_ID || process.env.R2_ACCOUNT_ID;
     // @ts-ignore
@@ -43,7 +48,9 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const uniqueFilename = `${Date.now()}-${filename}`;
+    // Use userId in path as per SPEC recommendation for organization
+    // But keep unique filename to avoid cache issues or overwrites if multiple uploads
+    const uniqueFilename = `${session.user.id}/${Date.now()}-${filename}`;
 
     const signedUrl = await getSignedUrl(
       S3,
@@ -51,20 +58,21 @@ export async function POST(req: NextRequest) {
         Bucket: R2_BUCKET_NAME,
         Key: uniqueFilename,
         ContentType: contentType,
+        // Enforce 10MB limit via content-length-range in policy if possible, 
+        // but here we are just signing a PUT. 
+        // Client should respect the limit.
       }),
       { expiresIn: 3600 }
     );
 
-    const publicUrl = ctx.env.R2_PUBLIC_URL || "https://photos.aiboop.org";
-
-    return NextResponse.json({
-      success: true,
-      uploadUrl: signedUrl,
-      filename: uniqueFilename,
-      fileUrl: publicUrl ? `${publicUrl}/${uniqueFilename}` : uniqueFilename,
+    return NextResponse.json({ 
+      url: signedUrl, 
+      key: uniqueFilename,
+      publicUrl: `https://photos.aiboop.org/${uniqueFilename}`
     });
+
   } catch (error) {
-    console.error("Presigned URL error:", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    console.error("Upload error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
