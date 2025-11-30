@@ -139,7 +139,11 @@ export default function AdminPage() {
                         <tr key={user.id} className='border-t'>
                             <td className='p-3'>{user.nickname}</td>
                             <td className='p-3'>
-                                <span className={px-2 py-1 rounded text-xs }>
+                                <span className={`px-2 py-1 rounded text-xs ${
+                                    user.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
+                                    user.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                                    'bg-red-100 text-red-800'
+                                }`}>
                                     {user.status}
                                 </span>
                             </td>
