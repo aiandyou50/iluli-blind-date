@@ -178,7 +178,7 @@ export default function AdminPage() {
             </button>
             
             <a 
-              href={instagram://user?username=}
+              href={`instagram://user?username=${selectedUser.instagramId}`}
               target='_blank'
               rel='noopener noreferrer'
               className='block text-center text-blue-500 hover:underline'
